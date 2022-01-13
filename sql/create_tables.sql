@@ -8,4 +8,5 @@ CREATE TABLE `MEMBER`(
     `birth` CHAR(6) NOT NULL,
     `phone` CHAR(11) NOT NULL,
     PRIMARY KEY (`id`));
-    
+
+INSERT INTO `MEMBER` VALUES(`dlekdud0102`, `password1234`, `이다영`, `010102`, `01012345678`);
