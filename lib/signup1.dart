@@ -88,7 +88,9 @@ class _SignUpState extends State<SignUp1> {
                             onPressed: (){
                               // 아이디 존재여부 확인
                               if(inputId.text==id){
-                                idExist=true;
+                                setState(() {
+                                  idExist=true;
+                                });
                               }
                               // 없는 아이디면 서버에 데이터 전달 후 다음 페이지로 이동
                               else {
@@ -96,7 +98,7 @@ class _SignUpState extends State<SignUp1> {
                                   id = inputId.text;
                                 });
                                 idExist=false;
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>SingUp2()));
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>SignUp2()));
                               }
                             },
                             child: text('계속하기', 14.0, FontWeight.w600, Colors.white),
