@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mosigg/signup2.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignUp1 extends StatefulWidget {
   const SignUp1({Key? key}) : super(key: key);
@@ -91,7 +93,25 @@ class _SignUpState extends State<SignUp1> {
                           ),
                           SizedBox(height: 20.0),
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              bool exist = await idcheck('${inputId.text}');
+                              if(exist == false){
+                                setState(() {
+                                  idExist = true;
+                                });
+                              }
+                              else{
+                                setState(() {
+                                  id = inputId.text;
+                                });
+                                idExist = false;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            SignUp2()));
+                              }
+                              /* 세연언니 코드
                               // 아이디 존재여부 확인
                               if (inputId.text == id) {
                                 setState(() {
@@ -110,6 +130,7 @@ class _SignUpState extends State<SignUp1> {
                                         builder: (BuildContext context) =>
                                             SignUp2()));
                               }
+                              */
                             },
                             child: text(
                                 '계속하기', 14.0, FontWeight.w600, Colors.white),
@@ -188,4 +209,15 @@ class _SignUpState extends State<SignUp1> {
 Text text(content, size, weight, colors) {
   return Text(content,
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
+}
+
+Future<bool> idcheck(String id) async {
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/signup/${id}'));
+
+  if(response.statusCode == 200) {
+    if(json.decode(response.body) == true)  return false; // 아이디 사용 불가(중복된 아이디)
+    else                                    return true;  // 아이디 사용 가능
+  } else {
+    return false;
+  }
 }
