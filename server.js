@@ -8,7 +8,7 @@ var mySQLOptions = {
     port: 3306,
     user: 'root',
     password: '1234',
-    database: 'mosigg'
+    database: 'carnnected'
 };
 
 // session
@@ -51,13 +51,13 @@ app.get('/signup/:idcheck', function(req, res){
         var sqlIdCheck = "SELECT id FROM member WHERE id = ?";
         connection.query(sqlIdCheck, idcheck, function(err, row){
             if(err) console.log('아이디 중복 확인 에러');
-            if(row[0] === undefined){
-                console.log('아이디 사용 가능');
-                res.send(false);
+            if(row[0] !== undefined){
+                console.log('아이디 중복', row);
+                res.send(true);
             }
             else{
-                console.log('아이디 사용 불가', row);
-                res.send(true);
+                console.log('아이디 중복 X, 사용 가능');
+                res.send(false);
             }
             connection.release();
         })

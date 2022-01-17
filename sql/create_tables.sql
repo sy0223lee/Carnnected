@@ -1,5 +1,5 @@
-create schema mosigg;
-use mosigg;
+create schema carnnected;
+use carnnected;
 
 CREATE TABLE `MEMBER`(
     `id` VARCHAR(15) NOT NULL,
