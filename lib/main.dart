@@ -75,7 +75,7 @@ class StartPage extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
@@ -98,7 +98,7 @@ class StartPage extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
