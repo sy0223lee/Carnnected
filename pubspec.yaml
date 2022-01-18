@@ -80,5 +80,7 @@ flutter:
           weight: 700
         - asset: fonts/NotoSansKR/NotoSansKr-Medium.otf
           weight: 500
+        - asset: fonts/NotoSansKR/NotoSansKr-Regular.otf
+          weight: 400
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
