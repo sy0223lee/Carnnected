@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mosigg/signup2.dart';
+import 'package:mosigg/main.dart';
 
 class SignUp1 extends StatefulWidget {
   const SignUp1({Key? key}) : super(key: key);
@@ -29,14 +29,16 @@ class _SignUpState extends State<SignUp1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: text('회원가입', 20.0, FontWeight.w600, Colors.black),
+        title: text('회원가입', 20.0, FontWeight.bold, Colors.black),
         centerTitle: true,
+        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           icon: Icon(Icons.clear_rounded),
           iconSize: 45.0,
+          color: Colors.black,
           onPressed: () {
-            // 시작페이지로 이동
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => StartPage()));
           },
         ),
       ),
@@ -58,11 +60,11 @@ class _SignUpState extends State<SignUp1> {
                   Padding(
                       padding: EdgeInsets.only(left: 25.0),
                       child:
-                          text('모시깽이의', 24.0, FontWeight.w600, Colors.black)),
+                          text('CARNNECTED의', 24.0, FontWeight.w500, Colors.black)),
                   Padding(
                       padding: EdgeInsets.only(left: 25.0),
                       child: text(
-                          '계정을 만들게요:)', 24.0, FontWeight.w600, Colors.black)),
+                          '계정을 만들게요:)', 24.0, FontWeight.w500, Colors.black)),
                   SizedBox(height: 40.0),
                   Form(
                     child: Container(
@@ -71,7 +73,7 @@ class _SignUpState extends State<SignUp1> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          text('아이디', 16.0, FontWeight.w600, Colors.black),
+                          text('아이디', 16.0, FontWeight.w500, Colors.black),
                           TextField(
                             controller: inputId,
                             decoration: InputDecoration(
@@ -84,7 +86,7 @@ class _SignUpState extends State<SignUp1> {
                                 helperText: '아이디를 입력해주세요!',
                                 helperStyle: TextStyle(
                                     fontSize: 14.0,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w400,
                                     color: Color(0xffCBCBCB)),
                                 focusColor: Colors.grey),
                             keyboardType: TextInputType.emailAddress,
@@ -104,15 +106,11 @@ class _SignUpState extends State<SignUp1> {
                                   id = inputId.text;
                                 });
                                 idExist = false;
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            SignUp2()));
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => SignUp2()));
                               }
                             },
                             child: text(
-                                '계속하기', 14.0, FontWeight.w600, Colors.white),
+                                '계속하기', 14.0, FontWeight.w500, Colors.white),
                             style: ElevatedButton.styleFrom(
                                 primary: Color(0xff001A5D),
                                 shape: RoundedRectangleBorder(
@@ -128,7 +126,7 @@ class _SignUpState extends State<SignUp1> {
                                   child: Text('앗! 이미 존재하는 아이디예요!',
                                       style: TextStyle(
                                           fontSize: 14.0,
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: FontWeight.w400,
                                           color: Colors.black)),
                                 ))
                               : SizedBox(height: 61.0),
@@ -145,7 +143,7 @@ class _SignUpState extends State<SignUp1> {
                                       // 간편 회원가입 페이지로 이동
                                     },
                                     child: text('간편 회원가입', 14.0,
-                                        FontWeight.w600, Color(0xffCBCBCB))),
+                                        FontWeight.w400, Color(0xffCBCBCB))),
                                 Container(
                                     height: 1.0,
                                     width: 130.0,
@@ -166,7 +164,7 @@ class _SignUpState extends State<SignUp1> {
                                     Image.asset('image/kakao.png',
                                         width: 25, height: 25),
                                     SizedBox(width: 5),
-                                    text('카카오로 시작', 14.0, FontWeight.w600,
+                                    text('카카오로 시작', 14.0, FontWeight.w500,
                                         Colors.black)
                                   ],
                                 )),
@@ -187,5 +185,5 @@ class _SignUpState extends State<SignUp1> {
 
 Text text(content, size, weight, colors) {
   return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
+      style: TextStyle(fontFamily: 'NotoSansKR', fontSize: size, fontWeight: weight, color: colors));
 }
