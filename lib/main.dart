@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'MOSIGG',
       theme: ThemeData(
-          fontFamily: 'NotoSans',
+          fontFamily: 'NotoSansKR',
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
@@ -33,13 +33,13 @@ class StartPage extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 200),
+                  padding: EdgeInsets.only(top: 150),
                 ),
                 Center(
                   child: Column(
                     children: [
                       Text(
-                        'MOSSIGG',
+                        'CARNNECTED',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 54,
@@ -75,7 +75,7 @@ class StartPage extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
@@ -98,7 +98,7 @@ class StartPage extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
