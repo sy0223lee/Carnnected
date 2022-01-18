@@ -13,12 +13,14 @@ class _SignUp2State extends State<SignUp2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: text('회원가입', 20.0, FontWeight.w600, Colors.black),
+        title: text('회원가입', 20.0, FontWeight.bold, Colors.black),
         centerTitle: true,
+        backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded),
           iconSize: 40.0,
+          color: Colors.black,
           onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>SignUp1()));
           },),
