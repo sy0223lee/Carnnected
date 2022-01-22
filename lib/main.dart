@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosigg/login.dart';
 import 'package:mosigg/signup1.dart';
 
 void main() => runApp(MyApp());
@@ -89,7 +90,13 @@ class StartPage extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                               primary: Color(0xffffffff),
                               onPrimary: Color(0xff000000)),
-                          onPressed: () {/*모시깽이로 로그인 페이지로*/},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                            );
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
