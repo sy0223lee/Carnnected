@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mosigg/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:mosigg/home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,23 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController inputid = TextEditingController();
   TextEditingController inputpw = TextEditingController();
 
-  Future login() async {
-    var response = await http.post("localhost:8080/login/:id/:pwd", body: {
-      "id": inputid.text,
-      "pwd": inputpw.text,
-    });
-    var data = json.decode(response.body);
-    if (data == "true") {
-      //Navigator.push(context, MaterialPageRoute(builder: (context)=>/*홈화면*/ ),),
-    } else {
-      Fluttertoast.showToast(
-          msg: '아이디와 비밀번호가 일치하지 않습니다',
-          fontSize: 15.0,
-          backgroundColor: Color(0xff001A5D),
-          textColor: Colors.white,
-          toastLength: Toast.LENGTH_SHORT);
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +134,18 @@ class _LoginPageState extends State<LoginPage> {
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.w500),
                                 ),
-                                onPressed: () {
-                                  login();
+                                onPressed: () async {
+                                  bool logined = await login('${inputid.text}', '${inputpw.text}');
+                                  if(logined == true){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                                  } else {
+                                    Fluttertoast.showToast(
+                                    msg: '아이디와 비밀번호가 일치하지 않습니다',
+                                    fontSize: 15.0,
+                                    backgroundColor: Color(0xff001A5D),
+                                    textColor: Colors.white,
+                                    toastLength: Toast.LENGTH_SHORT);
+                                  }
                                 },
                                 child: Text('로그인')),
                           ),
@@ -165,5 +160,16 @@ class _LoginPageState extends State<LoginPage> {
         },
       ),
     );
+  }
+}
+
+Future login(String id, String pwd) async {
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/login/${id}/${pwd}'));
+
+  if(response.statusCode == 200) {
+    if(json.decode(response.body) == true)  return true;  // 로그인 성공
+    else                                    return false; // 로그인 실패
+  } else {
+    return false;
   }
 }
