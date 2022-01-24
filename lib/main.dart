@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/signup1.dart';
+import 'package:mosigg/signup/signup1.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
-      home: StartPage(),
+      home: SignUp1()//StartPage(),
     );
   }
 }
