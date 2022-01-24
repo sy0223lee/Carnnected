@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
-      home: StartPage(),
+      home: SignUp1()//StartPage(),
     );
   }
 }
