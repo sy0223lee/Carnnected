@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:mosigg/signup1.dart';
 
-void main() => runApp(MyApp());
+//void main() => runApp(MyApp());
+void main(){
+  KakaoContext.clientId='f7926788ee7785502df4ce563f93d183';
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -20,8 +25,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class StartPage extends StatelessWidget {
-  const StartPage({Key? key}) : super(key: key);
+class StartPage extends StatefulWidget {
+  const StartPage({ Key? key }) : super(key: key);
+
+  @override
+  _StartPageState createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  Future<void> loginButtonPressed() async {
+    String authCode = await AuthCodeClient.instance.request();
+    print(authCode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +77,9 @@ class StartPage extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                               primary: Color(0xfff9e000),
                               onPrimary: Color(0xff000000)),
-                          onPressed: () {/*카카오톡 로그인 페이지*/},
+                          onPressed: () {
+                            loginButtonPressed();
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
