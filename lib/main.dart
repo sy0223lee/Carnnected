@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/login.dart';
-import 'package:mosigg/signup1.dart';
+import 'package:mosigg/login/login.dart';
+import 'package:mosigg/signup/signup1.dart';
 
 void main() => runApp(MyApp());
 
