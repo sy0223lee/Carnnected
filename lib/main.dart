@@ -34,8 +34,17 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   Future<void> loginButtonPressed() async {
-    String authCode = await AuthCodeClient.instance.request();
-    print(authCode);
+    try {
+      String authCode = await AuthCodeClient.instance.request();
+      print(authCode);
+    } catch(e) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext
+                    context) =>
+                StartPage()));
+    }
   }
 
   @override
