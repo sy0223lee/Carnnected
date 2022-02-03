@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:kakao_flutter_sdk/all.dart';
-import 'package:mosigg/signup1.dart';
+import 'package:mosigg/login/login.dart';
+import 'package:mosigg/signup/signup1.dart';
 
 //void main() => runApp(MyApp());
 void main(){
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
-      home: StartPage(),
+      home: SignUp1()//StartPage(),
     );
   }
 }
@@ -115,7 +117,13 @@ class _StartPageState extends State<StartPage> {
                           style: ElevatedButton.styleFrom(
                               primary: Color(0xffffffff),
                               onPrimary: Color(0xff000000)),
-                          onPressed: () {/*모시깽이로 로그인 페이지로*/},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                            );
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
