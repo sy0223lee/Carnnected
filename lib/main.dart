@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MOSIGG',
+      title: 'CARNNECTED',
       theme: ThemeData(
           fontFamily: 'NotoSansKR',
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
-      home: SignUp1()//StartPage(),
+      home: StartPage(),
     );
   }
 }
@@ -128,7 +128,7 @@ class _StartPageState extends State<StartPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '모시깽이로 로그인',
+                                '카넥티드로 로그인',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
