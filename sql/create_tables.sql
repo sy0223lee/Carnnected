@@ -28,6 +28,7 @@ CREATE TABLE `WASH_RESRV`(
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
     `type` VARCHAR(10) NOT NULL,		# 세차 종류
+    `detail` VARCHAR(100),				# 추가 요청 사항
     `company` VARCHAR(15) NOT NULL,		# 세차 업체
     `source` VARCHAR(50) NOT NULL,		# 차량 위치
     `price` INT NOT NULL,				# 예상 가격
