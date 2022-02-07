@@ -52,7 +52,7 @@ CREATE TABLE `WASH_RESRV`(
     `number` CHAR(8) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
     `type` VARCHAR(10) NOT NULL,		# 세차 종류
-    `detail` VARCHAR(100),				# 추가 요청 사항
+    `detail` VARCHAR(600),				# 추가 요청 사항
     `company` VARCHAR(15) NOT NULL,		# 세차 업체
     `source` VARCHAR(50) NOT NULL,		# 차량 위치
     `price` INT NOT NULL,				# 예상 가격
@@ -64,6 +64,7 @@ CREATE TABLE `DELIV_RESRV`(
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
     `number` CHAR(8) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
+    `detail` VARCHAR(600),				# 추가 요청 사항
     `source` VARCHAR(50) NOT NULL,		# 차량 위치
     `dest_name` VARCHAR(15),			# 목적지 이름
     `dest_addr` VARCHAR(50) NOT NULL,	# 목적지 주소
@@ -89,6 +90,7 @@ CREATE TABLE `REPLACE_RESRV`(
     `number` CHAR(8) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
 	`item` VARCHAR(20) NOT NULL,		# 교체 용품
+	`detail` VARCHAR(600),				# 추가 요청 사항
     `source` VARCHAR(50) NOT NULL,		# 차량 위치
     `price` INT NOT NULL,				# 예상 가격
     FOREIGN KEY (`id`)
@@ -100,7 +102,7 @@ CREATE TABLE `REPAIR_RESRV`(
     `number` CHAR(8) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
     `type` VARCHAR(10) NOT NULL,		# 검사 종류
-    `detail` VARCHAR(100),				# 추가 요청 사항
+    `detail` VARCHAR(600),				# 추가 요청 사항
     `source` VARCHAR(50) NOT NULL,		# 차량 위치
     `dest_name` VARCHAR(15) NOT NULL,	# 정비소 이름
     `dest_addr` VARCHAR(50) NOT NULL,	# 정비소 주소
