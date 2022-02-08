@@ -192,7 +192,6 @@ app.get('/favorite_addr/delete/:addr', function(req, res){
                                         console.log("순서 다시 정렬");
                                     })
                                 }
-                                console.log(i);
                             }
                         })
                     }
