@@ -19,7 +19,7 @@ CREATE TABLE `CAR`(
     #`imei` INT NOT NULL,				# 이동 단말 위치 추적 가능한 그런건가봐 아이카에 준 데이터에 있길래 추가해놓음
     `name` VARCHAR(30) NULL,			# 차 별명
     `image` VARCHAR(50) NOT NULL,		# 차 사진 경로
-    `order` INT NOT NULL,				# 차량 리스트 순서
+    `num` INT NOT NULL,				# 차량 리스트 순서
     PRIMARY KEY(`number`),
     FOREIGN KEY(`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
@@ -33,6 +33,15 @@ CREATE TABLE `CAR_STATE`(
     FOREIGN KEY(`index`)
     REFERENCES `CAR`(`index`) ON UPDATE CASCADE);
 */
+
+# 즐겨찾는 주소
+CREATE TABLE `FAVORITE_ADDR`(
+	`id` VARCHAR(15) NOT NULL,			# 회원 id
+    `addr` VARCHAR(100) NOT NULL,		# 즐겨찾는 주소
+    `num` INT NOT NULL,					# 보여줄 순서
+    FOREIGN KEY(`id`)
+    REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE,
+    PRIMARY KEY(`id`, `addr`));			# 기본키 여러개로 설정해서 중복 안되도록
 
 # 주유 서비스 예약
 CREATE TABLE `GAS_RESRV`(
