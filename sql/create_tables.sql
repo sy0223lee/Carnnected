@@ -13,24 +13,26 @@ CREATE TABLE `MEMBER`(
 # 차량 테이블
 CREATE TABLE `CAR`(
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
-    `model` VARCHAR(20) NOT NULL,		# 차종
+    `model` VARCHAR(30) NOT NULL,		# 차종
     `year` INT NOT NULL,				# 차 연식
     `number` CHAR(11) NOT NULL,			# 차 번호
     #`imei` INT NOT NULL,				# 이동 단말 위치 추적 가능한 그런건가봐 아이카에 준 데이터에 있길래 추가해놓음
-    `name` VARCHAR(15) NULL,			# 차 별명
-    `image` VARCHAR(20) NOT NULL,		# 차 사진 경로
+    `name` VARCHAR(30) NULL,			# 차 별명
+    `image` VARCHAR(50) NOT NULL,		# 차 사진 경로
     `order` INT NOT NULL,				# 차량 리스트 순서
     PRIMARY KEY(`number`),
     FOREIGN KEY(`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
 
 # 차량 상태 정보 테이블
+/*
 CREATE TABLE `CAR_STATE`(
 	`number` CHAR(11) NOT NULL,			# 차 번호
     `left_fuel` INT,					# 남은 연료
     `gps` INT,							# 차량 위치
     FOREIGN KEY(`index`)
     REFERENCES `CAR`(`index`) ON UPDATE CASCADE);
+*/
 
 # 주유 서비스 예약
 CREATE TABLE `GAS_RESRV`(

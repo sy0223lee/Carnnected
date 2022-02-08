@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var mySQL = require('mysql');
 var session = require('express-session');
+const { application } = require('express');
 var mySQLStore = require('express-mysql-session')(session);
 var mySQLOptions = {
     host:'localhost',
@@ -106,7 +107,7 @@ app.get('/login/:id/:pwd', function(req, res){
         if(err) console.log('로그인 오류');
         if(result[0] !== undefined){
             req.session.isLogined = true;
-            req.session.id = result[0].id;
+            req.session.userid = result[0].id;
             req.session.pwd = result[0].pwd;
             req.session.name = result[0].name;
             req.session.birth = result[0].birth;
@@ -121,5 +122,58 @@ app.get('/login/:id/:pwd', function(req, res){
             console.log("로그인 실패");
             res.send(false);
         }
+        connection.release();
     })
+})
+
+/***** 주유 서비스 *****/
+// 예약 insert
+app.get('/gas_resrv/:number/:time/:source/:type/:dest_name/:dest_addr/:amount/:price', function(req, res){
+    var id = req.session.userid;
+    var number = req.params.number;
+    var time = req.params.time;
+    var source = req.params.source;
+    var type = req.params.type;
+    var dest_name = req.params.dest_name;
+    var dest_addr = req.params.dest_addr;
+    var amount = req.params.amount;
+    var price = req.params.price;
+
+    pool.getConnection(function(err, connection){
+        // 동일한 시간, 차량 예약 정보가 존재하는지 확인
+        var sqlResrvCheck = "SELECT * FROM GAS_RESRV WHERE time = ? AND number = ?";
+        connection.query(sqlResrvCheck, [time, number], function(err, row){
+            if(err){
+                console.log("동일한 주유 예약 존재 확인 오류: ", row[0]);
+                res.send(false);
+            }
+            else{
+                if(row[0] === undefined){   // 정보 없으면 예약 가능
+                    console.log("주유 예약 가능");
+                    
+                    // 예약 정보 table에 insert
+                    var sqlGasReserv = "INSERT INTO GAS_RESRV VALUES (?,?,?,?,?,?,?,?,?)";
+                    var datas = [id, number, time, type, amount, source, dest_name, dest_addr, price];
+                    console.log("주유 예약 정보: ", datas);
+    
+                    pool.query(sqlGasReserv, datas, function(err){
+                        if(err){
+                            console.log('주유 예약 INSERT 오류');
+                            res.send(false);
+                        }
+                        else{
+                            console.log('주유 예약 INSERT 성공');
+                            res.send(true);
+                        }
+                    })
+                }
+                else{   // 동일한 정보 존재하면 예약 불가능
+                    console.log("동일한 시간, 차량 주유 예약 이미 존재: ", row[0]);
+                    console.log('주유 예약 INSERT 실패');
+                    res.send(false);
+                }
+            }
+            connection.release();
+        })
+    })    
 })
