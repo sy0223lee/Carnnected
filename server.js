@@ -8,7 +8,6 @@ var mySQLOptions = {
     host:'localhost',
     port: 3306,
     user: 'root',
-    password: '1234',
     database: 'carnnected'
 };
 
@@ -119,13 +118,12 @@ app.get('/login/:id/:pwd', function(req, res){
 
 /***** 전체 서비스 *****/
 // 즐겨찾는 주소 전송
-app.get('/favorite_addr', function(req, res){
+app.get('/favorite_addr/:id', function(req, res){
+		var id = req.params.id;
     pool.getConnection(function(err, connection){
-        var sqlAddr = "SELECT addr FROM FAVORITE_ADDR WHERE id = ? ORDER BY num DESC";
-        connection.query(sqlAddr, req.session.userid, function(err, rows){
+        var sqlAddr = "SELECT * FROM FAVORITE_ADDR WHERE id = ? ORDER BY num DESC";
+        connection.query(sqlAddr, id, function(err, rows){
             if(err){
-                console.log("즐겨찾는 주소 전송 오류: ", rows);
-                res.send(false);
             }
             else{
                 console.log("즐겨찾는 주소 전송 성공: ", rows);
