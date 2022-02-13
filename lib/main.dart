@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'NotoSansKR',
           primaryColor: Colors.white,
+          colorScheme: ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
       home: LocationSearchPage1()//StartPage(),

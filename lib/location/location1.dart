@@ -51,7 +51,7 @@ class _LocationSearchPage1State extends State<LocationSearchPage1> {
                             Container(width: 20, child: Icon(Icons.search)),
                         iconColor: Color(0xff9a9a9a),
                         prefixIconConstraints:
-                            BoxConstraints(maxHeight: 24, maxWidth: 20),
+                            BoxConstraints(maxHeight: 24, maxWidth: 24),
                         hintText: '예) 광운로 12',
                         hintStyle: TextStyle(
                           color: Color(0xff9a9a9a),
