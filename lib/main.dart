@@ -5,6 +5,7 @@ import 'package:mosigg/signup/signup1.dart';
 
 /*개발용 임시import*/
 import 'package:mosigg/location/location1.dart';
+import 'package:mosigg/location/location2.dart';
 
 //void main() => runApp(MyApp());
 void main(){
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
-      home: LocationSearchPage1()//StartPage(),
+      home: LocationSearchPage1(),
     );
   }
 }
