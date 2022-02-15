@@ -9,6 +9,7 @@ class Oilstart extends StatefulWidget {
 
 class _OilstartState extends State<Oilstart> {
   final isSelected = <bool>[false, false, false, false, false];
+  final isSelected2 = <bool>[false, false, false, false];
   String _selectedTime = "";
   DateTime? _selectedDate;
 
@@ -37,11 +38,14 @@ class _OilstartState extends State<Oilstart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                text(
-                    '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
-                    12.0,
-                    FontWeight.w400,
-                    Colors.black),
+                if (_selectedDate?.year != null)
+                  text(
+                      '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
+                      12.0,
+                      FontWeight.w400,
+                      Colors.black),
+                if (_selectedDate?.year == null)
+                  text("0000/00/00", 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     onPressed: () {
                       Future<DateTime?> selectedDate = showDatePicker(
@@ -101,13 +105,29 @@ class _OilstartState extends State<Oilstart> {
             SizedBox(height: 19),
             text('차량위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
-            text('경기', 12.0, FontWeight.w400, Colors.black),
-            Divider(
-              height: 0.0,
-              color: Color(0xffcbcbcb),
-              thickness: 2.0,
+            GestureDetector(
+              onTap: () {
+                //Navigator.push(context,
+                //MaterialPageRoute(builder: (context) => Oilprice()));
+              },
+              child: SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    text('경기', 12.0, FontWeight.w400, Colors.black),
+                    SizedBox(height: 6.0),
+                    Divider(
+                      height: 0.0,
+                      color: Color(0xffcbcbcb),
+                      thickness: 2.0,
+                    ),
+                    SizedBox(height: 5.0),
+                    text('차량 위치를 입력하세요!', 10.0, FontWeight.w400,
+                        Color(0xff9d9d9d)),
+                  ],
+                ),
+              ),
             ),
-            text('차량 위치를 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19),
             text('연료', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
@@ -179,6 +199,72 @@ class _OilstartState extends State<Oilstart> {
             ),
             SizedBox(height: 8.5),
             text('차량에 맞는 연료를 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
+            SizedBox(height: 19.0),
+            text('결제수단', 14.0, FontWeight.w400, Colors.black),
+            Container(
+              height: 24,
+              child: ToggleButtons(
+                  color: Colors.black,
+                  selectedColor: Colors.white,
+                  selectedBorderColor: Color(0xff001a5d),
+                  fillColor: Color(0xff001a5d),
+                  onPressed: (int index2) {
+                    setState(() {
+                      for (int buttonIndex2 = 0;
+                          buttonIndex2 < isSelected2.length;
+                          buttonIndex2++) {
+                        if (buttonIndex2 == index2) {
+                          isSelected2[buttonIndex2] = true;
+                        } else {
+                          isSelected2[buttonIndex2] = false;
+                        }
+                      }
+                    });
+                  },
+                  children: [
+                    Container(
+                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
+                      child: Center(
+                        child: Text(
+                          '신용카드',
+                          style: TextStyle(
+                              fontSize: 12.0, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
+                      child: Center(
+                        child: Text(
+                          '계좌이체',
+                          style: TextStyle(
+                              fontSize: 12.0, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
+                      child: Center(
+                        child: Text(
+                          '휴대폰결제',
+                          style: TextStyle(
+                              fontSize: 12.0, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
+                      child: Center(
+                        child: Text(
+                          '카카오페이',
+                          style: TextStyle(
+                              fontSize: 12.0, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                    ),
+                  ],
+                  isSelected: isSelected2),
+            ),
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,

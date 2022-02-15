@@ -1,17 +1,5 @@
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mosigg',
-      theme: ThemeData(fontFamily: 'NotoSansKR'),
-      debugShowCheckedModeBanner: false,
-      home: Oilconfirm(),
-    );
-  }
-}
-
 class Oilconfirm extends StatefulWidget {
   const Oilconfirm({Key? key}) : super(key: key);
 
@@ -49,7 +37,7 @@ class _OilconfirmState extends State<Oilconfirm> {
             splitrow('예약일시', '2022년 4월 29일 오후 12:00'),
             splitrow('차량위치', '경기도'),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [text('상세주소', 14.0, FontWeight.w400, Colors.black)],
             ),
             SizedBox(height: 10.0),
