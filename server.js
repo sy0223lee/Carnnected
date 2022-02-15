@@ -185,6 +185,9 @@ app.get('/usingservice/:carnumber', function(req, res){
                                                                             console.log("사용중인 대리정비 서비스 존재: ", rows6);
                                                                             res.send("대리정비");
                                                                         }
+                                                                        else{
+                                                                            return(false);
+                                                                        }
                                                                     }
                                                                 })
                                                             }
