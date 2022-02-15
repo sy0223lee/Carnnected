@@ -186,7 +186,7 @@ app.get('/usingservice/:carnumber', function(req, res){
                                                                             res.send("대리정비");
                                                                         }
                                                                         else{
-                                                                            return(false);
+                                                                            res.send(false);
                                                                         }
                                                                     }
                                                                 })
@@ -204,6 +204,7 @@ app.get('/usingservice/:carnumber', function(req, res){
                 })
             }
         }
+        connection.release();
     });
 })
 
