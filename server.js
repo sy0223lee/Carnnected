@@ -72,7 +72,6 @@ app.get('/signup/:id/:pwd/:name/:birth/:phone', function(req, res){
     })
 })
 
-
 /***** 로그인 *****/
 app.get('/login/:id/:pwd', function(req, res){
     var id = req.params.id;
@@ -95,6 +94,115 @@ app.get('/login/:id/:pwd', function(req, res){
     })
 })
 
+/***** 차량 정보 반환 *****/
+app.get('/carinfo/:id', function(req,res){
+    var id = req.params.id;
+    pool.getConnection(function(err, connection){
+        var sqlCarinfo = "SELECT * FROM CAR WHERE id = ?";
+        connection.query(sqlCarinfo, id, function(err, rows0){
+            if(err){
+                console.log("차량 정보 전송 오류: ", rows0);
+                res.send(false);
+            }
+            else{
+                console.log("차량 정보 전송 성공: ", rows0);
+                res.send(rows0);
+            }
+            connection.release();
+        })
+    })
+})
+
+app.get('/usingservice/:id/:carnumber', function(req, res){
+    var sqlUsinggas = "SELECT `time` FROM GAS_RESRV WHERE id = ? AND carnumber = ? AND status = 'progress'";
+        connection.query(sqlUsinggas, id, function(err, rows1){
+        if(err){
+            console.log("사용중인 주유 서비스 오류: ", rows1);
+            res.send(false);
+        }
+        else{
+            if(rows1.length != 0){
+                console.log("사용중인 주유 서비스 존재: ", rows1);
+                res.send("주유");
+            }
+            else{
+                var sqlUsingwash = "SELECT `time` FROM WASH_RESRV WHERE id = ? AND carnumber = ? AND status = 'progress'";
+                connection.query(sqlUsingwash, id, function(err, rows2){
+                    if(err){
+                        console.log("사용중인 세차 서비스 전송 오류: ", rows1);
+                        res.send(false);
+                    }
+                    else{
+                        if(rows2.length != 0){
+                            console.log("사용중인 세차 서비스 존재: ", rows2);
+                            res.send("세차");
+                        }
+                        else{
+                            var sqlUsingdeliv = "SELECT `time` FROM DELIV_RESRV WHERE id = ? AND carnumber = ? AND status = 'progress'";
+                            connection.query(sqlUsingdeliv, id, function(err, rows3){
+                                if(err){
+                                    console.log("사용중인 딜리버리 서비스 오류: ", rows1);
+                                    res.send(false);
+                                }
+                                else{
+                                    if(rows3.length != 0){
+                                        console.log("사용중인 딜리버리 서비스 존재: ", rows3);
+                                        res.send( "딜리버리");
+                                    }
+                                    else{
+                                        var sqlUsingdrive = "SELECT `time` FROM DRIVE_RESRV WHERE id = ? AND carnumber = ? AND status = 'progress'";
+                                        connection.query(sqlUsingdrive, id, function(err, rows4){
+                                            if(err){
+                                                console.log("사용중인 대리운전 서비스 오류: ", rows1);
+                                                res.send(false);
+                                            }
+                                            else{
+                                                if(rows4.length != 0){
+                                                    console.log("사용중인 대리운전 서비스 존재: ", rows4);
+                                                    res.send("대리운전");
+                                                }
+                                                else{
+                                                    var sqlUsingreplace = "SELECT `time` FROM REPLACE_RESRV WHERE id = ? AND carnumber = ? AND status = 'progress'";
+                                                    connection.query(sqlUsingreplace, id, function(err, rows5){
+                                                        if(err){
+                                                            console.log("사용중인 방문교체 서비스 오류: ", rows1);
+                                                            res.send(false);
+                                                        }
+                                                        else{
+                                                            if(rows5.length != 0){
+                                                                console.log("사용중인 방문교체 서비스 존재: ", rows5);
+                                                                res.send("방문교체");
+                                                            }
+                                                            else{
+                                                                var sqlUsingrepair = "SELECT `time` FROM REPAIR_RESRV WHERE id = ? AND carnumber = ? AND status = 'progress'";
+                                                                connection.query(sqlUsingrepair, id, function(err, rows6){
+                                                                    if(err){
+                                                                        console.log("사용중인 대리정비 서비스 오류: ", rows1);
+                                                                        res.send(false);
+                                                                    }
+                                                                    else{
+                                                                        if(rows6.length != 0){
+                                                                            console.log("사용중인 대리정비 서비스 존재: ", rows6);
+                                                                            res.send("대리정비");
+                                                                        }
+                                                                    }
+                                                                })
+                                                            }
+                                                        }
+                                                    })
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        }
+    });
+})
 
 /***** 전체 서비스 *****/
 // 즐겨찾는 주소 전송
@@ -185,7 +293,6 @@ app.get('/favorite_addr/delete/:id/:addr/:detailAddr', function(req, res){
         })
     })
 })
-
 
 /***** 주유 서비스 *****/
 // 예약 insert
