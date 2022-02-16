@@ -94,7 +94,99 @@ app.get('/login/:id/:pwd', function(req, res){
     })
 })
 
-/***** 차량 정보 반환 *****/
+
+
+/***** 전체 서비스 *****/
+// 즐겨찾는 주소 전송
+app.get('/favorite_addr/:id', function(req, res){
+	var id = req.params.id;
+    pool.getConnection(function(err, connection){
+        var sqlAddr = "SELECT * FROM FAVORITE_ADDR WHERE id = ? ORDER BY num DESC";
+        connection.query(sqlAddr, id, function(err, rows){
+            if(err){
+            }
+            else{
+                console.log("즐겨찾는 주소 전송 성공:", rows);
+                res.send(rows);
+            }
+            connection.release();
+        })
+    })
+})
+
+// 즐겨찾는 주소 추가
+app.get('/favorite_addr/insert/:id/:addr/:detailAddr', function(req, res){
+    var id = req.params.id;
+    var addr = req.params.addr;
+    var detailAddr = req.params.detailAddr;
+
+    var sqlAddrCount = "SELECT count(*) AS addrCount FROM FAVORITE_ADDR WHERE id = ?";
+    pool.query(sqlAddrCount, id, function(err, result){
+        console.log(result[0]);
+        if(result[0] === undefined)
+            var addrCount = 0;
+        else
+            var addrCount = result[0].addrCount;
+
+        pool.getConnection(function(err, connection){
+            var sqlAddrInsert = "INSERT INTO FAVORITE_ADDR VALUES (?, ?, ?, ?)";
+            connection.query(sqlAddrInsert, [id, addr, detailAddr, addrCount+1], function(err){
+                if(err){
+                    // 이미 추가했던 주소의 경우도 포함
+                    console.log("즐겨찾는 주소 추가 오류");
+                    res.send(false);
+                }
+                else{
+                    console.log("즐겨찾는 주소 추가 성공:", addr, detailAddr);
+                    res.send(true);
+                }
+                connection.release();
+            })
+        })
+    })
+})
+
+// 즐겨찾는 주소 삭제
+app.get('/favorite_addr/delete/:id/:addr/:detailAddr', function(req, res){
+    var id = req.params.id;
+    var addr = req.params.addr;
+    var detailAddr = req.params.detailAddr;
+
+    pool.getConnection(function(err, connection){
+        var sqlAddrDelete = "DELETE FROM FAVORITE_ADDR WHERE id = ? AND addr = ? AND detailAddr = ?";
+        connection.query(sqlAddrDelete, [id, addr, detailAddr], function(err){
+            if(err){
+                console.log("즐겨찾는 주소 삭제 오류:", addr, detailAddr);
+                res.send(false);
+            }
+            else{
+                console.log("즐겨찾는 주소 삭제 성공:", addr, detailAddr);
+                
+                // num 연속되게 다시 설정
+                var sqlAddrCount = "SELECT count(*) AS addrCount FROM FAVORITE_ADDR WHERE id = ?";
+                pool.query(sqlAddrCount, id, function(err, result){
+                    if(result[0] !== undefined){
+                        var sqlAddrNum = "SELECT num FROM FAVORITE_ADDR WHERE id = ? ORDER BY num";
+                        pool.query(sqlAddrNum, id, function(err, rows){
+                            for(var i = 0; i<result[0].addrCount; i++){
+                                if(i+1 !== rows[i].num){
+                                    var sqlOrder = "UPDATE FAVORITE_ADDR SET num = ? WHERE num = ?"
+                                    pool.query(sqlOrder, [i+1, rows[i].num], function(err){
+                                        console.log("순서 다시 정렬");
+                                    })
+                                }
+                            }
+                        })
+                    }
+                })           
+                res.send(true);
+            }
+            connection.release();
+        })
+    })
+})
+
+// 차량 정보 반환 
 app.get('/carinfo/:id', function(req,res){
     var id = req.params.id;
     pool.getConnection(function(err, connection){
@@ -113,6 +205,7 @@ app.get('/carinfo/:id', function(req,res){
     })
 })
 
+// 사용중인 서비스 확인
 app.get('/usingservice/:carnumber', function(req, res){
     var sqlUsinggas = "SELECT `time` FROM GAS_RESRV WHERE carnumber = ? AND status = 'progress'";
         connection.query(sqlUsinggas, id, function(err, rows1){
@@ -208,95 +301,25 @@ app.get('/usingservice/:carnumber', function(req, res){
     });
 })
 
-/***** 전체 서비스 *****/
-// 즐겨찾는 주소 전송
-app.get('/favorite_addr/:id', function(req, res){
-	var id = req.params.id;
-    pool.getConnection(function(err, connection){
-        var sqlAddr = "SELECT * FROM FAVORITE_ADDR WHERE id = ? ORDER BY num DESC";
-        connection.query(sqlAddr, id, function(err, rows){
-            if(err){
-            }
-            else{
-                console.log("즐겨찾는 주소 전송 성공:", rows);
-                res.send(rows);
-            }
-            connection.release();
-        })
+
+/***** 지도 서비스 *****/
+// 정비 검색 키워드: "자동차 수리점"
+// 세차 검색 키워드: "세차장"
+// 정비, 세차 같이 검색: "자동차 수리점, 세차장"
+app.get('/map/:keyword', function(req, res){
+    var keyword = req.params.keyword;
+    var search = require('./crawling.js');
+    
+    pool.getConnection(async function(err, connection){
+        var fixList = await search(keyword);
+        setTimeout(() => {
+            console.log(keyword, ":", fixList);
+            res.send(fixList);
+        }, 45000);
+        connection.release();
     })
 })
 
-// 즐겨찾는 주소 추가
-app.get('/favorite_addr/insert/:id/:addr/:detailAddr', function(req, res){
-    var id = req.params.id;
-    var addr = req.params.addr;
-    var detailAddr = req.params.detailAddr;
-
-    var sqlAddrCount = "SELECT count(*) AS addrCount FROM FAVORITE_ADDR WHERE id = ?";
-    pool.query(sqlAddrCount, id, function(err, result){
-        console.log(result[0]);
-        if(result[0] === undefined)
-            var addrCount = 0;
-        else
-            var addrCount = result[0].addrCount;
-
-        pool.getConnection(function(err, connection){
-            var sqlAddrInsert = "INSERT INTO FAVORITE_ADDR VALUES (?, ?, ?, ?)";
-            connection.query(sqlAddrInsert, [id, addr, detailAddr, addrCount+1], function(err){
-                if(err){
-                    // 이미 추가했던 주소의 경우도 포함
-                    console.log("즐겨찾는 주소 추가 오류");
-                    res.send(false);
-                }
-                else{
-                    console.log("즐겨찾는 주소 추가 성공:", addr, detailAddr);
-                    res.send(true);
-                }
-                connection.release();
-            })
-        })
-    })
-})
-
-// 즐겨찾는 주소 삭제
-app.get('/favorite_addr/delete/:id/:addr/:detailAddr', function(req, res){
-    var id = req.params.id;
-    var addr = req.params.addr;
-    var detailAddr = req.params.detailAddr;
-
-    pool.getConnection(function(err, connection){
-        var sqlAddrDelete = "DELETE FROM FAVORITE_ADDR WHERE id = ? AND addr = ? AND detailAddr = ?";
-        connection.query(sqlAddrDelete, [id, addr, detailAddr], function(err){
-            if(err){
-                console.log("즐겨찾는 주소 삭제 오류:", addr, detailAddr);
-                res.send(false);
-            }
-            else{
-                console.log("즐겨찾는 주소 삭제 성공:", addr, detailAddr);
-                
-                // num 연속되게 다시 설정
-                var sqlAddrCount = "SELECT count(*) AS addrCount FROM FAVORITE_ADDR WHERE id = ?";
-                pool.query(sqlAddrCount, id, function(err, result){
-                    if(result[0] !== undefined){
-                        var sqlAddrNum = "SELECT num FROM FAVORITE_ADDR WHERE id = ? ORDER BY num";
-                        pool.query(sqlAddrNum, id, function(err, rows){
-                            for(var i = 0; i<result[0].addrCount; i++){
-                                if(i+1 !== rows[i].num){
-                                    var sqlOrder = "UPDATE FAVORITE_ADDR SET num = ? WHERE num = ?"
-                                    pool.query(sqlOrder, [i+1, rows[i].num], function(err){
-                                        console.log("순서 다시 정렬");
-                                    })
-                                }
-                            }
-                        })
-                    }
-                })           
-                res.send(true);
-            }
-            connection.release();
-        })
-    })
-})
 
 /***** 주유 서비스 *****/
 // 예약 insert
@@ -314,18 +337,18 @@ app.get('/gas_resrv/:id/:number/:time/:source/:detailSrc/:type/:dest_name/:dest_
 
     pool.getConnection(function(err, connection){
         // 동일한 시간, 차량 예약 정보가 존재하는지 확인
-        var sqlResrvCheck = "SELECT * FROM GAS_RESRV WHERE time = ? AND number = ?";
-        connection.query(sqlResrvCheck, [time, number], function(err, row){
+        var sqlResrvCheck = "SELECT count(*) as count FROM((SELECT `number` FROM deliv_resrv WHERE `time`=? and `number`=?) UNION ALL (SELECT `number` FROM drive_resrv WHERE `time`=? and `number`=?) UNION ALL (SELECT `number` FROM gas_resrv WHERE `time`=? and `number`=?) UNION ALL (SELECT `number` FROM repair_resrv WHERE `time`=? and `number`=?) UNION ALL (SELECT `number` FROM replace_resrv WHERE `time`=? and `number`=?) UNION ALL (SELECT `number` FROM wash_resrv WHERE `time`=? and `number`=?)) as RESRV";
+        connection.query(sqlResrvCheck, [time, number, time, number, time, number, time, number, time, number, time, number], function(err, row){
             if(err){
-                console.log("동일한 주유 예약 존재 확인 오류:", row[0]);
+                console.log("동일한 예약 존재 확인 오류:", row[0]);
                 res.send(false);
             }
             else{
-                if(row[0] === undefined){   // 정보 없으면 예약 가능
+                if(row[0].count === 0){   // 정보 없으면 예약 가능
                     console.log("주유 예약 가능");
                     
                     // 예약 정보 table에 insert
-                    var sqlGasReserv = "INSERT INTO GAS_RESRV VALUES (?,?,?,?,?,?,?,?,?,?)";
+                    var sqlGasReserv = "INSERT INTO GAS_RESRV (`id`,`number`,`time`,`type`,`amount`,`source`,`detailSrc`,`dest_name`,`dest_addr`,`price`) VALUES (?,?,?,?,?,?,?,?,?,?)";
                     var datas = [id, number, time, type, amount, source, detailSrc, dest_name, dest_addr, price];
                     console.log("주유 예약 정보: ", datas);
     
@@ -341,7 +364,7 @@ app.get('/gas_resrv/:id/:number/:time/:source/:detailSrc/:type/:dest_name/:dest_
                     })
                 }
                 else{   // 동일한 정보 존재하면 예약 불가능
-                    console.log("동일한 시간, 차량 주유 예약 이미 존재:", row[0]);
+                    console.log("동일한 시간, 차량 예약 이미 존재:", row[0]);
                     console.log('주유 예약 INSERT 실패');
                     res.send(false);
                 }
