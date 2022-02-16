@@ -30,6 +30,10 @@ dependencies:
   package_info_plus: ^1.0.4
   platform: ^3.0.0
   shared_preferences: ^2.0.5
+  flutter_feather_icons: ^2.0.0
+  proj4dart: any
+  google_maps_flutter: ^2.1.1
+  geolocator: ^8.0.2
 
 
   # The following adds the Cupertino Icons font to your application.

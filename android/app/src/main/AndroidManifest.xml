@@ -1,8 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mosigg">
+		<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <application
         android:label="mosigg"
         android:icon="@mipmap/ic_launcher">
+				<meta-data android:name="com.google.android.geo.API_KEY"
+									 android:value="AIzaSyATiYK9L-tWdxjJbVmCFa_woi0FWu-6pbU"/>
         <activity android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity">
           <intent-filter android:label="flutter_web_auth">
               <action android:name="android.intent.action.VIEW" />
