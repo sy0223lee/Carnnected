@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/location/location3.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/signup/signup1.dart';
 

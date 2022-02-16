@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:mosigg/location/location2.dart';
+import 'package:mosigg/location/location3.dart';
 
 class LocationSearchPage1 extends StatefulWidget {
   const LocationSearchPage1({Key? key}) : super(key: key);
@@ -94,18 +95,27 @@ class _LocationSearchPage1State extends State<LocationSearchPage1> {
                           keyboardType: TextInputType.text,
                         )),
                     SizedBox(height: 6.5),
-                    Row(children: [
-                      Icon(FeatherIcons.crosshair, size: 18),
-                      SizedBox(width: 6.5),
-                      Text(
-                        '현재 위치로 검색하기',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'NotoSansKR',
-                        ),
-                      )
-                    ]),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    LocationSearchPage3()));
+                      },
+                      child: Row(children: [
+                        Icon(FeatherIcons.crosshair, size: 18),
+                        SizedBox(width: 6.5),
+                        Text(
+                          '현재 위치로 검색하기',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'NotoSansKR',
+                          ),
+                        )
+                      ]),
+                    ),
                     SizedBox(height: 44),
                     searchDone == false
                         ? favoriteAddrWidget(favoriteAddrData)
