@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/location/common/map.dart';
 import 'dart:convert';
 import 'package:proj4dart/proj4dart.dart';
 
@@ -29,10 +30,13 @@ class LocationSearchPage2 extends StatefulWidget {
 
 class _LocationSearchPage2State extends State<LocationSearchPage2> {
   var mapCheck = false;
+  var coordX;
+  var coordY;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
@@ -51,7 +55,7 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
           elevation: 0.0,
         ),
         body: Container(
-            padding: EdgeInsets.fromLTRB(25, 57, 25, 20),
+            padding: EdgeInsets.fromLTRB(25, 57, 25, 0),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('좀 더 자세한 주소를\n입력해주세요:)',
@@ -63,6 +67,7 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                   )),
               SizedBox(height: 9),
               Container(
+                margin: EdgeInsets.only(bottom: 12),
                 padding: EdgeInsets.fromLTRB(8, 12, 0, 12),
                 height: 140,
                 child: Column(
@@ -150,14 +155,6 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                         setState(() {
                           mapCheck = !mapCheck;
                         });
-                        getCoordinates(
-                            widget.rn,
-                            widget.addr,
-                            widget.admCd,
-                            widget.rnMgtSn,
-                            widget.udrtYn,
-                            widget.buldMnnm,
-                            widget.buldSlno);
                       },
                       child: Container(
                         padding: EdgeInsets.only(left: 6),
@@ -193,10 +190,57 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
               ),
               mapCheck
                   ? Flexible(
-                      child: Container(
-                      color: Colors.blue,
-                    ))
-                  : SizedBox()
+                      child: FutureBuilder<Coordinates>(
+                          future: getCoordinates(
+                              widget.rn,
+                              widget.addr,
+                              widget.admCd,
+                              widget.rnMgtSn,
+                              widget.udrtYn,
+                              widget.buldMnnm,
+                              widget.buldSlno),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData == false) {
+                              return Column(
+                                children: [
+                                  Text('지도를 불러오는 중입니다'),
+                                  SizedBox(),
+                                ],
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('지도 불러오기 에러!');
+                            } else {
+                              return GoogleMapBody(
+                                  coordX: double.parse(snapshot.data!.coordX),
+                                  coordY: double.parse(snapshot.data!.coordY));
+                            }
+                          }),
+                    )
+                  : Flexible(child: Container()),
+              InkWell(
+                  onTap: () {},
+                  child: Container(
+                    margin: EdgeInsets.only(top: 12, bottom: 16),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Color(0xff001a5d),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '확인',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'NotoSansKR',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      ],
+                    ),
+                  ))
             ])));
   }
 }
@@ -215,12 +259,24 @@ Future<Coordinates> getCoordinates(String rn, String addr, String admCd,
   late Coordinates coordinates;
 
   if (response.statusCode == 200) {
-    var def = Projection.get('EPSG:4236');
+    var grs80 = Projection.get('grs80') ??
+        Projection.add('grs80',
+            '+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs');
+    var wgs84 = Projection.get('wgs84') ??
+        Projection.add('wgs84',
+            '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees');
 
     print(jsonDecode(response.body)['results']['juso']);
-    coordinates = Coordinates.fromJson(jsonDecode(response.body)['results']['juso'][0]);
-    print('X: ${coordinates.coordX}, Y: ${coordinates.coordY}');
-    return coordinates;
+    coordinates =
+        Coordinates.fromJson(jsonDecode(response.body)['results']['juso'][0]);
+    var point = Point(
+        x: double.parse(coordinates.coordX),
+        y: double.parse(coordinates.coordY));
+    var newCoordinates = grs80.transform(wgs84, point);
+    print('${newCoordinates.x}진짜피곤해');
+    return Coordinates(
+        coordX: newCoordinates.x.toString(),
+        coordY: newCoordinates.y.toString());
   } else {
     throw Exception("좌표 검색에 실패했습니다");
   }

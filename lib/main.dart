@@ -6,6 +6,7 @@ import 'package:mosigg/signup/signup1.dart';
 /*개발용 임시import*/
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/location/location2.dart';
+import 'package:mosigg/location/common/map.dart';
 
 //void main() => runApp(MyApp());
 void main(){
