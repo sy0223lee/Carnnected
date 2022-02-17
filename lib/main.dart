@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:mosigg/location/location3.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/oiling/oilstart.dart';
 import 'package:mosigg/signup/signup1.dart';
 import 'package:mosigg/map/tabbar.dart';
 
@@ -11,8 +12,8 @@ import 'package:mosigg/location/location2.dart';
 import 'package:mosigg/location/common/map.dart';
 
 //void main() => runApp(MyApp());
-void main(){
-  KakaoContext.clientId='f7926788ee7785502df4ce563f93d183';
+void main() {
+  KakaoContext.clientId = 'f7926788ee7785502df4ce563f93d183';
   runApp(MyApp());
 }
 
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'NotoSansKR',
           primaryColor: Colors.white,
-          colorScheme: ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
+          colorScheme:
+              ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
       home: TabBarPage()//StartPage(),
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
 }
 
 class StartPage extends StatefulWidget {
-  const StartPage({ Key? key }) : super(key: key);
+  const StartPage({Key? key}) : super(key: key);
 
   @override
   _StartPageState createState() => _StartPageState();
@@ -46,13 +48,9 @@ class _StartPageState extends State<StartPage> {
     try {
       String authCode = await AuthCodeClient.instance.request();
       print(authCode);
-    } catch(e) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext
-                    context) =>
-                StartPage()));
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => StartPage()));
     }
   }
 

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Oilprice extends StatefulWidget {
-  const Oilprice({Key? key}) : super(key: key);
+  final String? dateAndTime;
+  final String? carLocation; 
+  final String? carDetailLocation;
+  final String? type;
+
+  const Oilprice({Key? key, this.dateAndTime, this.carLocation, this.carDetailLocation, this.type}) : super(key: key);
 
   @override
   State<Oilprice> createState() => _OilpriceState();

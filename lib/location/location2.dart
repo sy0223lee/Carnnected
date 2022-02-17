@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosigg/location/common/map.dart';
+import 'package:mosigg/oiling/oilstart.dart';
 import 'dart:convert';
 import 'package:proj4dart/proj4dart.dart';
 
 class LocationSearchPage2 extends StatefulWidget {
-  final String rn;
+  final String? rn;
   final String addr;
-  final String admCd;
-  final String rnMgtSn;
-  final String udrtYn;
-  final String buldMnnm;
-  final String buldSlno;
+  final String? admCd;
+  final String? rnMgtSn;
+  final String? udrtYn;
+  final String? buldMnnm;
+  final String? buldSlno;
+  final double? latitude;
+  final double? longitude;
 
   const LocationSearchPage2(
       {Key? key,
       required this.addr,
-      required this.rn,
-      required this.admCd,
-      required this.rnMgtSn,
-      required this.udrtYn,
-      required this.buldMnnm,
-      required this.buldSlno})
+      this.rn,
+      this.admCd,
+      this.rnMgtSn,
+      this.udrtYn,
+      this.buldMnnm,
+      this.buldSlno,
+      this.latitude,
+      this.longitude})
       : super(key: key);
 
   @override
@@ -32,11 +37,12 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
   var mapCheck = false;
   var coordX;
   var coordY;
+  final detailLocationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
@@ -69,22 +75,13 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
               Container(
                 margin: EdgeInsets.only(bottom: 12),
                 padding: EdgeInsets.fromLTRB(8, 12, 0, 12),
-                height: 140,
+                height: 105,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.rn,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: 'NotoSansKR',
-                          ),
-                        ),
-                        SizedBox(height: 3),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -93,7 +90,7 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                                   '도로명',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 8,
+                                    fontSize: 10,
                                     fontFamily: 'NotoSansKR',
                                   ),
                                 ),
@@ -103,7 +100,7 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                               widget.addr,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 10,
+                                fontSize: 12,
                                 fontFamily: 'NotoSansKR',
                               ),
                             ),
@@ -132,9 +129,10 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                         ],
                       ),
                       child: TextField(
-                        onSubmitted: (text) => {
-                          print(text),
-                        },
+                        controller: detailLocationController,
+                        // onSubmitted: (text) => {
+                        //   print(text),
+                        // },
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 10,
@@ -198,7 +196,10 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                               widget.rnMgtSn,
                               widget.udrtYn,
                               widget.buldMnnm,
-                              widget.buldSlno),
+                              widget.buldSlno,
+                              widget.latitude,
+                              widget.longitude
+                              ),
                           builder: (context, snapshot) {
                             if (snapshot.hasData == false) {
                               return Column(
@@ -218,7 +219,15 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                     )
                   : Flexible(child: Container()),
               InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Oilstart(
+                                carLocation: widget.addr,
+                                carDetailLocation:
+                                    detailLocationController.text)));
+                  },
                   child: Container(
                     margin: EdgeInsets.only(top: 12, bottom: 16),
                     height: 40,
@@ -246,39 +255,51 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
 }
 
 //좌표 통신
-Future<Coordinates> getCoordinates(String rn, String addr, String admCd,
-    String rnMgtSn, String udrtYn, String buldMnnm, String buldSlno) async {
-  final response = await http.post(
-      Uri.parse(
-          'https://www.juso.go.kr/addrlink/addrCoordApi.do?admCd=${admCd}&rnMgtSn=${rnMgtSn}&udrtYn=${udrtYn}&buldMnnm=${buldMnnm}&buldSlno=${buldSlno}&confmKey=devU01TX0FVVEgyMDIyMDIxNDA1MDA0NjExMjIzODY=&resultType=json'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      });
-
+Future<Coordinates> getCoordinates(
+    String? rn,
+    String addr,
+    String? admCd,
+    String? rnMgtSn,
+    String? udrtYn,
+    String? buldMnnm,
+    String? buldSlno,
+    double? latitude,
+    double? longitude) async {
   late Coordinates coordinates;
 
-  if (response.statusCode == 200) {
-    var grs80 = Projection.get('grs80') ??
-        Projection.add('grs80',
-            '+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs');
-    var wgs84 = Projection.get('wgs84') ??
-        Projection.add('wgs84',
-            '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees');
-
-    print(jsonDecode(response.body)['results']['juso']);
-    coordinates =
-        Coordinates.fromJson(jsonDecode(response.body)['results']['juso'][0]);
-    var point = Point(
-        x: double.parse(coordinates.coordX),
-        y: double.parse(coordinates.coordY));
-    var newCoordinates = grs80.transform(wgs84, point);
-    print('${newCoordinates.x}진짜피곤해');
-    return Coordinates(
-        coordX: newCoordinates.x.toString(),
-        coordY: newCoordinates.y.toString());
+  if (admCd == null) {
+    return Coordinates(coordX: longitude.toString(), coordY: latitude.toString());
   } else {
-    throw Exception("좌표 검색에 실패했습니다");
+    final response = await http.post(
+        Uri.parse(
+            'https://www.juso.go.kr/addrlink/addrCoordApi.do?admCd=${admCd}&rnMgtSn=${rnMgtSn}&udrtYn=${udrtYn}&buldMnnm=${buldMnnm}&buldSlno=${buldSlno}&confmKey=devU01TX0FVVEgyMDIyMDIxNDA1MDA0NjExMjIzODY=&resultType=json'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        });
+
+    if (response.statusCode == 200) {
+      var grs80 = Projection.get('grs80') ??
+          Projection.add('grs80',
+              '+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs');
+      var wgs84 = Projection.get('wgs84') ??
+          Projection.add('wgs84',
+              '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees');
+
+      print(jsonDecode(response.body)['results']['juso']);
+      coordinates =
+          Coordinates.fromJson(jsonDecode(response.body)['results']['juso'][0]);
+      var point = Point(
+          x: double.parse(coordinates.coordX),
+          y: double.parse(coordinates.coordY));
+      var newCoordinates = grs80.transform(wgs84, point);
+
+      return Coordinates(
+          coordX: newCoordinates.x.toString(),
+          coordY: newCoordinates.y.toString());
+    } else {
+      throw Exception("좌표 검색에 실패했습니다");
+    }
   }
 }
 

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mosigg/location/location1.dart';
+import 'package:mosigg/oiling/oilprice.dart';
 
 class Oilstart extends StatefulWidget {
-  const Oilstart({Key? key}) : super(key: key);
+  final String? carLocation;
+  final String? carDetailLocation;
+
+  const Oilstart({Key? key, this.carLocation, this.carDetailLocation }) : super(key: key);
 
   @override
   State<Oilstart> createState() => _OilstartState();
@@ -12,6 +17,18 @@ class _OilstartState extends State<Oilstart> {
   final isSelected2 = <bool>[false, false, false, false];
   String _selectedTime = "";
   DateTime? _selectedDate;
+  String? carLocation;
+  String? carDetailLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.carLocation);
+    print(widget.carDetailLocation);
+    carLocation = widget.carLocation;
+    carDetailLocation = widget.carDetailLocation;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,16 +122,21 @@ class _OilstartState extends State<Oilstart> {
             SizedBox(height: 19),
             text('차량위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
-            GestureDetector(
+            InkWell(
               onTap: () {
-                //Navigator.push(context,
-                //MaterialPageRoute(builder: (context) => Oilprice()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LocationSearchPage1()));
               },
-              child: SizedBox(
+              child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    text('경기', 12.0, FontWeight.w400, Colors.black),
+                    carLocation == null
+                        ? SizedBox(height: 12)
+                        : text(
+                            carLocation, 12.0, FontWeight.w400, Colors.black),
                     SizedBox(height: 6.0),
                     Divider(
                       height: 0.0,
@@ -268,7 +290,7 @@ class _OilstartState extends State<Oilstart> {
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [kipgoing()],
+              children: [kipgoing(context)],
             ))
           ],
         ),
@@ -282,12 +304,22 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container kipgoing() {
+Container kipgoing(BuildContext context) {
   return Container(
     width: double.infinity,
     height: 40,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        // Navigator.push(
+        //                 context,
+        //                 MaterialPageRoute(
+        //                     builder: (BuildContext context) => Oilprice(
+        //                         dateAndTime: 
+        //                         carLocation: ,
+        //                         carDetailLocation:,
+        //                         type:
+        //                         )));
+      },
       child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
     ),

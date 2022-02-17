@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:mosigg/location/common/map.dart';
+import 'package:mosigg/location/location2.dart';
 
 class LocationSearchPage3 extends StatefulWidget {
   const LocationSearchPage3({Key? key}) : super(key: key);
@@ -13,6 +14,10 @@ class LocationSearchPage3 extends StatefulWidget {
 }
 
 class _LocationSearchPage3State extends State<LocationSearchPage3> {
+  var latitude;
+  var longitude;
+  late String addr;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +54,8 @@ class _LocationSearchPage3State extends State<LocationSearchPage3> {
                       } else if (snapshot.hasError) {
                         return Text('지도 불러오기 에러!');
                       } else {
+                        latitude = snapshot.data!.latitude;
+                        longitude = snapshot.data!.longitude;
                         print(
                             '${snapshot.data!.latitude}, ${snapshot.data!.longitude}');
                         return GoogleMapBody(
@@ -62,17 +69,28 @@ class _LocationSearchPage3State extends State<LocationSearchPage3> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '서울특별시 노원구 광운로 20',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontFamily: 'NotoSansKR',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    FutureBuilder(
+                        future: revGeoCoding(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                              addr = snapshot.data!.toString();
+                            return Text(snapshot.data!.toString());
+                          } else {
+                            return Text('주소를 불러오지 못했습니다');
+                          }
+                        }),
                     InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      LocationSearchPage2(
+                                          addr: addr,
+                                          latitude: latitude,
+                                          longitude: longitude)));
+                        },
                         child: Container(
                           margin: EdgeInsets.only(top: 20, bottom: 16),
                           height: 40,
@@ -104,9 +122,23 @@ class _LocationSearchPage3State extends State<LocationSearchPage3> {
 
 /*현재 위치 불러오기*/
 Future<Position> getCurrentLocation() async {
+  //LocationPermission permission = await Geolocator.requestPermission();
+  Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high);
+  return position;
+}
+
+Future<String> revGeoCoding() async {
   LocationPermission permission = await Geolocator.requestPermission();
   Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high);
 
-  return position;
+  final response = await http.get(Uri.parse(
+      'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&language=ko&key=AIzaSyBJHfzckYIvqPrJT1rO_GY3xL6BVfQmTGs'));
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body)['results'][0]['formatted_address'].toString().substring(5);
+  } else {
+    return '역지오코딩 에러';
+  }
 }
