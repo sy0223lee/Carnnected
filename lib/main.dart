@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/signup/signup1.dart';
+import 'package:mosigg/map/tabbar.dart';
 
 //void main() => runApp(MyApp());
 void main(){
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.white,
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
-      home: StartPage(),
+      home: TabBarPage()//StartPage(),
     );
   }
 }
