@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:mosigg/location/location2.dart';
 import 'package:mosigg/location/location3.dart';
+import 'package:mosigg/oiling/oilstart.dart';
 
 class LocationSearchPage1 extends StatefulWidget {
   const LocationSearchPage1({Key? key}) : super(key: key);
@@ -29,7 +30,9 @@ class _LocationSearchPage1State extends State<LocationSearchPage1> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Icon(Icons.arrow_back_ios_new),
               color: Colors.black),
           title: Text('주소 설정',
@@ -174,10 +177,11 @@ Column favoriteAddrWidget(Future<List>? favoriteAddrData) {
 InkWell addrWidget(BuildContext context, String addr, String detailAddr) {
   return InkWell(
     onTap: () {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (BuildContext context) => LocationSearchPage2(addr: addr, detailAddr: detailAddr)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  Oilstart(carLocation: addr, carDetailLocation: detailAddr)));
     },
     child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 6),
@@ -329,7 +333,6 @@ InkWell roadAddrWidget(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => LocationSearchPage2(
-                  rn: rn,
                   addr: addr,
                   admCd: admCd,
                   rnMgtSn: rnMgtSn,
@@ -436,7 +439,7 @@ class RoadAddr {
   factory RoadAddr.fromJson(Map<dynamic, dynamic> json) {
     return RoadAddr(
         rn: json['rn'],
-        addr: json['roadAddr'],
+        addr: json['roadAddrPart1'],
         admCd: json['admCd'],
         rnMgtSn: json['rnMgtSn'],
         udrtYn: json['udrtYn'],

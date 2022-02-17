@@ -55,7 +55,9 @@ Container gohome() {
     height: 56,
     padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 16.0),
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        
+      },
       child: text('홈', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
     ),
