@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/location/location3.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/signup/signup1.dart';
 import 'package:mosigg/map/tabbar.dart';
+
+/*개발용 임시import*/
+import 'package:mosigg/location/location1.dart';
+import 'package:mosigg/location/location2.dart';
+import 'package:mosigg/location/common/map.dart';
 
 //void main() => runApp(MyApp());
 void main(){
@@ -21,6 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'NotoSansKR',
           primaryColor: Colors.white,
+          colorScheme: ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
       home: TabBarPage()//StartPage(),
