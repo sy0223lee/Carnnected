@@ -1,6 +1,6 @@
 const {Builder, By, Capabilities} = require('selenium-webdriver');
 
-const search = async (keyword) => { 
+const search = async (keyword, x, y) => { 
   var driver = await new Builder()
     .withCapabilities(Capabilities.chrome())
     .build();
@@ -8,7 +8,7 @@ const search = async (keyword) => {
   var urlList = [];
   var elements = [];
 
-  await driver.get('https://www.google.com/maps/search/' + keyword);
+  await driver.get('https://www.google.com/maps/search/' + keyword + '/@' + x + ',' + y);
   
   await driver.findElements(By.css('.a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd')).then(function (item){
     for(var i = 0; i < item.length; i++){

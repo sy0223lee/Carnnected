@@ -306,12 +306,14 @@ app.get('/usingservice/:carnumber', function(req, res){
 // 정비 검색 키워드: "자동차 수리점"
 // 세차 검색 키워드: "세차장"
 // 정비, 세차 같이 검색: "자동차 수리점, 세차장"
-app.get('/map/:keyword', function(req, res){
+app.get('/map/:keyword/:x/:y', function(req, res){
     var keyword = req.params.keyword;
+    var x = req.params.x;
+    var y = req.params.y;
     var search = require('./crawling.js');
     
     pool.getConnection(async function(err, connection){
-        var fixList = await search(keyword);
+        var fixList = await search(keyword, x, y);
         setTimeout(() => {
             console.log(keyword, ":", fixList);
             res.send(fixList);
