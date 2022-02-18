@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:mosigg/oiling/oilconfirm.dart';
+import 'package:mosigg/oiling/oilstart.dart';
 
 class Oilprice extends StatefulWidget {
   final String? dateAndTime;
-  final String? carLocation; 
+  final String? carLocation;
   final String? carDetailLocation;
   final String? type;
 
-  const Oilprice({Key? key, this.dateAndTime, this.carLocation, this.carDetailLocation, this.type}) : super(key: key);
+  const Oilprice(
+      {Key? key,
+      this.dateAndTime,
+      this.carLocation,
+      this.carDetailLocation,
+      this.type})
+      : super(key: key);
 
   @override
   State<Oilprice> createState() => _OilpriceState();
@@ -24,7 +32,12 @@ class _OilpriceState extends State<Oilprice> {
         centerTitle: true,
         title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Oilstart()));
+          },
           icon: Icon(
             Icons.arrow_back,
             color: Colors.black,
@@ -83,7 +96,7 @@ class _OilpriceState extends State<Oilprice> {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                kipgoing(),
+                kipgoing(context, controller),
               ],
             ))
           ],
@@ -98,12 +111,18 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container kipgoing() {
+Container kipgoing(BuildContext context, controller) {
   return Container(
     width: double.infinity,
     height: 40,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        if (controller.text != null)
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => Oilconfirm()));
+      },
       child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
     ),

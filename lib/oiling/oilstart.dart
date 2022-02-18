@@ -6,17 +6,33 @@ class Oilstart extends StatefulWidget {
   final String? carLocation;
   final String? carDetailLocation;
 
-  const Oilstart({Key? key, this.carLocation, this.carDetailLocation }) : super(key: key);
+  const Oilstart({Key? key, this.carLocation, this.carDetailLocation})
+      : super(key: key);
 
   @override
   State<Oilstart> createState() => _OilstartState();
 }
+
+const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
+  50: Color(0xff001a5d),
+  100: Color(0xff001a5d),
+  200: Color(0xff001a5d),
+  300: Color(0xff001a5d),
+  400: Color(0xff001a5d),
+  500: Color(0xff001a5d),
+  600: Color(0xff001a5d),
+  700: Color(0xff001a5d),
+  800: Color(0xff001a5d),
+  900: Color(0xff001a5d),
+});
 
 class _OilstartState extends State<Oilstart> {
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
   String _selectedTime = "";
   DateTime? _selectedDate;
+  String _selectedHour = '';
+  String _selectedMinute = '';
   String? carLocation;
   String? carDetailLocation;
 
@@ -28,7 +44,6 @@ class _OilstartState extends State<Oilstart> {
     carLocation = widget.carLocation;
     carDetailLocation = widget.carDetailLocation;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +77,16 @@ class _OilstartState extends State<Oilstart> {
                       FontWeight.w400,
                       Colors.black),
                 if (_selectedDate?.year == null)
-                  text("0000/00/00", 12.0, FontWeight.w400, Colors.black),
+                  text("", 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     onPressed: () {
                       Future<DateTime?> selectedDate = showDatePicker(
+                          builder: (BuildContext context, child) {
+                            return Theme(
+                                data:
+                                    ThemeData(primarySwatch: _buttonTextColor),
+                                child: child!);
+                          },
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime.now(),
@@ -94,15 +115,28 @@ class _OilstartState extends State<Oilstart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
+                if (_selectedMinute != '0')
+                  text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
+                if (_selectedMinute == '0')
+                  text(
+                      '$_selectedHour:00', 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     onPressed: () {
                       Future<TimeOfDay?> selectedTime = showTimePicker(
-                          context: context, initialTime: TimeOfDay.now());
+                          builder: (BuildContext context, child) {
+                            return Theme(
+                                data:
+                                    ThemeData(primarySwatch: _buttonTextColor),
+                                child: child!);
+                          },
+                          context: context,
+                          initialTime: TimeOfDay.now());
                       selectedTime.then((timeOfDay) {
                         setState(() {
                           _selectedTime =
                               '${timeOfDay?.hour}:${timeOfDay?.minute}';
+                          _selectedHour = '${timeOfDay?.hour}';
+                          _selectedMinute = '${timeOfDay?.minute}';
                         });
                       });
                     },
@@ -310,11 +344,12 @@ Container kipgoing(BuildContext context) {
     height: 40,
     child: ElevatedButton(
       onPressed: () {
+        // if(dataAndTime != null& carLocation != null& type != null)
         // Navigator.push(
         //                 context,
         //                 MaterialPageRoute(
         //                     builder: (BuildContext context) => Oilprice(
-        //                         dateAndTime: 
+        //                         dateAndTime:
         //                         carLocation: ,
         //                         carDetailLocation:,
         //                         type:
