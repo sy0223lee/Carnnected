@@ -206,99 +206,101 @@ app.get('/carinfo/:id', function(req,res){
 })
 
 // 사용중인 서비스 확인
-app.get('/usingservice/:carnumber', function(req, res){
-    var sqlUsinggas = "SELECT `time` FROM GAS_RESRV WHERE carnumber = ? AND status = 'progress'";
+app.get('/usingservice/:id', function(req, res){
+    var id = req.params.id;
+    pool.getConnection(function(err, connection){
+        var sqlUsinggas = "SELECT `carnumber`, `time` FROM GAS_RESRV WHERE id = ? AND status = 'progress'";
         connection.query(sqlUsinggas, id, function(err, rows1){
-        if(err){
-            console.log("사용중인 주유 서비스 오류: ", rows1);
-            res.send(false);
-        }
-        else{
-            if(rows1.length != 0){
-                console.log("사용중인 주유 서비스 존재: ", rows1);
-                res.send("주유");
+            if(err){
+                console.log("사용중인 주유 서비스 오류: ", rows1);
+                res.send(false);
             }
             else{
-                var sqlUsingwash = "SELECT `time` FROM WASH_RESRV WHERE carnumber = ? AND status = 'progress'";
-                connection.query(sqlUsingwash, id, function(err, rows2){
-                    if(err){
-                        console.log("사용중인 세차 서비스 전송 오류: ", rows1);
-                        res.send(false);
-                    }
-                    else{
-                        if(rows2.length != 0){
-                            console.log("사용중인 세차 서비스 존재: ", rows2);
-                            res.send("세차");
+                if(rows1.length != 0){
+                    console.log("사용중인 주유 서비스 존재: ", rows1);
+                    res.send("주유");
+                }
+                else{
+                    var sqlUsingwash = "SELECT `carnumber`, `time` FROM WASH_RESRV WHERE id = ? AND status = 'progress'";
+                    connection.query(sqlUsingwash, id, function(err, rows2){
+                        if(err){
+                            console.log("사용중인 세차 서비스 전송 오류: ", rows1);
+                            res.send(false);
                         }
                         else{
-                            var sqlUsingdeliv = "SELECT `time` FROM DELIV_RESRV WHERE carnumber = ? AND status = 'progress'";
-                            connection.query(sqlUsingdeliv, id, function(err, rows3){
-                                if(err){
-                                    console.log("사용중인 딜리버리 서비스 오류: ", rows1);
-                                    res.send(false);
-                                }
-                                else{
-                                    if(rows3.length != 0){
-                                        console.log("사용중인 딜리버리 서비스 존재: ", rows3);
-                                        res.send( "딜리버리");
+                            if(rows2.length != 0){
+                                console.log("사용중인 세차 서비스 존재: ", rows2);
+                                res.send("세차");
+                            }
+                            else{
+                                var sqlUsingdeliv = "SELECT `carnumber`, `time` FROM DELIV_RESRV WHERE id = ? AND status = 'progress'";
+                                connection.query(sqlUsingdeliv, id, function(err, rows3){
+                                    if(err){
+                                        console.log("사용중인 딜리버리 서비스 오류: ", rows1);
+                                        res.send(false);
                                     }
                                     else{
-                                        var sqlUsingdrive = "SELECT `time` FROM DRIVE_RESRV WHERE carnumber = ? AND status = 'progress'";
-                                        connection.query(sqlUsingdrive, id, function(err, rows4){
-                                            if(err){
-                                                console.log("사용중인 대리운전 서비스 오류: ", rows1);
-                                                res.send(false);
-                                            }
-                                            else{
-                                                if(rows4.length != 0){
-                                                    console.log("사용중인 대리운전 서비스 존재: ", rows4);
-                                                    res.send("대리운전");
+                                        if(rows3.length != 0){
+                                            console.log("사용중인 딜리버리 서비스 존재: ", rows3);
+                                            res.send( "딜리버리");
+                                        }
+                                        else{
+                                            var sqlUsingdrive = "SELECT `carnumber`, `time` FROM DRIVE_RESRV WHERE id = ? AND status = 'progress'";
+                                            connection.query(sqlUsingdrive, id, function(err, rows4){
+                                                if(err){
+                                                    console.log("사용중인 대리운전 서비스 오류: ", rows1);
+                                                    res.send(false);
                                                 }
                                                 else{
-                                                    var sqlUsingreplace = "SELECT `time` FROM REPLACE_RESRV WHERE carnumber = ? AND status = 'progress'";
-                                                    connection.query(sqlUsingreplace, id, function(err, rows5){
-                                                        if(err){
-                                                            console.log("사용중인 방문교체 서비스 오류: ", rows1);
-                                                            res.send(false);
-                                                        }
-                                                        else{
-                                                            if(rows5.length != 0){
-                                                                console.log("사용중인 방문교체 서비스 존재: ", rows5);
-                                                                res.send("방문교체");
+                                                    if(rows4.length != 0){
+                                                        console.log("사용중인 대리운전 서비스 존재: ", rows4);
+                                                        res.send("대리운전");
+                                                    }
+                                                    else{
+                                                        var sqlUsingreplace = "SELECT `carnumber`, `time` FROM REPLACE_RESRV WHERE id = ? AND status = 'progress'";
+                                                        connection.query(sqlUsingreplace, id, function(err, rows5){
+                                                            if(err){
+                                                                console.log("사용중인 방문교체 서비스 오류: ", rows1);
+                                                                res.send(false);
                                                             }
                                                             else{
-                                                                var sqlUsingrepair = "SELECT `time` FROM REPAIR_RESRV WHERE carnumber = ? AND status = 'progress'";
-                                                                connection.query(sqlUsingrepair, id, function(err, rows6){
-                                                                    if(err){
-                                                                        console.log("사용중인 대리정비 서비스 오류: ", rows1);
-                                                                        res.send(false);
-                                                                    }
-                                                                    else{
-                                                                        if(rows6.length != 0){
-                                                                            console.log("사용중인 대리정비 서비스 존재: ", rows6);
-                                                                            res.send("대리정비");
-                                                                        }
-                                                                        else{
+                                                                if(rows5.length != 0){
+                                                                    console.log("사용중인 방문교체 서비스 존재: ", rows5);
+                                                                    res.send("방문교체");
+                                                                }
+                                                                else{
+                                                                    var sqlUsingrepair = "SELECT `carnumber`, `time` FROM REPAIR_RESRV WHERE id = ? AND status = 'progress'";
+                                                                    connection.query(sqlUsingrepair, id, function(err, rows6){
+                                                                        if(err){
+                                                                            console.log("사용중인 대리정비 서비스 오류: ", rows1);
                                                                             res.send(false);
                                                                         }
-                                                                    }
-                                                                })
+                                                                        else{
+                                                                            if(rows6.length != 0){
+                                                                                console.log("사용중인 대리정비 서비스 존재: ", rows6);
+                                                                                res.send("대리정비");
+                                                                            }
+                                                                            else
+                                                                                res.send("없음");
+                                                                        }
+                                                                    })
+                                                                }
                                                             }
-                                                        }
-                                                    })
+                                                        })
+                                                    }
                                                 }
-                                            }
-                                        })
+                                            })
+                                        }
                                     }
-                                }
-                            })
+                                })
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
-        }
-        connection.release();
-    });
+            connection.release();
+        });
+    })
 })
 
 
