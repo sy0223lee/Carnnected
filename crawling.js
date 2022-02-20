@@ -1,8 +1,13 @@
 const {Builder, By, Capabilities} = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+const options = new chrome.Options().headless();
+// 창 안 보이게 크롤링
+// https://stackoverflow.com/questions/44197253/headless-automation-with-nodejs-selenium-webdriver
 
 const search = async (keyword, x, y) => { 
   var driver = await new Builder()
-    .withCapabilities(Capabilities.chrome())
+    .forBrowser('chrome')
+    .setChromeOptions(options)
     .build();
 
   var urlList = [];

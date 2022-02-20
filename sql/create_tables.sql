@@ -45,6 +45,7 @@ CREATE TABLE `GAS_RESRV`(
     `dest_name` VARCHAR(30) NOT NULL,	# 주유소 이름
     `dest_addr` VARCHAR(100) NOT NULL,	# 주유소 주소
     `price` INT NOT NULL,				# 예상 가격
+    `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
     FOREIGN KEY (`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
@@ -59,6 +60,7 @@ CREATE TABLE `WASH_RESRV`(
     `source` VARCHAR(100) NOT NULL,		# 차량 위치
     `detailSrc` VARCHAR(100) NOT NULL,	# 차량 상세 위치
     `price` INT NOT NULL,				# 예상 가격
+    `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
     FOREIGN KEY (`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
@@ -74,6 +76,7 @@ CREATE TABLE `DELIV_RESRV`(
     `dest_name` VARCHAR(30),			# 목적지 이름
     `dest_addr` VARCHAR(100) NOT NULL,	# 목적지 주소
     `price` INT NOT NULL,				# 예상 가격
+    `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
     FOREIGN KEY (`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);   
@@ -88,6 +91,7 @@ CREATE TABLE `DRIVE_RESRV`(
     `dest_name` VARCHAR(30),			# 목적지 이름
     `dest_addr` VARCHAR(100) NOT NULL,	# 목적지 주소
     `price` INT NOT NULL,				# 예상 가격
+    `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
     FOREIGN KEY (`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);  
@@ -102,6 +106,7 @@ CREATE TABLE `REPLACE_RESRV`(
     `source` VARCHAR(100) NOT NULL,		# 차량 위치
     `detailSrc` VARCHAR(100) NOT NULL,	# 차량 상세 위치
     `price` INT NOT NULL,				# 예상 가격
+    `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
     FOREIGN KEY (`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
@@ -118,6 +123,7 @@ CREATE TABLE `REPAIR_RESRV`(
     `dest_name` VARCHAR(30) NOT NULL,	# 정비소 이름
     `dest_addr` VARCHAR(100) NOT NULL,	# 정비소 주소
     `price` INT NOT NULL,				# 예상 가격
+    `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
     FOREIGN KEY (`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);

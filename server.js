@@ -325,7 +325,7 @@ app.get('/map/:keyword/:x/:y', function(req, res){
 
 /***** 주유 서비스 *****/
 // 예약 insert
-app.get('/gas_resrv/:id/:number/:time/:source/:detailSrc/:type/:dest_name/:dest_addr/:amount/:price', function(req, res){
+app.get('/gas_resrv/:id/:number/:time/:source/:detailSrc/:type/:dest_name/:dest_addr/:amount/:price/:payment', function(req, res){
     var id = req.params.id;
     var number = req.params.number;
     var time = req.params.time;
@@ -336,6 +336,7 @@ app.get('/gas_resrv/:id/:number/:time/:source/:detailSrc/:type/:dest_name/:dest_
     var dest_addr = req.params.dest_addr;
     var amount = req.params.amount;
     var price = req.params.price;
+    var payment = req.params.payment;
 
     pool.getConnection(function(err, connection){
         // 동일한 시간, 차량 예약 정보가 존재하는지 확인
@@ -350,8 +351,8 @@ app.get('/gas_resrv/:id/:number/:time/:source/:detailSrc/:type/:dest_name/:dest_
                     console.log("주유 예약 가능");
                     
                     // 예약 정보 table에 insert
-                    var sqlGasReserv = "INSERT INTO GAS_RESRV (`id`,`number`,`time`,`type`,`amount`,`source`,`detailSrc`,`dest_name`,`dest_addr`,`price`) VALUES (?,?,?,?,?,?,?,?,?,?)";
-                    var datas = [id, number, time, type, amount, source, detailSrc, dest_name, dest_addr, price];
+                    var sqlGasReserv = "INSERT INTO GAS_RESRV (`id`,`number`,`time`,`type`,`amount`,`source`,`detailSrc`,`dest_name`,`dest_addr`,`price`,`payment`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                    var datas = [id, number, time, type, amount, source, detailSrc, dest_name, dest_addr, price, payment];
                     console.log("주유 예약 정보: ", datas);
     
                     pool.query(sqlGasReserv, datas, function(err){
