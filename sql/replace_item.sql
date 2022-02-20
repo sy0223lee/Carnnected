@@ -7,7 +7,7 @@ CREATE TABLE `REPLACE_ITEM`(
     `item` VARCHAR(30) NOT NULL,
     `detail` VARCHAR(100) NOT NULL,
     `price` INT NOT NULL,
-    PRIMARY KEY (`detail`));
+    PRIMARY KEY (`index`));
 
 # 교체 아이템 추가
 # item: 와이퍼, 에어컨필터, 워셔액, 엔진오일, 배터리, 타이어, 타이어 공기압
