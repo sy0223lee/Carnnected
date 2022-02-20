@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mosigg/oiling/oilend.dart';
+import 'package:mosigg/oiling/oilprice.dart';
 
 class Oilconfirm extends StatefulWidget {
   const Oilconfirm({Key? key}) : super(key: key);
@@ -17,7 +19,12 @@ class _OilconfirmState extends State<Oilconfirm> {
         centerTitle: true,
         title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Oilprice()));
+          },
           icon: Icon(
             Icons.arrow_back,
             color: Colors.black,
@@ -53,7 +60,7 @@ class _OilconfirmState extends State<Oilconfirm> {
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [reserving()],
+              children: [reserving(context)],
             ))
           ],
         ),
@@ -67,12 +74,15 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container reserving() {
+Container reserving(BuildContext context) {
   return Container(
     width: double.infinity,
     height: 40,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => Oilend()));
+      },
       child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
     ),
