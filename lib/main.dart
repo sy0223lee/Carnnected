@@ -23,16 +23,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CARNNECTED',
-      theme: ThemeData(
-          fontFamily: 'NotoSansKR',
-          primaryColor: Colors.white,
-          colorScheme:
-              ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
-          scaffoldBackgroundColor: Colors.white),
-      debugShowCheckedModeBanner: false,
-      home: TabBarPage()//StartPage(),
-    );
+        title: 'CARNNECTED',
+        theme: ThemeData(
+            fontFamily: 'NotoSansKR',
+            primaryColor: Colors.white,
+            colorScheme:
+                ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
+            scaffoldBackgroundColor: Colors.white),
+        debugShowCheckedModeBanner: false,
+        home: TabBarPage() //StartPage(),
+        );
   }
 }
 

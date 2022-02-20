@@ -39,8 +39,6 @@ class _OilstartState extends State<Oilstart> {
   @override
   void initState() {
     super.initState();
-    print(widget.carLocation);
-    print(widget.carDetailLocation);
     carLocation = widget.carLocation;
     carDetailLocation = widget.carDetailLocation;
   }
@@ -67,6 +65,7 @@ class _OilstartState extends State<Oilstart> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             text('예약 날짜', 14.0, FontWeight.w400, Colors.black),
+            SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -79,6 +78,8 @@ class _OilstartState extends State<Oilstart> {
                 if (_selectedDate?.year == null)
                   text("", 12.0, FontWeight.w400, Colors.black),
                 IconButton(
+                    padding: EdgeInsets.only(left: 2),
+                    constraints: BoxConstraints(),
                     onPressed: () {
                       Future<DateTime?> selectedDate = showDatePicker(
                           builder: (BuildContext context, child) {
@@ -100,11 +101,12 @@ class _OilstartState extends State<Oilstart> {
                     icon: Icon(
                       Icons.date_range,
                       color: Color(0xff9c9c9c),
+                      size: 20,
                     ))
               ],
             ),
             Divider(
-              height: 0.0,
+              height: 10.0,
               color: Color(0xffcbcbcb),
               thickness: 2.0,
             ),
@@ -121,6 +123,8 @@ class _OilstartState extends State<Oilstart> {
                   text(
                       '$_selectedHour:00', 12.0, FontWeight.w400, Colors.black),
                 IconButton(
+                    padding: EdgeInsets.only(left: 2),
+                    constraints: BoxConstraints(),
                     onPressed: () {
                       Future<TimeOfDay?> selectedTime = showTimePicker(
                           builder: (BuildContext context, child) {
@@ -143,11 +147,12 @@ class _OilstartState extends State<Oilstart> {
                     icon: Icon(
                       Icons.watch_later_outlined,
                       color: Color(0xff9c9c9c),
+                      size: 20
                     ))
               ],
             ),
             Divider(
-              height: 0.0,
+              height: 10.0,
               color: Color(0xffcbcbcb),
               thickness: 2.0,
             ),
@@ -163,27 +168,16 @@ class _OilstartState extends State<Oilstart> {
                     MaterialPageRoute(
                         builder: (context) => LocationSearchPage1()));
               },
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    carLocation == null
-                        ? SizedBox(height: 12)
-                        : text(
-                            carLocation, 12.0, FontWeight.w400, Colors.black),
-                    SizedBox(height: 6.0),
-                    Divider(
-                      height: 0.0,
-                      color: Color(0xffcbcbcb),
-                      thickness: 2.0,
-                    ),
-                    SizedBox(height: 5.0),
-                    text('차량 위치를 입력하세요!', 10.0, FontWeight.w400,
-                        Color(0xff9d9d9d)),
-                  ],
-                ),
-              ),
+              child: carLocation == null
+                  ? SizedBox(height: 17)
+                  : text(carLocation, 12.0, FontWeight.w400, Colors.black),
             ),
+            Divider(
+              height: 10.0,
+              color: Color(0xffcbcbcb),
+              thickness: 2.0,
+            ),
+            text('차량 위치를 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19),
             text('연료', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
@@ -253,10 +247,11 @@ class _OilstartState extends State<Oilstart> {
                   ],
                   isSelected: isSelected),
             ),
-            SizedBox(height: 8.5),
+            SizedBox(height: 6),
             text('차량에 맞는 연료를 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19.0),
             text('결제수단', 14.0, FontWeight.w400, Colors.black),
+            SizedBox(height: 6),
             Container(
               height: 24,
               child: ToggleButtons(
@@ -321,6 +316,8 @@ class _OilstartState extends State<Oilstart> {
                   ],
                   isSelected: isSelected2),
             ),
+            SizedBox(height: 6),
+            text('결제 수단을 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
