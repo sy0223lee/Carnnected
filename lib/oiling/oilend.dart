@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosigg/home.dart';
 
 class Oilend extends StatefulWidget {
   const Oilend({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _OilendState extends State<Oilend> {
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [gohome()],
+                  children: [gohome(context)],
                 ),
               ),
             ],
@@ -49,14 +50,15 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container gohome() {
+Container gohome(BuildContext context) {
   return Container(
     width: double.infinity,
     height: 56,
     padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 16.0),
     child: ElevatedButton(
       onPressed: () {
-        
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()));
       },
       child: text('홈', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
