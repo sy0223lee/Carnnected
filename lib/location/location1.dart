@@ -100,11 +100,16 @@ class _LocationSearchPage1State extends State<LocationSearchPage1> {
                     SizedBox(height: 6.5),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
+                        final _ = Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    LocationSearchPage3()));
+                                    LocationSearchPage3())).then((val) {
+                          if (val != null) {
+                            Navigator.pop(context, val);
+                          }
+                        });
+                        ;
                       },
                       child: Row(children: [
                         Icon(FeatherIcons.crosshair, size: 18),
@@ -177,11 +182,7 @@ Column favoriteAddrWidget(Future<List>? favoriteAddrData) {
 InkWell addrWidget(BuildContext context, String addr, String detailAddr) {
   return InkWell(
     onTap: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  Oilstart(carLocation: addr, carDetailLocation: detailAddr)));
+      Navigator.pop(context, Addr(addr: addr, detailAddr: detailAddr));
     },
     child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 6),
@@ -328,8 +329,8 @@ InkWell roadAddrWidget(
     String buldMnnm,
     String buldSlno) {
   return InkWell(
-    onTap: () {
-      Navigator.push(
+    onTap: () async {
+      final _ = await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => LocationSearchPage2(
@@ -338,7 +339,11 @@ InkWell roadAddrWidget(
                   rnMgtSn: rnMgtSn,
                   udrtYn: udrtYn,
                   buldMnnm: buldMnnm,
-                  buldSlno: buldSlno)));
+                  buldSlno: buldSlno))).then((val) {
+        if (val != null) {
+          Navigator.pop(context, val);
+        }
+      });
     },
     child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 6),

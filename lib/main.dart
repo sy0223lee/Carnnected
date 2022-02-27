@@ -31,7 +31,13 @@ class MyApp extends StatelessWidget {
                 ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
             scaffoldBackgroundColor: Colors.white),
         debugShowCheckedModeBanner: false,
-        home: TabBarPage() //StartPage(),
+        initialRoute: '/oilstart',
+        routes: {
+          '/': (context) => StartPage(),
+          '/oilstart': (context) => Oilstart(),
+          '/location1': (context) => LocationSearchPage1(),
+        }
+        // home: Oilstart() //TabBarPage() //StartPage(),
         );
   }
 }

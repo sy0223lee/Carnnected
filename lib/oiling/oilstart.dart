@@ -39,8 +39,8 @@ class _OilstartState extends State<Oilstart> {
   @override
   void initState() {
     super.initState();
-    carLocation = widget.carLocation;
-    carDetailLocation = widget.carDetailLocation;
+    // carLocation = widget.carLocation;
+    // carDetailLocation = widget.carDetailLocation;
   }
 
   @override
@@ -162,14 +162,19 @@ class _OilstartState extends State<Oilstart> {
             text('차량위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
             InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LocationSearchPage1()));
+              onTap: () async {
+                final result = await Navigator.pushNamed(context, '/location1');
+                if( result is Addr ){
+                  print(result.addr);
+                  print(result.detailAddr);
+                  setState(() {
+                    carLocation = result.addr;
+                    carDetailLocation = result.detailAddr;
+                  });
+                } 
               },
               child: carLocation == null
-                  ? SizedBox(height: 17)
+                  ? Container(height: 17)
                   : text(carLocation, 12.0, FontWeight.w400, Colors.black),
             ),
             Divider(
