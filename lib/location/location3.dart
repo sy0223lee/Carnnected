@@ -74,22 +74,26 @@ class _LocationSearchPage3State extends State<LocationSearchPage3> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
-                              addr = snapshot.data!.toString();
+                            addr = snapshot.data!.toString();
                             return Text(snapshot.data!.toString());
                           } else {
                             return Text('주소를 불러오지 못했습니다');
                           }
                         }),
                     InkWell(
-                        onTap: () {
-                          Navigator.push(
+                        onTap: () async {
+                          final _ = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       LocationSearchPage2(
                                           addr: addr,
                                           latitude: latitude,
-                                          longitude: longitude)));
+                                          longitude: longitude))).then((val) {
+                            if (val != null) {
+                              Navigator.pop(context, val);
+                            }
+                          });
                         },
                         child: Container(
                           margin: EdgeInsets.only(top: 20, bottom: 16),
@@ -137,7 +141,9 @@ Future<String> revGeoCoding() async {
       'https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&language=ko&key=AIzaSyBJHfzckYIvqPrJT1rO_GY3xL6BVfQmTGs'));
 
   if (response.statusCode == 200) {
-    return jsonDecode(response.body)['results'][0]['formatted_address'].toString().substring(5);
+    return jsonDecode(response.body)['results'][0]['formatted_address']
+        .toString()
+        .substring(5);
   } else {
     return '역지오코딩 에러';
   }
