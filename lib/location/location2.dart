@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosigg/location/common/map.dart';
 import 'package:mosigg/oiling/oilstart.dart';
+import 'package:mosigg/location/location1.dart';
 import 'dart:convert';
 import 'package:proj4dart/proj4dart.dart';
 
@@ -130,9 +131,6 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                       ),
                       child: TextField(
                         controller: detailLocationController,
-                        // onSubmitted: (text) => {
-                        //   print(text),
-                        // },
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 10,
@@ -220,13 +218,14 @@ class _LocationSearchPage2State extends State<LocationSearchPage2> {
                   : Flexible(child: Container()),
               InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => Oilstart(
-                                carLocation: widget.addr,
-                                carDetailLocation:
-                                    detailLocationController.text)));
+                    Navigator.pop(context, Addr(addr: widget.addr, detailAddr: detailLocationController.text));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (BuildContext context) => Oilstart(
+                    //             carLocation: widget.addr,
+                    //             carDetailLocation:
+                    //                 detailLocationController.text)));
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 12, bottom: 16),
