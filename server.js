@@ -303,6 +303,24 @@ app.get('/usingservice/:carnumber', function(req, res){
     })
 })
 
+// 최근 사용 서비스 확인
+app.get('/recentservice/:carnumber', function(req, res){
+    var carnumber = req.params.carnumber;
+    pool.getConnection(function(err, connection){
+        var sqlRecent = "SELECT tablename, `time` FROM DELIV_RESRV UNION SELECT tablename, `time` FROM DRIVE_RESRV UNION SELECT tablename, `time` FROM GAS_RESRV UNION SELECT tablename, `time` FROM REPAIR_RESRV UNION SELECT tablename, `time` FROM REPLACE_RESRV UNION SELECT tablename, `time` FROM WASH_RESRV WHERE number = ? ORDER BY `time` DESC;";
+        connection.query(sqlRecent, carnumber, function(err, rows){
+            if(err){
+                console.log("최근 사용 서비스 전송 오류: ", rows);
+                res.send(false);
+            }
+            else{
+                console.log("최근 사용 서비스 전송 성공: ", rows);
+                res.send(rows);
+            }
+            connection.release();
+        })
+    })
+})
 
 /***** 지도 서비스 *****/
 // 정비 검색 키워드: "자동차 수리점"
