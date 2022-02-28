@@ -19,6 +19,7 @@ class _BottomtabbarState extends State<Bottomtabbar> {
       length: 5,
       child: Scaffold(
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Oilstart(),
             Oilprice(),
