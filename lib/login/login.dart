@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mosigg/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mosigg/home.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,8 +17,34 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController inputid = TextEditingController();
   TextEditingController inputpw = TextEditingController();
+  String? userInfo = ""; // user 정보 저장하기 위한 변수
+  static final storage = new FlutterSecureStorage();
 
-  
+  @override
+  void initState(){
+    super.initState();
+    // 비동기로 flutter secure storage 정보를 불러오는 작업
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      asyncMethod();
+    });
+  }
+
+  asyncMethod() async {
+    // read 함수를 통해 key값에 맞는 정보 불러옴(데이터 없으면 null 반환)
+    userInfo = await storage.read(key: "login");
+    print(userInfo);
+
+    // user 정보가 있으면 바로 home 화면으로 이동
+    // ignore: unnecessary_null_comparison
+    if (userInfo != null){
+      Navigator.pushReplacement(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => HomePage()
+        )
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +163,10 @@ class _LoginPageState extends State<LoginPage> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 onPressed: () async {
+                                  await storage.write(
+                                    key: "login",
+                                    value: "id " + inputid.text.toString() + " " + "pw " + inputpw.text.toString()
+                                  );
                                   bool logined = await login('${inputid.text}', '${inputpw.text}');
                                   if(logined == true){
                                     Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
