@@ -396,7 +396,6 @@ Future recentservice(String carnumber) async {
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);
     for (var i = 0; i < json.length; i++) {
-      print(Recent.fromJson(json[i]));
       serviceList.add(Recent.fromJson(json[i]).toString());
     }
   } else {
