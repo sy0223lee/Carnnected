@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-List serviceList = ['주유', '방문세차', '방문교체', '정비'];
+List serviceList = [];
 
 class Servicechoice extends StatefulWidget {
   const Servicechoice({Key? key}) : super(key: key);
@@ -17,174 +17,175 @@ class _ServicechoiceState extends State<Servicechoice> {
   @override
   void initState() {
     data = cardata('dlekdud0102');
+    //recentservice('102허2152');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<List>(
-          future: data,
-          builder: (context, snapshot) {
-            return Column(
-              children: [
-                    Stack(
-                      clipBehavior: Clip.none,
+      body: FutureBuilder<List>(
+        future: data,
+        builder: (context, snapshot) {
+          return Column(
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    height: 153,
+                    color: Color(0xff001a5d),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          height: 153,
-                          color: Color(0xff001a5d),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.help_outline),
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              )
-                            ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.help_outline),
+                              color: Colors.white,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: 50.0,
+                    right: 60.0,
+                    child:
+                      //if(이용한 서비스가 있으면)
+                      card1(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
+                      //if(이용한 서비스가 없으면)
+                      //card2(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
+                      //if(등록된 차량이 없으면)
+                      //card3()
+                  )
+                ],
+              ),
+              SizedBox(height: 84.0),
+              text('이용 가능한 서비스', 16.0, FontWeight.bold, Colors.black),
+              SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.only(right: 35.0),
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.person,
+                          size: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 4.0),
+                      text('주유', 10.0, FontWeight.w400, Colors.black),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.only(right: 35.0),
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.person,
+                          size: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 4.0),
+                      text('방문세차', 10.0, FontWeight.w400, Colors.black),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.only(right: 35.0),
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.person,
+                          size: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 4.0),
+                      text('방문교체', 10.0, FontWeight.w400, Colors.black),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 22.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.only(right: 35.0),
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.person,
+                          size: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 4.0),
+                      text('정비', 10.0, FontWeight.w400, Colors.black),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.only(right: 35.0),
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.person,
+                          size: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 4.0),
+                      text('딜리버리', 10.0, FontWeight.w400, Colors.black),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.only(right: 35.0),
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.person,
+                          size: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 4.0),
+                      text('대리운전', 10.0, FontWeight.w400, Colors.black),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 22.0),
+              Row(
+                    children: [
+                      SizedBox(width: 59.0),
+                      Column(
+                        children: [
+                          IconButton(
+                            padding: EdgeInsets.only(right: 35.0),
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.person,
+                              size: 60.0,
+                            ),
                           ),
-                        ),
-                        Positioned(
-                            top: 50.0,
-                            right: 60.0,
-                            child:
-                              //if(이용한 서비스가 있으면)
-                              card1(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
-                              //if(이용한 서비스가 없으면)
-                              //card2(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
-                              //if(등록된 차량이 없으면)
-                              //card3()
-                            )
-                      ],
-                    ),
-                    SizedBox(height: 84.0),
-                    text('이용 가능한 서비스', 16.0, FontWeight.bold, Colors.black),
-                    SizedBox(height: 16.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.only(right: 35.0),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.person,
-                                size: 60.0,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            text('주유', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.only(right: 35.0),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.person,
-                                size: 60.0,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            text('방문세차', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.only(right: 35.0),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.person,
-                                size: 60.0,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            text('방문교체', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 22.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.only(right: 35.0),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.person,
-                                size: 60.0,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            text('정비', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.only(right: 35.0),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.person,
-                                size: 60.0,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            text('딜리버리', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.only(right: 35.0),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.person,
-                                size: 60.0,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            text('대리운전', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 22.0),
-                    Row(
-                      children: [
-                        SizedBox(width: 59.0),
-                        Column(
-                          children: [
-                            IconButton(
-                              padding: EdgeInsets.only(right: 35.0),
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.person,
-                                size: 60.0,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            text('가계부', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                      ],
-                    ),
-              ],
-            );
-          }
+                          SizedBox(height: 4.0),
+                          text('가계부', 10.0, FontWeight.w400, Colors.black),
+                        ],
+                      ),
+                    ],
+                  ),
+            ],
+          );
+        }
     ));
   }
 
@@ -373,7 +374,6 @@ class _ServicechoiceState extends State<Servicechoice> {
           ))),
     );
   }
-
 }
 
 Container currentservice(service) {
@@ -393,6 +393,19 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
+Future recentservice(String carnumber) async {
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/recentservice/${carnumber}'));
+  if (response.statusCode == 200) {
+    List<dynamic> json = jsonDecode(response.body);
+    for (var i = 0; i < json.length; i++) {
+      print(Recent.fromJson(json[i]));
+      serviceList.add(Recent.fromJson(json[i]).toString());
+    }
+  } else {
+    throw Exception('Failed to load recent use service');
+  }
+}
+
 Future<List> cardata(String id) async {
   final response = await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/${id}'));
   late List<Car> carList = [];
@@ -400,12 +413,26 @@ Future<List> cardata(String id) async {
     List<dynamic> json = jsonDecode(response.body);
     for (var i = 0; i < json.length; i++) {
       carList.add(Car.fromJson(json[i]));
+      recentservice(carList[i].carnumber);
     }
-    print(carList);
     return carList;
   } else {
     throw Exception('Failed to load car data');
   }
+}
+
+class Recent {
+  final String service;
+  Recent({ required this.service });
+
+  factory Recent.fromJson(Map<String, dynamic> json) {
+    return Recent(
+      service: json['tablename'],
+    );
+  }
+
+  @override
+  String toString() => '${service}';
 }
 
 class Car {
