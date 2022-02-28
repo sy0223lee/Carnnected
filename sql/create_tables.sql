@@ -44,7 +44,6 @@ CREATE TABLE `GAS_RESRV`(
     `source` VARCHAR(100) NOT NULL,		# 차량 위치
     `detailSrc` VARCHAR(100) NOT NULL,	# 차량 상세 위치
     `dest_name` VARCHAR(30) NOT NULL,	# 주유소 이름
-    `dest_addr` VARCHAR(100) NOT NULL,	# 주유소 주소
     `price` INT NOT NULL,				# 예상 가격
     `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
@@ -82,7 +81,7 @@ CREATE TABLE `DELIV_RESRV`(
     `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
     FOREIGN KEY (`id`)
-    REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);   
+    REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
 
 # 대리운전 서비스 예약    
 CREATE TABLE `DRIVE_RESRV`(
@@ -98,7 +97,7 @@ CREATE TABLE `DRIVE_RESRV`(
     `payment` VARCHAR(15) NOT NULL,		# 결제 방식
     `status` VARCHAR(10) NOT NULL DEFAULT 'reserved',	# 예약 상태
     FOREIGN KEY (`id`)
-    REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);  
+    REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
 
 # 방문교체 서비스 예약    
 CREATE TABLE `REPLACE_RESRV`(
