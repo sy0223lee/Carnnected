@@ -228,7 +228,7 @@ class _ServicechoiceState extends State<Servicechoice> {
             children: [
               SizedBox(width: 26.0),
               CircleAvatar(
-                backgroundImage: AssetImage('image/kakao.png'),
+                backgroundImage: AssetImage('image/peridot.jpg'),
                 radius: 35.0,
               ),
               SizedBox(width: 17.0),
@@ -315,7 +315,7 @@ class _ServicechoiceState extends State<Servicechoice> {
               children: [
                 SizedBox(width: 26.0),
                 CircleAvatar(
-                  backgroundImage: AssetImage('image/kakao.png'),
+                  backgroundImage: AssetImage('image/peridot.jpg'),
                   radius: 35.0,
                 ),
                 SizedBox(width: 17.0),
