@@ -17,7 +17,6 @@ class _ServicechoiceState extends State<Servicechoice> {
   @override
   void initState() {
     data = cardata('dlekdud0102');
-    //recentservice('102허2152');
     super.initState();
   }
 
