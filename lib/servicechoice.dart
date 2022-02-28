@@ -54,13 +54,11 @@ class _ServicechoiceState extends State<Servicechoice> {
                   Positioned(
                     top: 50.0,
                     right: 60.0,
-                    child:
-                      //if(이용한 서비스가 있으면)
-                      card1(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
-                      //if(이용한 서비스가 없으면)
-                      //card2(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
-                      //if(등록된 차량이 없으면)
-                      //card3()
+                    child:  snapshot.data!.length == 0 ?
+                      card3() :
+                        serviceList.length == 0 ?
+                          card2(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname) :
+                            card1(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
                   )
                 ],
               ),
