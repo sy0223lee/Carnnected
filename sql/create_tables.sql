@@ -35,6 +35,7 @@ CREATE TABLE `FAVORITE_ADDR`(
 
 # 주유 서비스 예약
 CREATE TABLE `GAS_RESRV`(
+	`tablename` VARCHAR(20) NOT NULL DEFAULT '주유',
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
@@ -52,6 +53,7 @@ CREATE TABLE `GAS_RESRV`(
 
 # 세차 서비스 예약    
 CREATE TABLE `WASH_RESRV`(
+	`tablename` VARCHAR(20) NOT NULL DEFAULT '세차',
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
@@ -67,6 +69,7 @@ CREATE TABLE `WASH_RESRV`(
 
 # 딜리버리 서비스 예약
 CREATE TABLE `DELIV_RESRV`(
+	`tablename` VARCHAR(20) NOT NULL DEFAULT '딜리버리',
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
@@ -83,6 +86,7 @@ CREATE TABLE `DELIV_RESRV`(
 
 # 대리운전 서비스 예약    
 CREATE TABLE `DRIVE_RESRV`(
+	`tablename` VARCHAR(20) NOT NULL DEFAULT '대리운전',
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
@@ -98,6 +102,7 @@ CREATE TABLE `DRIVE_RESRV`(
 
 # 방문교체 서비스 예약    
 CREATE TABLE `REPLACE_RESRV`(
+	`tablename` VARCHAR(20) NOT NULL DEFAULT '방문교체',
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
@@ -113,6 +118,7 @@ CREATE TABLE `REPLACE_RESRV`(
     
 # 정비 서비스 예약
 CREATE TABLE `REPAIR_RESRV`(
+	`tablename` VARCHAR(20) NOT NULL DEFAULT '대리정비',
 	`id` VARCHAR(15) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
