@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+List serviceList = ['주유', '방문세차', '방문교체', '정비'];
+
 class Servicechoice extends StatefulWidget {
   const Servicechoice({Key? key}) : super(key: key);
 
@@ -52,12 +54,12 @@ class _ServicechoiceState extends State<Servicechoice> {
                             top: 50.0,
                             right: 60.0,
                             child:
-                                //if(이용한 서비스가 있으면)
-                                card1(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
-                            //if(이용한 서비스가 없으면)
-                            //card2()
-                            //if(등록된 차량이 없으면)
-                            //card3
+                              //if(이용한 서비스가 있으면)
+                              card1(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
+                              //if(이용한 서비스가 없으면)
+                              //card2(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
+                              //if(등록된 차량이 없으면)
+                              //card3()
                             )
                       ],
                     ),
@@ -390,8 +392,6 @@ Text text(content, size, weight, colors) {
   return Text(content,
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
-
-List serviceList = ['주유', '방문세차', '방문교체', '정비'];
 
 Future<List> cardata(String id) async {
   final response = await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/${id}'));

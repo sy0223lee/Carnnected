@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
-import 'package:mosigg/location/location3.dart';
 import 'package:mosigg/login/login.dart';
-import 'package:mosigg/oiling/oilstart.dart';
 import 'package:mosigg/signup/signup1.dart';
 import 'package:mosigg/servicechoice.dart';
-
-/*개발용 임시import*/
-import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/location/location2.dart';
-import 'package:mosigg/location/common/map.dart';
 
 //void main() => runApp(MyApp());
 void main() {
