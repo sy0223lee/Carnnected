@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import 'package:mosigg/location/location2.dart';
 import 'package:mosigg/location/location3.dart';
-import 'package:mosigg/oiling/oilstart.dart';
 
 class LocationSearchPage1 extends StatefulWidget {
   const LocationSearchPage1({Key? key}) : super(key: key);
@@ -109,7 +108,6 @@ class _LocationSearchPage1State extends State<LocationSearchPage1> {
                             Navigator.pop(context, val);
                           }
                         });
-                        ;
                       },
                       child: Row(children: [
                         Icon(FeatherIcons.crosshair, size: 18),
