@@ -29,11 +29,13 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 class _OilstartState extends State<Oilstart> {
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
+  List<String> fuelList = ['휘발유', '경유', 'LPG', '고급휘발유', '전기'];
+  List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String? _selectedTime = "";
   DateTime? _selectedDate;
-  int? fuelIndex;
-  int? paymentIndex;
 
+  String? fuel;
+  String? payment;
   String? carLocation;
   String? carDetailLocation;
   late LatLng carCoord;
@@ -70,14 +72,13 @@ class _OilstartState extends State<Oilstart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedDate?.year != null)
-                  text(
-                      '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
-                      12.0,
-                      FontWeight.w400,
-                      Colors.black),
-                if (_selectedDate?.year == null)
-                  text("", 12.0, FontWeight.w400, Colors.black),
+                _selectedDate?.year != null
+                    ? text(
+                        '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
+                        12.0,
+                        FontWeight.w400,
+                        Colors.black)
+                    : text("", 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -157,8 +158,6 @@ class _OilstartState extends State<Oilstart> {
               onTap: () async {
                 final result = await Navigator.pushNamed(context, '/location1');
                 if (result is Addr) {
-                  print(result.addr);
-                  print(result.detailAddr);
                   setState(() {
                     carLocation = result.addr;
                     carDetailLocation = result.detailAddr;
@@ -192,7 +191,7 @@ class _OilstartState extends State<Oilstart> {
                           buttonIndex++) {
                         if (buttonIndex == index) {
                           isSelected[buttonIndex] = true;
-                          fuelIndex = buttonIndex;
+                          fuel = fuelList[buttonIndex];
                         } else {
                           isSelected[buttonIndex] = false;
                         }
@@ -200,48 +199,11 @@ class _OilstartState extends State<Oilstart> {
                     });
                   },
                   children: [
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '휘발유',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text('경유',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text('LPG',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text('고급휘발유',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text('전기',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      ),
-                    ),
+                    toggleItem(context, fuelList[0], fuelList.length),
+                    toggleItem(context, fuelList[1], fuelList.length),
+                    toggleItem(context, fuelList[2], fuelList.length),
+                    toggleItem(context, fuelList[3], fuelList.length),
+                    toggleItem(context, fuelList[4], fuelList.length),
                   ],
                   isSelected: isSelected),
             ),
@@ -264,7 +226,7 @@ class _OilstartState extends State<Oilstart> {
                           buttonIndex2++) {
                         if (buttonIndex2 == index2) {
                           isSelected2[buttonIndex2] = true;
-                          paymentIndex = buttonIndex2;
+                          payment = paymentList[buttonIndex2];
                         } else {
                           isSelected2[buttonIndex2] = false;
                         }
@@ -272,46 +234,10 @@ class _OilstartState extends State<Oilstart> {
                     });
                   },
                   children: [
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '신용카드',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '계좌이체',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '휴대폰결제',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '카카오페이',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
+                    toggleItem(context, paymentList[0], 5),
+                    toggleItem(context, paymentList[1], 5),
+                    toggleItem(context, paymentList[2], 5),
+                    toggleItem(context, paymentList[3], 5),
                   ],
                   isSelected: isSelected2),
             ),
@@ -321,8 +247,40 @@ class _OilstartState extends State<Oilstart> {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                kipgoing(context, _selectedDate, _selectedTime, carLocation,
-                    carDetailLocation, fuelIndex, paymentIndex)
+                Container(
+                  width: double.infinity,
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_selectedDate != null &&
+                          _selectedTime != null &&
+                          carLocation != null &&
+                          carDetailLocation != null &&
+                          fuel != null &&
+                          payment != null) {
+                        String dateAndTime =
+                            _selectedDate.toString().substring(0, 10) +
+                                ' ' +
+                                _selectedTime! +
+                                ':00';
+                        LatLng carCoord = await getCarCoord(carLocation!);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => GasRsrv(
+                                    dateAndTime: dateAndTime,
+                                    carLocation: carLocation!,
+                                    carDetailLocation: carDetailLocation!,
+                                    fuel: fuel!,
+                                    payment: payment!,
+                                    carCoord: carCoord)));
+                      }
+                    },
+                    child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
+                    style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+                  ),
+                ),
               ],
             ))
           ],
@@ -337,49 +295,14 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container kipgoing(
-    BuildContext context,
-    DateTime? date,
-    String? time,
-    String? carLocation,
-    String? carDetailLocation,
-    int? fuelIndex,
-    int? paymentIndex) {
+Container toggleItem(context, text, itemNum) {
   return Container(
-    width: double.infinity,
-    height: 40,
-    child: ElevatedButton(
-      onPressed: () async {
-        var fuelList = ['휘발유', '경유', 'LPG', '고급휘발유', '전기'];
-        var paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
-
-        if (date != null &&
-            time != null &&
-            carLocation != null &&
-            carDetailLocation != null &&
-            fuelIndex != null &&
-            paymentIndex != null) {
-          String dateAndTime =
-              date.toString().substring(0, 10) + ' ' + time + ':00';
-          print(dateAndTime);
-          LatLng carCoord = await getCarCoord(carLocation);
-          String fuel = fuelList[fuelIndex];
-          String payment = paymentList[paymentIndex];
-
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => GasRsrv(
-                      dateAndTime: dateAndTime,
-                      carLocation: carLocation,
-                      carDetailLocation: carDetailLocation,
-                      fuel: fuel,
-                      payment: payment,
-                      carCoord: carCoord)));
-        }
-      },
-      child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+    width: (MediaQuery.of(context).size.width - 60.0) / itemNum,
+    child: Center(
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400),
+      ),
     ),
   );
 }
@@ -398,8 +321,6 @@ Future<LatLng> getCarCoord(String carLocation) async {
       headers: headers);
 
   if (response.statusCode == 200) {
-    print('${double.parse(jsonDecode(response.body)['addresses'][0]['x'])}');
-    print('${double.parse(jsonDecode(response.body)['addresses'][0]['y'])}');
     carCoord = LatLng(
         double.parse(jsonDecode(response.body)['addresses'][0]['y']),
         double.parse(jsonDecode(response.body)['addresses'][0]['x']));
