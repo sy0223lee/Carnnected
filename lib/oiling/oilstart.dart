@@ -1,13 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/oiling/oilprice.dart';
+import 'package:mosigg/oiling/oilsecond.dart';
+import 'package:http/http.dart' as http;
 
 class Oilstart extends StatefulWidget {
-  final String? carLocation;
-  final String? carDetailLocation;
-
-  const Oilstart({Key? key, this.carLocation, this.carDetailLocation})
-      : super(key: key);
+  const Oilstart({Key? key}) : super(key: key);
 
   @override
   State<Oilstart> createState() => _OilstartState();
@@ -29,23 +29,24 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 class _OilstartState extends State<Oilstart> {
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
-  String _selectedTime = "";
+  String? _selectedTime = "";
   DateTime? _selectedDate;
-  String _selectedHour = '';
-  String _selectedMinute = '';
+  int? fuelIndex;
+  int? paymentIndex;
+
   String? carLocation;
   String? carDetailLocation;
+  late LatLng carCoord;
 
   @override
   void initState() {
     super.initState();
-    // carLocation = widget.carLocation;
-    // carDetailLocation = widget.carDetailLocation;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -117,11 +118,7 @@ class _OilstartState extends State<Oilstart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedMinute != '0')
-                  text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
-                if (_selectedMinute == '0')
-                  text(
-                      '$_selectedHour:00', 12.0, FontWeight.w400, Colors.black),
+                text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -138,17 +135,12 @@ class _OilstartState extends State<Oilstart> {
                       selectedTime.then((timeOfDay) {
                         setState(() {
                           _selectedTime =
-                              '${timeOfDay?.hour}:${timeOfDay?.minute}';
-                          _selectedHour = '${timeOfDay?.hour}';
-                          _selectedMinute = '${timeOfDay?.minute}';
+                              timeOfDay.toString().substring(10, 15);
                         });
                       });
                     },
-                    icon: Icon(
-                      Icons.watch_later_outlined,
-                      color: Color(0xff9c9c9c),
-                      size: 20
-                    ))
+                    icon: Icon(Icons.watch_later_outlined,
+                        color: Color(0xff9c9c9c), size: 20))
               ],
             ),
             Divider(
@@ -164,14 +156,14 @@ class _OilstartState extends State<Oilstart> {
             InkWell(
               onTap: () async {
                 final result = await Navigator.pushNamed(context, '/location1');
-                if( result is Addr ){
+                if (result is Addr) {
                   print(result.addr);
                   print(result.detailAddr);
                   setState(() {
                     carLocation = result.addr;
                     carDetailLocation = result.detailAddr;
                   });
-                } 
+                }
               },
               child: carLocation == null
                   ? Container(height: 17)
@@ -200,6 +192,7 @@ class _OilstartState extends State<Oilstart> {
                           buttonIndex++) {
                         if (buttonIndex == index) {
                           isSelected[buttonIndex] = true;
+                          fuelIndex = buttonIndex;
                         } else {
                           isSelected[buttonIndex] = false;
                         }
@@ -271,6 +264,7 @@ class _OilstartState extends State<Oilstart> {
                           buttonIndex2++) {
                         if (buttonIndex2 == index2) {
                           isSelected2[buttonIndex2] = true;
+                          paymentIndex = buttonIndex2;
                         } else {
                           isSelected2[buttonIndex2] = false;
                         }
@@ -326,7 +320,10 @@ class _OilstartState extends State<Oilstart> {
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [kipgoing(context)],
+              children: [
+                kipgoing(context, _selectedDate, _selectedTime, carLocation,
+                    carDetailLocation, fuelIndex, paymentIndex)
+              ],
             ))
           ],
         ),
@@ -340,25 +337,74 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container kipgoing(BuildContext context) {
+Container kipgoing(
+    BuildContext context,
+    DateTime? date,
+    String? time,
+    String? carLocation,
+    String? carDetailLocation,
+    int? fuelIndex,
+    int? paymentIndex) {
   return Container(
     width: double.infinity,
     height: 40,
     child: ElevatedButton(
-      onPressed: () {
-        // if(dataAndTime != null& carLocation != null& type != null)
-        // Navigator.push(
-        //                 context,
-        //                 MaterialPageRoute(
-        //                     builder: (BuildContext context) => Oilprice(
-        //                         dateAndTime:
-        //                         carLocation: ,
-        //                         carDetailLocation:,
-        //                         type:
-        //                         )));
+      onPressed: () async {
+        var fuelList = ['휘발유', '경유', 'LPG', '고급휘발유', '전기'];
+        var paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
+
+        if (date != null &&
+            time != null &&
+            carLocation != null &&
+            carDetailLocation != null &&
+            fuelIndex != null &&
+            paymentIndex != null) {
+          String dateAndTime =
+              date.toString().substring(0, 10) + ' ' + time + ':00';
+          print(dateAndTime);
+          LatLng carCoord = await getCarCoord(carLocation);
+          String fuel = fuelList[fuelIndex];
+          String payment = paymentList[paymentIndex];
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => GasRsrv(
+                      dateAndTime: dateAndTime,
+                      carLocation: carLocation,
+                      carDetailLocation: carDetailLocation,
+                      fuel: fuel,
+                      payment: payment,
+                      carCoord: carCoord)));
+        }
       },
       child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
     ),
   );
+}
+
+Future<LatLng> getCarCoord(String carLocation) async {
+  Map<String, String> headers = {
+    'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
+    'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
+  };
+
+  late LatLng carCoord;
+
+  final response = await http.get(
+      Uri.parse(
+          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${carLocation}'),
+      headers: headers);
+
+  if (response.statusCode == 200) {
+    print('${double.parse(jsonDecode(response.body)['addresses'][0]['x'])}');
+    print('${double.parse(jsonDecode(response.body)['addresses'][0]['y'])}');
+    carCoord = LatLng(
+        double.parse(jsonDecode(response.body)['addresses'][0]['y']),
+        double.parse(jsonDecode(response.body)['addresses'][0]['x']));
+    return carCoord;
+  } else {
+    throw Exception('Failed to get coordinates of car');
+  }
 }
