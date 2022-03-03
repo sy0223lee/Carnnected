@@ -3,6 +3,7 @@ import 'package:kakao_flutter_sdk/all.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/signup/signup1.dart';
 import 'package:mosigg/servicechoice.dart';
+import 'package:mosigg/home.dart';
 
 //void main() => runApp(MyApp());
 void main() {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
               ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
           scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
-      home: Servicechoice()//StartPage(),
+      home: HomePage()//StartPage(),
     );
   }
 }
