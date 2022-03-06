@@ -7,7 +7,7 @@ var pool = mySQL.createPool({
     host:'localhost',
     port: 3306,
     user: 'root',
-    password: '1234',
+    password: 'alsdlWkd72!',
     database: 'carnnected'
 });
 
@@ -24,7 +24,7 @@ app.get('/signup/:idcheck', function(req, res){
     console.log('확인할 아이디:', idcheck);
     
     pool.getConnection(function(err, connection){
-        var sqlIdCheck = "SELECT id FROM member WHERE id = ?";
+        var sqlIdCheck = "SELECT id FROM MEMBER WHERE id = ?";
         connection.query(sqlIdCheck, idcheck, function(err, row){
             if(err) console.log('아이디 중복 확인 에러');
             if(row[0] !== undefined){
@@ -52,11 +52,11 @@ app.get('/signup/:id/:pwd/:name/:birth/:phone', function(req, res){
     console.log("회원 정보:", datas);
         
     pool.getConnection(function(err, connection){
-        var sqlMemInsert = "INSERT INTO member VALUES (?, ?, ?, ?, ?)";
+        var sqlMemInsert = "INSERT INTO MEMBER VALUES (?, ?, ?, ?, ?)";
         connection.query(sqlMemInsert, datas, function(err){
             if(err) console.log('회원가입 INSERT 오류');
             else {
-                pool.query("SELECT * FROM member WHERE id = ?", id, function(err, row){
+                pool.query("SELECT * FROM MEMBER WHERE id = ?", id, function(err, row){
                     if(row[0].id === id){
                         console.log('회원가입 성공:', row);
                         res.send(true);
@@ -74,11 +74,11 @@ app.get('/signup/:id/:pwd/:name/:birth/:phone', function(req, res){
 
 /***** 로그인 *****/
 app.get('/login/:id/:pwd', function(req, res){
-    var id = req.params.id;
+    var id = req.params.id.toString();
     var pwd = req.params.pwd;
 
     pool.getConnection(function(err, connection){
-        var sqlLogin = "SELECT * FROM member WHERE id = ? and pwd = ?";
+        var sqlLogin = "SELECT * FROM MEMBER WHERE id = '?' and pwd = '?'";
         connection.query(sqlLogin, [id, pwd], function(err, result){
             if(err) console.log('로그인 오류');
             if(result[0] !== undefined){
@@ -533,7 +533,7 @@ app.get('/deliv_resrv/:id/:number/:time/:source/:detailSrc/:dest_name/:dest_addr
 
     pool.getConnection(function(err, connection){
         // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
-        var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM deliv_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM drive_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM gas_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM repair_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM replace_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM wash_resrv WHERE `number`=? and `time` between ? and ?)) as RESRV';
+        var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
         connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
             if(err){
                 console.log("동일한 예약 존재 확인 오류:", row[0]);
