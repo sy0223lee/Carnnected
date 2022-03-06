@@ -366,7 +366,7 @@ app.get('/gas_resrv/:id/:number/:time/:source/:detailSrc/:type/:dest_name/:amoun
 
     pool.getConnection(function(err, connection){
         // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
-        var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM deliv_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM drive_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM gas_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM repair_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM replace_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM wash_resrv WHERE `number`=? and `time` between ? and ?)) as RESRV';
+        var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
         connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
             if(err){
                 console.log("동일한 예약 존재 확인 오류:", row[0]);
