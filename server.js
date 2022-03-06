@@ -465,12 +465,12 @@ app.get('/drive_resrv/response/:id/:number', function (req, res){
     var id = req.params.id;
     var number = req.params.number;
     var now = new Date();
-    var time = now.setMinutes(now.getMinutes()-10);
-    var sqlReqCheck = "SELECT status FROM DRIVE_RESRV WHERE id = ? AND number = ? AND time >= ?";
+    var time = String(now.getFullYear())+'-'+String(now.getMonth()+1)+'-'+String(now.getDate())+'\u0020'+String(now.getHours())+':'+String(now.getMinutes()-10);
+    var sqlReqCheck = "SELECT `status` FROM DRIVE_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ?";
 
     var response = false;
     var timer = setInterval(() => {
-        pool.getConnection(async function(err, connection){
+        pool.getConnection(function(err, connection){
             connection.query(sqlReqCheck, [id, number, time], function(err, result){
                 if(err) {
                     console.log("대리운전 예약 상태 확인 오류:", result[0]);
@@ -498,6 +498,121 @@ app.get('/drive_resrv/response/:id/:number', function (req, res){
     setTimeout(() => {
         if(!response){
             console.log("대리운전 예약 요청 실패");
+            var sqlCancel = "DELETE FROM DRIVE_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ? AND `status` = 'request'";
+
+            pool.query(sqlCancel, [id, number, time], function(err, result){
+                if(err) console.log("대리운전 예약 요청 취소 오류", err);
+                else console.log("대리운전 예약 요청 취소 성공", result);
+            })
+            clearInterval(timer);
+            res.send(response);
+        }
+    }, 30000);
+})
+
+
+/***** 딜리버리 서비스 *****/
+// 예약 요청 insert
+app.get('/deliv_resrv/:id/:number/:time/:source/:detailSrc/:dest_name/:dest_addr/:price/:payment', function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var time = req.params.time;
+    var source = req.params.source;
+    var detailSrc = req.params.detailSrc;
+    var dest_name = req.params.dest_name;
+    var dest_addr = req.params.dest_addr;
+    var price = req.params.price;
+    var payment = req.params.payment;
+
+    var datetime = time.split(' ');
+    var onlydate = datetime[0].split('-');
+    var onlytime = datetime[1].split(':');
+    var beforeTime = onlydate[0]+'-'+onlydate[1]+'-'+onlydate[2]+'\u0020'+String(onlytime[0]*1-2)+':'+onlytime[1];   // 2시간 이전 예약 존재하는지 확인
+    var afterTime = onlydate[0]+"-"+onlydate[1]+"-"+onlydate[2]+'\u0020'+String(onlytime[0]*1+2)+":"+onlytime[1];   // 2시간 이후 예약 존재하는지 확인
+    console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
+
+    pool.getConnection(function(err, connection){
+        // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
+        var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM deliv_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM drive_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM gas_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM repair_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM replace_resrv WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM wash_resrv WHERE `number`=? and `time` between ? and ?)) as RESRV';
+        connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
+            if(err){
+                console.log("동일한 예약 존재 확인 오류:", row[0]);
+                res.send(false);
+            }
+            else{
+                if(row[0].count === 0){   // 정보 없으면 예약 가능
+                    console.log("딜리버리 예약 가능");
+                    
+                    // 예약 정보 table에 insert
+                    var sqlGasReserv = "INSERT INTO DELIV_RESRV (`id`,`number`,`time`,`source`,`detailSrc`,`dest_name`,`dest_addr`,`price`,`payment`) VALUES (?,?,?,?,?,?,?,?,?)";
+                    var datas = [id, number, time, source, detailSrc, dest_name, dest_addr, price, payment];
+                    console.log("딜리버리 예약 정보: ", datas);
+    
+                    pool.query(sqlGasReserv, datas, function(err){
+                        if(err){
+                            console.log('딜리버리 예약 INSERT 오류:', err);
+                            res.send(false);
+                        }
+                        else{
+                            console.log('딜리버리 예약 INSERT 성공');
+                            res.send(true);
+                        }
+                    })
+                }
+                else{   // 동일한 정보 존재하면 예약 불가능
+                    console.log("동일한 시간, 차량 예약 이미 존재:", row[0]);
+                    console.log('딜리버리 예약 INSERT 실패');
+                    res.send(false);
+                }
+            }
+            connection.release();
+        })
+    })    
+})
+
+// 예약 요청 수락 확인
+app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var time = req.params.time;
+    var sqlReqCheck = "SELECT `status` FROM DELIV_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ?";
+
+    var response = false;
+    var timer = setInterval(() => {
+        pool.getConnection(function(err, connection){
+            connection.query(sqlReqCheck, [id, number, time], function(err, result){
+                if(err) {
+                    console.log("딜리버리 예약 상태 확인 오류:", result[0]);
+                    return res.send(false);
+                }
+                if(result[0] === undefined){
+                    console.log("딜리버리 예약 요청 없음");
+                    clearInterval(timer);
+                    response = "unexist";
+                    return res.send(response);
+                }
+                else if(result[0].status === 'reserved'){
+                    console.log("딜리버리 예약 요청 성공");
+                    clearInterval(timer);
+                    response = true
+                    return res.send(response);
+                }
+                else if(result[0].status === 'request'){
+                    console.log("딜리버리 예약 요청 중")
+                }   
+            })
+        })
+    }, 3000)
+
+    setTimeout(() => {
+        if(!response){
+            console.log("딜리버리 예약 요청 실패");
+            var sqlCancel = "DELETE FROM DELIV_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ? AND `status` = 'request'";
+
+            pool.query(sqlCancel, [id, number, time], function(err, result){
+                if(err) console.log("딜리버리 예약 요청 취소 오류", err);
+                else console.log("딜리버리 예약 요청 취소 성공", result);
+            })
             clearInterval(timer);
             res.send(response);
         }
