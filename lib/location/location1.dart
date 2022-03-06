@@ -241,7 +241,7 @@ InkWell addrWidget(BuildContext context, String addr, String detailAddr) {
 //즐겨찾는 주소 통신
 Future<List> favoriteAddr(String id) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/favorite_addr/${id}'));
+      await http.get(Uri.parse('http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/favorite_addr/${id}'));
   late List<Addr> favoriteAddrList = [];
 
   if (response.statusCode == 200) {

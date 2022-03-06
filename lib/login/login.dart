@@ -24,9 +24,9 @@ class _LoginPageState extends State<LoginPage> {
   void initState(){
     super.initState();
     // 비동기로 flutter secure storage 정보를 불러오는 작업
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      asyncMethod();
-    });
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   asyncMethod();
+    // });
   }
 
   asyncMethod() async {
@@ -196,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 Future login(String id, String pwd) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/login/${id}/${pwd}'));
+  final response = await http.get(Uri.parse('http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/login/${id}/${pwd}'));
 
   if(response.statusCode == 200) {
     if(json.decode(response.body) == true)  return true;  // 로그인 성공
