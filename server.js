@@ -74,11 +74,11 @@ app.get('/signup/:id/:pwd/:name/:birth/:phone', function(req, res){
 
 /***** 로그인 *****/
 app.get('/login/:id/:pwd', function(req, res){
-    var id = req.params.id.toString();
+    var id = req.params.id;
     var pwd = req.params.pwd;
 
     pool.getConnection(function(err, connection){
-        var sqlLogin = "SELECT * FROM MEMBER WHERE id = '?' and pwd = '?'";
+        var sqlLogin = "SELECT * FROM MEMBER WHERE id = ? and pwd = ?";
         connection.query(sqlLogin, [id, pwd], function(err, result){
             if(err) console.log('로그인 오류');
             if(result[0] !== undefined){
