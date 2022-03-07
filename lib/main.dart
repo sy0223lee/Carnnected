@@ -4,11 +4,6 @@ import 'package:mosigg/login/login.dart';
 import 'package:mosigg/oiling/oilstart.dart';
 import 'package:mosigg/signup/signup1.dart';
 
-/*개발용 임시import*/
-import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/location/location2.dart';
-import 'package:mosigg/location/common/map.dart';
-
 //void main() => runApp(MyApp());
 void main() {
   KakaoContext.clientId = 'f7926788ee7785502df4ce563f93d183';
@@ -29,13 +24,13 @@ class MyApp extends StatelessWidget {
                 ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
             scaffoldBackgroundColor: Colors.white),
         debugShowCheckedModeBanner: false,
-        initialRoute: '/oilstart',
-        routes: {
-          '/': (context) => StartPage(),
-          '/oilstart': (context) => Oilstart(),
-          '/location1': (context) => LocationSearchPage1(),
-        }
-        // home: Oilstart() //TabBarPage() //StartPage(),
+        // initialRoute: '/oilstart',
+        // routes: {
+        //   '/': (context) => StartPage(),
+        //   '/oilstart': (context) => Oilstart(),
+        //   '/location1': (context) => LocationSearchPage1(),
+        // }
+        home: StartPage(),
         );
   }
 }
