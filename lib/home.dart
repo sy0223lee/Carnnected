@@ -16,6 +16,13 @@ class _HomePageState extends State<HomePage> {
   Future<List>? data;
   String usingservice = "";
 
+  Future initService(String carNumber) async {
+    var service = await getUsingservice(carNumber);
+    setState(() {
+      usingservice = service;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -44,136 +51,137 @@ class _HomePageState extends State<HomePage> {
           future: data,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              Future initService() async {
-                var _ = await getUsingservice(snapshot.data![idx].carnumber);
-                setState(() {
-                  usingservice = _;
-                });
+              if (usingservice == "") {
+                initService(snapshot.data![idx].carnumber);
               }
-              initService();
               return SingleChildScrollView(
-                child: Container(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  text(snapshot.data![idx].cartype, 18.0, FontWeight.w500, Colors.black),
-                  text(snapshot.data![idx].carname, 14.0, FontWeight.w500, Color(0xffA9A9A9)),
-                  Container(
-                    height: 360,
-                    child: Swiper(
-                      onIndexChanged: (value) async {
-                        setState(() {
-                          idx = value;
-                        });
-                        usingservice = await getUsingservice(snapshot.data![idx].carnumber);
-                      },
-                      scale: 0.85,
-                      loop: false,
-                      viewportFraction: 0.61,
-                      pagination:
-                          SwiperPagination(alignment: Alignment.bottomRight),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, index) {
-                        return Column(
-                          children: [
-                            card(snapshot.data![idx].carnumber, usingservice, "공유중")
-                          ],
-                        );
-                      },
+                  child: Container(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    text(snapshot.data![idx].cartype, 18.0, FontWeight.w500,
+                        Colors.black),
+                    text(snapshot.data![idx].carname, 14.0, FontWeight.w500,
+                        Color(0xffA9A9A9)),
+                    Container(
+                      height: 360,
+                      child: Swiper(
+                        onIndexChanged: (value) async {
+                          setState(() {
+                            idx = value;
+                          });
+                          usingservice = await getUsingservice(
+                              snapshot.data![idx].carnumber);
+                        },
+                        scale: 0.85,
+                        loop: false,
+                        viewportFraction: 0.61,
+                        pagination:
+                            SwiperPagination(alignment: Alignment.bottomRight),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, index) {
+                          return Column(
+                            children: [
+                              card(snapshot.data![idx].carnumber, usingservice,
+                                  "공유중")
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: 380,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Color(0xffE8EAEE),
-                      borderRadius: BorderRadius.circular(25),
+                    Container(
+                      width: 380,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Color(0xffE8EAEE),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                text('열기', 12.0, FontWeight.w400, Colors.black),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.lock_open_outlined,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                text('닫기', 12.0, FontWeight.w400, Colors.black),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.lock_outline,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                text('시동', 12.0, FontWeight.w400, Colors.black),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.power_settings_new,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                text('경적', 12.0, FontWeight.w400, Colors.black),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.campaign,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                text(
+                                    '트렁크', 12.0, FontWeight.w400, Colors.black),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.toys_outlined,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              text('열기', 12.0, FontWeight.w400, Colors.black),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.lock_open_outlined,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              text('닫기', 12.0, FontWeight.w400, Colors.black),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              text('시동', 12.0, FontWeight.w400, Colors.black),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.power_settings_new,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              text('경적', 12.0, FontWeight.w400, Colors.black),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.campaign,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              text('트렁크', 12.0, FontWeight.w400, Colors.black),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.toys_outlined,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-             ));
-            } else{
+                  ],
+                ),
+              ));
+            } else {
               return Container();
             }
           },
@@ -290,7 +298,8 @@ Card pluscard() {
 }
 
 Future<List> cardata(String id) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/${id}'));
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/${id}'));
   late List<Car> carList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);
@@ -305,8 +314,9 @@ Future<List> cardata(String id) async {
 }
 
 Future<String> getUsingservice(String carnumber) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/usingservice/${carnumber}'));
-  
+  final response = await http
+      .get(Uri.parse('http://10.0.2.2:8080/usingservice/${carnumber}'));
+
   if (response.statusCode == 200) {
     String service = response.body.toString();
     return service;

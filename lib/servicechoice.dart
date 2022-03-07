@@ -14,6 +14,13 @@ class Servicechoice extends StatefulWidget {
 class _ServicechoiceState extends State<Servicechoice> {
   Future<List>? data;
 
+  Future initService(String carNumber) async {
+    var service = await recentservice(carNumber);
+    setState(() {
+      serviceList = service;
+    });
+  }
+
   @override
   void initState() {
     data = cardata('dlekdud0102');
@@ -26,7 +33,11 @@ class _ServicechoiceState extends State<Servicechoice> {
       body: FutureBuilder<List>(
         future: data,
         builder: (context, snapshot) {
-          return Column(
+          if(snapshot.hasData) {
+            if(serviceList == []){
+              initService(snapshot.data![0].carnumber);
+            }
+            return Column(
             children: [
               Stack(
                 clipBehavior: Clip.none,
@@ -55,7 +66,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                     right: 60.0,
                     child:  snapshot.data!.length == 0 ?
                       card3() :
-                        serviceList.length == 0 ?
+                        serviceList == [] ?
                           card2(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname) :
                             card1(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
                   )
@@ -182,6 +193,10 @@ class _ServicechoiceState extends State<Servicechoice> {
                   ),
             ],
           );
+          } else {
+            return Container();
+          }
+          
         }
     ));
   }
