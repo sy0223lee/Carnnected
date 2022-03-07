@@ -95,7 +95,6 @@ app.get('/login/:id/:pwd', function(req, res){
 })
 
 
-
 /***** 전체 서비스 *****/
 // 즐겨찾는 주소 전송
 app.get('/favorite_addr/:id', function(req, res){
@@ -322,6 +321,7 @@ app.get('/recentservice/:carnumber', function(req, res){
     })
 })
 
+
 /***** 지도 서비스 *****/
 // 정비 검색 키워드: "자동차 수리점"
 // 세차 검색 키워드: "세차장"
@@ -510,6 +510,19 @@ app.get('/drive_resrv/response/:id/:number', function (req, res){
     }, 30000);
 })
 
+// 예약 요청 대기
+app.get('/drive_resrv/waiting/:id/:number', async function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var response = await http.get(Uri.parse(`http://10.0.2.2:8080/drive_resrv/waiting/${id}/${number}`));
+
+    if(response.status == 200){
+        if(response == true)    res.send(true);
+        else    res.send(false);
+    }
+    else    res.send(false);
+})
+
 
 /***** 딜리버리 서비스 *****/
 // 예약 요청 insert
@@ -617,4 +630,18 @@ app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
             res.send(response);
         }
     }, 30000);
+})
+
+// 예약 요청 대기
+app.get('/deliv_resrv/waiting/:id/:number/:time', async function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var time = req.params.time;
+    var response = await http.get(Uri.parse(`http://10.0.2.2:8080/deliv_resrv/waiting/${id}/${number}/${time}`));
+
+    if(response.status == 200){
+        if(response == true)    res.send(true);
+        else    res.send(false);
+    }
+    else    res.send(false);
 })
