@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mosigg/provider/replaceProvider.dart';
+import 'package:provider/provider.dart';
+import 'package:mosigg/provider/replaceProvider.dart';
 
-enum Select {One, Two, Three, Four, Five, Six, Seven}
-enum Using {One}
+enum Select { One, Two, Three, Four, Five, Six, Seven }
+enum Using { One }
 
 class RepSelect extends StatefulWidget {
   final String image;
@@ -9,11 +12,8 @@ class RepSelect extends StatefulWidget {
   final String price;
 
   const RepSelect(
-    {Key? key,
-    required this.image,
-    required this.name,
-    required this.price}) 
-    : super(key: key);
+      {Key? key, required this.image, required this.name, required this.price})
+      : super(key: key);
 
   @override
   _RepSelectState createState() => _RepSelectState();
@@ -63,175 +63,199 @@ class _RepSelectState extends State<RepSelect> {
                   SizedBox(height: 14),
                   text('사이즈', 16.0, FontWeight.w500, Colors.black),
                   RadioListTile(
-                    title: Transform.translate(
-                      offset: Offset(-18, 0),
-                      child: Row(
-                        children: [
-                          text('300mm', 14.0, FontWeight.w400, Colors.black),
-                          SizedBox(width: MediaQuery.of(context).size.width - 212),
-                          text('${widget.price}원', 14.0, FontWeight.w400, Colors.black)
-                        ],
-                      )
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    value: Select.One,
-                    groupValue: select,
-                    onChanged: (value) {
-                      setState(() {
-                        select = value as Select?;
-                      });
-                    }
-                  ),
+                      title: Transform.translate(
+                          offset: Offset(-18, 0),
+                          child: Row(
+                            children: [
+                              text(
+                                  '300mm', 14.0, FontWeight.w400, Colors.black),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 212),
+                              text('${widget.price}원', 14.0, FontWeight.w400,
+                                  Colors.black)
+                            ],
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      value: Select.One,
+                      groupValue: select,
+                      onChanged: (value) {
+                        setState(() {
+                          select = value as Select?;
+                        });
+                      }),
                   RadioListTile(
-                    title: Transform.translate(
-                      offset: Offset(-18, 0),
-                      child: Row(
-                        children: [
-                          text('350mm', 14.0, FontWeight.w400, Colors.black),
-                          SizedBox(width: MediaQuery.of(context).size.width - 212),
-                          text('${widget.price}원', 14.0, FontWeight.w400, Colors.black)
-                        ],
-                      )
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    value: Select.Two,
-                    groupValue: select,
-                    onChanged: (value) {
-                      setState(() {
-                        select = value as Select?;
-                      });
-                    }
-                  ),
+                      title: Transform.translate(
+                          offset: Offset(-18, 0),
+                          child: Row(
+                            children: [
+                              text(
+                                  '350mm', 14.0, FontWeight.w400, Colors.black),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 212),
+                              text('${widget.price}원', 14.0, FontWeight.w400,
+                                  Colors.black)
+                            ],
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      value: Select.Two,
+                      groupValue: select,
+                      onChanged: (value) {
+                        setState(() {
+                          select = value as Select?;
+                        });
+                      }),
                   RadioListTile(
-                    title: Transform.translate(
-                      offset: Offset(-18, 0),
-                      child: Row(
-                        children: [
-                          text('400mm', 14.0, FontWeight.w400, Colors.black),
-                          SizedBox(width: MediaQuery.of(context).size.width - 212),
-                          text('${widget.price}원', 14.0, FontWeight.w400, Colors.black)
-                        ],
-                      )
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    value: Select.Three,
-                    groupValue: select,
-                    onChanged: (value) {
-                      setState(() {
-                        select = value as Select?;
-                      });
-                    }
-                  ),
+                      title: Transform.translate(
+                          offset: Offset(-18, 0),
+                          child: Row(
+                            children: [
+                              text(
+                                  '400mm', 14.0, FontWeight.w400, Colors.black),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 212),
+                              text('${widget.price}원', 14.0, FontWeight.w400,
+                                  Colors.black)
+                            ],
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      value: Select.Three,
+                      groupValue: select,
+                      onChanged: (value) {
+                        setState(() {
+                          select = value as Select?;
+                        });
+                      }),
                   RadioListTile(
-                    title: Transform.translate(
-                      offset: Offset(-18, 0),
-                      child: Row(
-                        children: [
-                          text('450mm', 14.0, FontWeight.w400, Colors.black),
-                          SizedBox(width: MediaQuery.of(context).size.width - 212),
-                          text('${widget.price}원', 14.0, FontWeight.w400, Colors.black)
-                        ],
-                      )
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    value: Select.Four,
-                    groupValue: select,
-                    onChanged: (value) {
-                      setState(() {
-                        select = value as Select?;
-                      });
-                    }
-                  ),
+                      title: Transform.translate(
+                          offset: Offset(-18, 0),
+                          child: Row(
+                            children: [
+                              text(
+                                  '450mm', 14.0, FontWeight.w400, Colors.black),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 212),
+                              text('${widget.price}원', 14.0, FontWeight.w400,
+                                  Colors.black)
+                            ],
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      value: Select.Four,
+                      groupValue: select,
+                      onChanged: (value) {
+                        setState(() {
+                          select = value as Select?;
+                        });
+                      }),
                   RadioListTile(
-                    title: Transform.translate(
-                      offset: Offset(-18, 0),
-                      child: Row(
-                        children: [
-                          text('500mm', 14.0, FontWeight.w400, Colors.black),
-                          SizedBox(width: MediaQuery.of(context).size.width - 212),
-                          text('${widget.price}원', 14.0, FontWeight.w400, Colors.black)
-                        ],
-                      )
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    value: Select.Five,
-                    groupValue: select,
-                    onChanged: (value) {
-                      setState(() {
-                        select = value as Select?;
-                      });
-                    }
-                  ),
+                      title: Transform.translate(
+                          offset: Offset(-18, 0),
+                          child: Row(
+                            children: [
+                              text(
+                                  '500mm', 14.0, FontWeight.w400, Colors.black),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 212),
+                              text('${widget.price}원', 14.0, FontWeight.w400,
+                                  Colors.black)
+                            ],
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      value: Select.Five,
+                      groupValue: select,
+                      onChanged: (value) {
+                        setState(() {
+                          select = value as Select?;
+                        });
+                      }),
                   RadioListTile(
-                    title: Transform.translate(
-                      offset: Offset(-18, 0),
-                      child: Row(
-                        children: [
-                          text('550mm', 14.0, FontWeight.w400, Colors.black),
-                          SizedBox(width: MediaQuery.of(context).size.width - 212),
-                          text('${widget.price}원', 14.0, FontWeight.w400, Colors.black)
-                        ],
-                      )
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    value: Select.Six,
-                    groupValue: select,
-                    onChanged: (value) {
-                      setState(() {
-                        select = value as Select?;
-                      });
-                    }
-                  ),
+                      title: Transform.translate(
+                          offset: Offset(-18, 0),
+                          child: Row(
+                            children: [
+                              text(
+                                  '550mm', 14.0, FontWeight.w400, Colors.black),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 212),
+                              text('${widget.price}원', 14.0, FontWeight.w400,
+                                  Colors.black)
+                            ],
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      value: Select.Six,
+                      groupValue: select,
+                      onChanged: (value) {
+                        setState(() {
+                          select = value as Select?;
+                        });
+                      }),
                   RadioListTile(
-                    title: Transform.translate(
-                      offset: Offset(-18, 0),
-                      child: Row(
-                        children: [
-                          text('600mm', 14.0, FontWeight.w400, Colors.black),
-                          SizedBox(width: MediaQuery.of(context).size.width - 212),
-                          text('${widget.price}원', 14.0, FontWeight.w400, Colors.black)
-                        ],
-                      )
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    value: Select.Seven,
-                    groupValue: select,
-                    onChanged: (value) {
-                      setState(() {
-                        select = value as Select?;
-                      });
-                    }
-                  ),
+                      title: Transform.translate(
+                          offset: Offset(-18, 0),
+                          child: Row(
+                            children: [
+                              text(
+                                  '600mm', 14.0, FontWeight.w400, Colors.black),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 212),
+                              text('${widget.price}원', 14.0, FontWeight.w400,
+                                  Colors.black)
+                            ],
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      value: Select.Seven,
+                      groupValue: select,
+                      onChanged: (value) {
+                        setState(() {
+                          select = value as Select?;
+                        });
+                      }),
                   SizedBox(height: 18),
                   text('용도', 16.0, FontWeight.w500, Colors.black),
                   RadioListTile(
-                    title: Transform.translate(
-                      offset: Offset(-18, 0),
-                      child: Row(
-                        children: [
-                          text('조수석', 14.0, FontWeight.w400, Colors.black),
-                          SizedBox(width: MediaQuery.of(context).size.width - 174),
-                          text('+0원', 14.0, FontWeight.w400, Colors.black)
-                        ],
-                      )
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    value: Using.One,
-                    groupValue: using,
-                    onChanged: (value) {
-                      setState(() {
-                        using = value as Using?;
-                      });
-                    }
-                  ),
+                      title: Transform.translate(
+                          offset: Offset(-18, 0),
+                          child: Row(
+                            children: [
+                              text('조수석', 14.0, FontWeight.w400, Colors.black),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 174),
+                              text('+0원', 14.0, FontWeight.w400, Colors.black)
+                            ],
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      value: Using.One,
+                      groupValue: using,
+                      onChanged: (value) {
+                        setState(() {
+                          using = value as Using?;
+                        });
+                      }),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width-50,
+                    width: MediaQuery.of(context).size.width - 50,
                     height: 40,
                     child: ElevatedButton(
-                      onPressed: (){
-                        // 장바구니 담긴 개수 증가
+                      onPressed: () {
+                        context.read<CountPurchase>().increase();
+                        Navigator.pop(context);
                       },
-                      child: text('${widget.price}원 담기', 14.0, FontWeight.w500, Colors.white),
+                      child: text('${widget.price}원 담기', 14.0, FontWeight.w500,
+                          Colors.white),
                       style: ElevatedButton.styleFrom(
                         primary: Color(0xff001A5D),
                         shape: RoundedRectangleBorder(

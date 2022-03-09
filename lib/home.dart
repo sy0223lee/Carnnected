@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mosigg/provider/replaceProvider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({ Key? key }) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -16,27 +18,36 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: Builder(
-        builder: (context){
-          return SingleChildScrollView(
-            child: Container(
+      body: ChangeNotifierProvider(
+        create: (BuildContext context) => CountPurchase(), 
+        child: Builder(
+          builder: (context) {
+            return SingleChildScrollView(
+                child: Container(
               alignment: Alignment.center,
               child: Column(
                 children: [
-                  Icon(Icons.favorite, color: Color(0xff001A5D), size: 250.0,),
-                  Icon(Icons.favorite, color: Colors.amber, size: 250.0,),
+                  Icon(
+                    Icons.favorite,
+                    color: Color(0xff001A5D),
+                    size: 250.0,
+                  ),
+                  Icon(
+                    Icons.favorite,
+                    color: Colors.amber,
+                    size: 250.0,
+                  ),
                 ],
               ),
-            )
-          );
-        },
+            ));
+          },
+        ),
       ),
     );
   }
 }
 
-Text text(content, size, weight, colors){
-  return Text(
-    content, style: TextStyle(fontSize: size, fontWeight: weight, color: colors)
-  );
+Text text(content, size, weight, colors) {
+  return Text(content,
+      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

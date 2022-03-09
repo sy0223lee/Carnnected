@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:provider/provider.dart';
+import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/oiling/oilstart.dart';
-import 'package:mosigg/replacement/repconfirm.dart';
 import 'package:mosigg/signup/signup1.dart';
 
 /*개발용 임시import*/
@@ -14,7 +15,14 @@ import 'package:mosigg/replacement/repconfirm.dart';
 //void main() => runApp(MyApp());
 void main() {
   KakaoContext.clientId = 'f7926788ee7785502df4ce563f93d183';
-  runApp(MyApp());
+  runApp(
+    MultiProvider (
+      providers: [
+        ChangeNotifierProvider(create: (_) => CountPurchase()),
+      ],
+      child: MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
