@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './signup3.dart';
-import 'package:mosigg/home.dart';
+import 'package:mosigg/login/login.dart';
 
 class SignUp4 extends StatefulWidget {
   const SignUp4({Key? key}) : super(key: key);
@@ -71,7 +71,7 @@ class _SignUp4State extends State<SignUp4> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          HomePage()));
+                                          LoginPage()));
                             },
                             child: Text('카넥티드 시작하기',
                                 style: TextStyle(
@@ -97,4 +97,10 @@ class _SignUp4State extends State<SignUp4> {
       }),
     );
   }
+}
+
+Text text(content, size, weight, colors){
+  return Text(
+    content, style: TextStyle(fontSize: size, fontWeight: weight, color: colors)
+  );
 }

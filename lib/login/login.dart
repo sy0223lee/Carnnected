@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   asyncMethod() async {
     // read 함수를 통해 key값에 맞는 정보 불러옴(데이터 없으면 null 반환)
     userInfo = await storage.read(key: "login");
+    var ui = userInfo.toString();
     print(userInfo);
 
     // user 정보가 있으면 바로 home 화면으로 이동
@@ -41,7 +42,10 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         CupertinoPageRoute(
-          builder: (context) => Bottomtabbar()
+          builder: (context) => Bottomtabbar(
+            id: ui.split(" ")[1],
+            pw: ui.split(" ")[3],
+          )
         )
       );
     }
@@ -170,7 +174,11 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                   bool logined = await login('${inputid.text}', '${inputpw.text}');
                                   if(logined == true){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Bottomtabbar()));
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context)=>Bottomtabbar(
+                                        id: inputid.text.toString(),
+                                        pw: inputpw.text.toString(),
+                                    )));
                                   } else {
                                     Fluttertoast.showToast(
                                     msg: '아이디와 비밀번호가 일치하지 않습니다',

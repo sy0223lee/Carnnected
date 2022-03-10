@@ -3,15 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mosigg/login/login.dart'; // 로그아웃
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String id;
+  final String pw;
+  HomePage({required this.id, required this.pw});
+  // const HomePage({ Key? key }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  static final storage = FlutterSecureStorage(); // 로그아웃
+  late String id;
+  late String pw;
   var idx = 0;
   Future<List>? data;
   String usingservice = "";
@@ -22,13 +30,16 @@ class _HomePageState extends State<HomePage> {
       usingservice = service;
     });
   }
-
+  
   @override
   void initState() {
     super.initState();
-    data = cardata('dlekdud0102');
+    id = widget.id;
+    pw = widget.pw;
+    data = cardata(id);
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
