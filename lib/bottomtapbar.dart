@@ -2,20 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:mosigg/home.dart';
 import 'package:mosigg/main.dart';
 import 'package:mosigg/oiling/oilend.dart';
-import 'package:mosigg/oiling/oilprice.dart';
-import 'package:mosigg/oiling/oilstart.dart';
-import 'package:mosigg/oiling/oilsecond.dart';
 import 'package:mosigg/map/page1.dart';
 import 'package:mosigg/servicechoice.dart';
 
 class Bottomtabbar extends StatefulWidget {
-  const Bottomtabbar({Key? key}) : super(key: key);
+  final String id;
+  final String pw;
+  Bottomtabbar({required this.id, required this.pw});
+  // const Bottomtabbar({Key? key}) : super(key: key);
 
   @override
   _BottomtabbarState createState() => _BottomtabbarState();
 }
 
 class _BottomtabbarState extends State<Bottomtabbar> {
+  late String id;
+  late String pw;
+
+  @override
+  void initState() {
+    super.initState();
+    id = widget.id;
+    pw = widget.pw;
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -27,7 +37,7 @@ class _BottomtabbarState extends State<Bottomtabbar> {
           children: [
             Servicechoice(), // 서비스 선택 페이지
             StartPage(), // 서비스 사용 내역
-            HomePage(), // 홈 페이지
+            HomePage(id: id, pw: pw), // 홈 페이지
             Page1(),    // 지도
             Oilend(),   // 설정?
           ],
