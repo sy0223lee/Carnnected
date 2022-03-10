@@ -518,7 +518,7 @@ app.get('/wash_resrv/:id/:number/:time/:source/:detailSrc/:type/:detail/:price/:
                     console.log("방문세차 예약 가능");
                     
                     // 예약 정보 table에 insert
-                    var sqlWashReserv = "INSERT INTO WASH_RESRV (`id`,`number`,`time`,`type`,`detail`,`source`,`detailSrc`,`price`,`payment`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                    var sqlWashReserv = "INSERT INTO WASH_RESRV (`id`,`number`,`time`,`type`,`detail`,`source`,`detailSrc`,`price`,`payment`) VALUES (?,?,?,?,?,?,?,?,?)";
                     var datas = [id, number, time, items, type, source, detailSrc, price, payment];
                     console.log("방문세차 예약 정보: ", datas);
     
