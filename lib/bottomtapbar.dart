@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home.dart';
-import 'package:mosigg/oiling/oilconfirm.dart';
+import 'package:mosigg/main.dart';
 import 'package:mosigg/oiling/oilend.dart';
 import 'package:mosigg/oiling/oilprice.dart';
 import 'package:mosigg/oiling/oilstart.dart';
+import 'package:mosigg/oiling/oilsecond.dart';
+import 'package:mosigg/map/page1.dart';
 
 class Bottomtabbar extends StatefulWidget {
   const Bottomtabbar({Key? key}) : super(key: key);
@@ -17,15 +19,16 @@ class _BottomtabbarState extends State<Bottomtabbar> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 5,
+      initialIndex: 2,
       child: Scaffold(
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            Oilstart(),
-            Oilprice(),
-            HomePage(),
-            Oilconfirm(),
-            Oilend(),
+            Oilstart(), // 서비스 선택 페이지
+            StartPage(), // 서비스 사용 내역
+            HomePage(), // 홈 페이지
+            Page1(),    // 지도
+            Oilend(),   // 설정?
           ],
         ),
         bottomNavigationBar: Container(

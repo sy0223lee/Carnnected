@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mosigg/home.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mosigg/bottomtapbar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         CupertinoPageRoute(
-          builder: (context) => HomePage()
+          builder: (context) => Bottomtabbar()
         )
       );
     }
@@ -169,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                   bool logined = await login('${inputid.text}', '${inputpw.text}');
                                   if(logined == true){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Bottomtabbar()));
                                   } else {
                                     Fluttertoast.showToast(
                                     msg: '아이디와 비밀번호가 일치하지 않습니다',
