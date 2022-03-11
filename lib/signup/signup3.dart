@@ -125,7 +125,7 @@ class _SignUp3State extends State<SignUp3> {
 Future<bool> signup(
     String id, String pwd, String name, String birth, String phone) async {
   final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/signup/${id}/${pwd}/${name}/${birth}/${phone}'));
+      'http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/signup/${id}/${pwd}/${name}/${birth}/${phone}'));
 
   if (response.statusCode == 200) {
     if (json.decode(response.body) == true)

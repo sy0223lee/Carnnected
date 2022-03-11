@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import 'package:mosigg/location/location2.dart';
 import 'package:mosigg/location/location3.dart';
-import 'package:mosigg/oiling/oilstart.dart';
 
 class LocationSearchPage1 extends StatefulWidget {
   const LocationSearchPage1({Key? key}) : super(key: key);
@@ -100,11 +99,15 @@ class _LocationSearchPage1State extends State<LocationSearchPage1> {
                     SizedBox(height: 6.5),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
+                        final _ = Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    LocationSearchPage3()));
+                                    LocationSearchPage3())).then((val) {
+                          if (val != null) {
+                            Navigator.pop(context, val);
+                          }
+                        });
                       },
                       child: Row(children: [
                         Icon(FeatherIcons.crosshair, size: 18),
@@ -177,11 +180,7 @@ Column favoriteAddrWidget(Future<List>? favoriteAddrData) {
 InkWell addrWidget(BuildContext context, String addr, String detailAddr) {
   return InkWell(
     onTap: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  Oilstart(carLocation: addr, carDetailLocation: detailAddr)));
+      Navigator.pop(context, Addr(addr: addr, detailAddr: detailAddr));
     },
     child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 6),
@@ -242,7 +241,7 @@ InkWell addrWidget(BuildContext context, String addr, String detailAddr) {
 //즐겨찾는 주소 통신
 Future<List> favoriteAddr(String id) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/favorite_addr/${id}'));
+      await http.get(Uri.parse('http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/favorite_addr/${id}'));
   late List<Addr> favoriteAddrList = [];
 
   if (response.statusCode == 200) {
@@ -328,8 +327,8 @@ InkWell roadAddrWidget(
     String buldMnnm,
     String buldSlno) {
   return InkWell(
-    onTap: () {
-      Navigator.push(
+    onTap: () async {
+      final _ = await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => LocationSearchPage2(
@@ -338,7 +337,11 @@ InkWell roadAddrWidget(
                   rnMgtSn: rnMgtSn,
                   udrtYn: udrtYn,
                   buldMnnm: buldMnnm,
-                  buldSlno: buldSlno)));
+                  buldSlno: buldSlno))).then((val) {
+        if (val != null) {
+          Navigator.pop(context, val);
+        }
+      });
     },
     child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 6),

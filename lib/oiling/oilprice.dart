@@ -3,17 +3,21 @@ import 'package:mosigg/oiling/oilconfirm.dart';
 import 'package:mosigg/oiling/oilstart.dart';
 
 class Oilprice extends StatefulWidget {
-  final String? dateAndTime;
-  final String? carLocation;
-  final String? carDetailLocation;
-  final String? type;
+  final String dateAndTime;
+  final String carLocation;
+  final String carDetailLocation;
+  final String fuel;
+  final String payment;
+  final String gasStationName;
 
   const Oilprice(
       {Key? key,
-      this.dateAndTime,
-      this.carLocation,
-      this.carDetailLocation,
-      this.type})
+      required this.dateAndTime,
+      required this.carLocation,
+      required this.carDetailLocation,
+      required this.fuel,
+      required this.payment,
+      required this.gasStationName})
       : super(key: key);
 
   @override
@@ -96,7 +100,15 @@ class _OilpriceState extends State<Oilprice> {
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                kipgoing(context, controller),
+                kipgoing(
+                    context,
+                    controller,
+                    widget.dateAndTime,
+                    widget.carLocation,
+                    widget.carDetailLocation,
+                    widget.fuel,
+                    widget.payment,
+                    widget.gasStationName),
               ],
             ))
           ],
@@ -111,17 +123,32 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container kipgoing(BuildContext context, controller) {
+Container kipgoing(
+    BuildContext context,
+    controller,
+    String dateAndTime,
+    String carLocation,
+    String carDetailLocation,
+    String fuel,
+    String payment,
+    String gasStationName) {
   return Container(
     width: double.infinity,
     height: 40,
     child: ElevatedButton(
       onPressed: () {
-        if (controller.text != null)
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => Oilconfirm()));
+        if (controller.text != null) {}
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => Oilconfirm(
+                    dateAndTime: dateAndTime,
+                    carLocation: carLocation,
+                    carDetailLocation: carDetailLocation,
+                    fuel: fuel,
+                    payment: payment,
+                    gasStationName: gasStationName,
+                    price: controller.text)));
       },
       child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),

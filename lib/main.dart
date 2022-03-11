@@ -3,14 +3,12 @@ import 'package:kakao_flutter_sdk/all.dart';
 import 'package:mosigg/carwash/wash1.dart';
 import 'package:mosigg/location/location3.dart';
 import 'package:mosigg/login/login.dart';
-import 'package:mosigg/oiling/oilstart.dart';
 import 'package:mosigg/signup/signup1.dart';
-import 'package:mosigg/map/tabbar.dart';
+import 'package:mosigg/bottomtapbar.dart';
+import 'package:mosigg/servicechoice.dart';
+import 'package:mosigg/home.dart';
 
-/*개발용 임시import*/
-import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/location/location2.dart';
-import 'package:mosigg/location/common/map.dart';
+import 'location/location1.dart';
 
 //void main() => runApp(MyApp());
 void main() {

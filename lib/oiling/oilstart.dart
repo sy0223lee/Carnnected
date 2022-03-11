@@ -1,13 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/oiling/oilprice.dart';
+import 'package:mosigg/oiling/oilsecond.dart';
+import 'package:http/http.dart' as http;
 
 class Oilstart extends StatefulWidget {
-  final String? carLocation;
-  final String? carDetailLocation;
-
-  const Oilstart({Key? key, this.carLocation, this.carDetailLocation})
-      : super(key: key);
+  const Oilstart({Key? key}) : super(key: key);
 
   @override
   State<Oilstart> createState() => _OilstartState();
@@ -29,23 +29,26 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 class _OilstartState extends State<Oilstart> {
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
-  String _selectedTime = "";
+  List<String> fuelList = ['휘발유', '경유', 'LPG', '고급휘발유', '전기'];
+  List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
+  String? _selectedTime = "";
   DateTime? _selectedDate;
-  String _selectedHour = '';
-  String _selectedMinute = '';
+
+  String? fuel;
+  String? payment;
   String? carLocation;
   String? carDetailLocation;
+  late LatLng carCoord;
 
   @override
   void initState() {
     super.initState();
-    carLocation = widget.carLocation;
-    carDetailLocation = widget.carDetailLocation;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -69,14 +72,13 @@ class _OilstartState extends State<Oilstart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedDate?.year != null)
-                  text(
-                      '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
-                      12.0,
-                      FontWeight.w400,
-                      Colors.black),
-                if (_selectedDate?.year == null)
-                  text("", 12.0, FontWeight.w400, Colors.black),
+                _selectedDate?.year != null
+                    ? text(
+                        '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
+                        12.0,
+                        FontWeight.w400,
+                        Colors.black)
+                    : text("", 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -117,11 +119,7 @@ class _OilstartState extends State<Oilstart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedMinute != '0')
-                  text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
-                if (_selectedMinute == '0')
-                  text(
-                      '$_selectedHour:00', 12.0, FontWeight.w400, Colors.black),
+                text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -138,17 +136,12 @@ class _OilstartState extends State<Oilstart> {
                       selectedTime.then((timeOfDay) {
                         setState(() {
                           _selectedTime =
-                              '${timeOfDay?.hour}:${timeOfDay?.minute}';
-                          _selectedHour = '${timeOfDay?.hour}';
-                          _selectedMinute = '${timeOfDay?.minute}';
+                              timeOfDay.toString().substring(10, 15);
                         });
                       });
                     },
-                    icon: Icon(
-                      Icons.watch_later_outlined,
-                      color: Color(0xff9c9c9c),
-                      size: 20
-                    ))
+                    icon: Icon(Icons.watch_later_outlined,
+                        color: Color(0xff9c9c9c), size: 20))
               ],
             ),
             Divider(
@@ -162,14 +155,17 @@ class _OilstartState extends State<Oilstart> {
             text('차량위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
             InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LocationSearchPage1()));
+              onTap: () async {
+                final result = await Navigator.pushNamed(context, '/location1');
+                if (result is Addr) {
+                  setState(() {
+                    carLocation = result.addr;
+                    carDetailLocation = result.detailAddr;
+                  });
+                }
               },
               child: carLocation == null
-                  ? SizedBox(height: 17)
+                  ? Container(height: 17)
                   : text(carLocation, 12.0, FontWeight.w400, Colors.black),
             ),
             Divider(
@@ -195,6 +191,7 @@ class _OilstartState extends State<Oilstart> {
                           buttonIndex++) {
                         if (buttonIndex == index) {
                           isSelected[buttonIndex] = true;
+                          fuel = fuelList[buttonIndex];
                         } else {
                           isSelected[buttonIndex] = false;
                         }
@@ -202,48 +199,11 @@ class _OilstartState extends State<Oilstart> {
                     });
                   },
                   children: [
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '휘발유',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text('경유',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text('LPG',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text('고급휘발유',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text('전기',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400)),
-                      ),
-                    ),
+                    toggleItem(context, fuelList[0], fuelList.length),
+                    toggleItem(context, fuelList[1], fuelList.length),
+                    toggleItem(context, fuelList[2], fuelList.length),
+                    toggleItem(context, fuelList[3], fuelList.length),
+                    toggleItem(context, fuelList[4], fuelList.length),
                   ],
                   isSelected: isSelected),
             ),
@@ -266,6 +226,7 @@ class _OilstartState extends State<Oilstart> {
                           buttonIndex2++) {
                         if (buttonIndex2 == index2) {
                           isSelected2[buttonIndex2] = true;
+                          payment = paymentList[buttonIndex2];
                         } else {
                           isSelected2[buttonIndex2] = false;
                         }
@@ -273,46 +234,10 @@ class _OilstartState extends State<Oilstart> {
                     });
                   },
                   children: [
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '신용카드',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '계좌이체',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '휴대폰결제',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '카카오페이',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
+                    toggleItem(context, paymentList[0], 5),
+                    toggleItem(context, paymentList[1], 5),
+                    toggleItem(context, paymentList[2], 5),
+                    toggleItem(context, paymentList[3], 5),
                   ],
                   isSelected: isSelected2),
             ),
@@ -321,7 +246,42 @@ class _OilstartState extends State<Oilstart> {
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [kipgoing(context)],
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_selectedDate != null &&
+                          _selectedTime != null &&
+                          carLocation != null &&
+                          carDetailLocation != null &&
+                          fuel != null &&
+                          payment != null) {
+                        String dateAndTime =
+                            _selectedDate.toString().substring(0, 10) +
+                                ' ' +
+                                _selectedTime! +
+                                ':00';
+                        LatLng carCoord = await getCarCoord(carLocation!);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => GasRsrv(
+                                    dateAndTime: dateAndTime,
+                                    carLocation: carLocation!,
+                                    carDetailLocation: carDetailLocation!,
+                                    fuel: fuel!,
+                                    payment: payment!,
+                                    carCoord: carCoord)));
+                      }
+                    },
+                    child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
+                    style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+                  ),
+                ),
+              ],
             ))
           ],
         ),
@@ -335,25 +295,37 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container kipgoing(BuildContext context) {
+Container toggleItem(context, text, itemNum) {
   return Container(
-    width: double.infinity,
-    height: 40,
-    child: ElevatedButton(
-      onPressed: () {
-        // if(dataAndTime != null& carLocation != null& type != null)
-        // Navigator.push(
-        //                 context,
-        //                 MaterialPageRoute(
-        //                     builder: (BuildContext context) => Oilprice(
-        //                         dateAndTime:
-        //                         carLocation: ,
-        //                         carDetailLocation:,
-        //                         type:
-        //                         )));
-      },
-      child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+    width: (MediaQuery.of(context).size.width - 60.0) / itemNum,
+    child: Center(
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400),
+      ),
     ),
   );
+}
+
+Future<LatLng> getCarCoord(String carLocation) async {
+  Map<String, String> headers = {
+    'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
+    'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
+  };
+
+  late LatLng carCoord;
+
+  final response = await http.get(
+      Uri.parse(
+          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${carLocation}'),
+      headers: headers);
+
+  if (response.statusCode == 200) {
+    carCoord = LatLng(
+        double.parse(jsonDecode(response.body)['addresses'][0]['y']),
+        double.parse(jsonDecode(response.body)['addresses'][0]['x']));
+    return carCoord;
+  } else {
+    throw Exception('Failed to get coordinates of car');
+  }
 }
