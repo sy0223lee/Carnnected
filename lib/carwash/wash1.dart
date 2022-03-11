@@ -4,9 +4,11 @@ import 'package:mosigg/home.dart';
 import 'package:mosigg/location/location1.dart';
 
 class Washstart extends StatefulWidget {
-  const Washstart({
-    Key? key,
-  }) : super(key: key);
+  final String? carLocation;
+  final String? carDetailLocation;
+
+  const Washstart({Key? key, this.carLocation, this.carDetailLocation})
+      : super(key: key);
 
   @override
   State<Washstart> createState() => _WashstartState();
@@ -39,6 +41,8 @@ class _WashstartState extends State<Washstart> {
   @override
   void initState() {
     super.initState();
+    carLocation = widget.carLocation;
+    carDetailLocation = widget.carDetailLocation;
   }
 
   @override
