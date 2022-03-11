@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/carwash/wash1.dart';
 import 'package:mosigg/location/location3.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/oiling/oilstart.dart';
@@ -31,7 +32,13 @@ class MyApp extends StatelessWidget {
                 ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
             scaffoldBackgroundColor: Colors.white),
         debugShowCheckedModeBanner: false,
-        home: TabBarPage() //StartPage(),
+        initialRoute: '/washstart',
+        routes: {
+          '/': (context) => StartPage(),
+          '/washstart': (context) => Washstart(),
+          '/location1': (context) => LocationSearchPage1(),
+        }
+        // home: Washstart() //StartPage(),
         );
   }
 }

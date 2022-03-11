@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:mosigg/carwash/wash1.dart';
+import 'package:mosigg/carwash/wash3.dart';
 
 class Washsecond extends StatefulWidget {
-  const Washsecond({Key? key}) : super(key: key);
+  final String dateAndTime;
+  final String carLocation;
+  final String carDetailLocation;
+  final String? type;
+  final String? detail;
+  final String payment;
+
+  const Washsecond({
+    Key? key,
+    required this.dateAndTime,
+    required this.carLocation,
+    required this.carDetailLocation,
+    this.type,
+    this.detail,
+    required this.payment,
+  }) : super(key: key);
 
   @override
   _WashsecondState createState() => _WashsecondState();
@@ -12,6 +28,10 @@ class Washsecond extends StatefulWidget {
 class _WashsecondState extends State<Washsecond> {
   final isSelected = <bool>[false, false, false];
   final isSelected2 = <bool>[false, false];
+  List<String> typeList = ['없음', '셀프 세차장 세차', '주차장 스팀 세차'];
+  List<String> typeList2 = ['없음', '실내 클리닝'];
+  String type1 = '';
+  String type2 = '';
   TextEditingController plusRequest = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -169,6 +189,32 @@ class _WashsecondState extends State<Washsecond> {
                   border: OutlineInputBorder(borderRadius: BorderRadius.zero),
                 ),
               ),
+              Expanded(
+                  child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => Washconfirm(
+                                    dateAndTime: widget.dateAndTime,
+                                    carLocation: widget.carLocation,
+                                    carDetailLocation: widget.carDetailLocation,
+                                    type: type1 + ',' + type2,
+                                    payment: widget.payment,
+                                    detail: plusRequest.text)));
+                      },
+                      child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
+                      style:
+                          ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+                    ),
+                  )
+                ],
+              ))
             ],
           ),
         ),
@@ -180,16 +226,4 @@ class _WashsecondState extends State<Washsecond> {
 Text text(content, size, weight, colors) {
   return Text(content,
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
-}
-
-Container kipgoing(BuildContext context) {
-  return Container(
-    width: double.infinity,
-    height: 40,
-    child: ElevatedButton(
-      onPressed: () {},
-      child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-    ),
-  );
 }
