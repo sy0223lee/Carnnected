@@ -519,7 +519,7 @@ app.get('/wash_resrv/:id/:number/:time/:source/:detailSrc/:type/:detail/:price/:
                     
                     // 예약 정보 table에 insert
                     var sqlWashReserv = "INSERT INTO WASH_RESRV (`id`,`number`,`time`,`type`,`detail`,`source`,`detailSrc`,`price`,`payment`) VALUES (?,?,?,?,?,?,?,?,?)";
-                    var datas = [id, number, time, items, type, source, detailSrc, price, payment];
+                    var datas = [id, number, time, type, detail, source, detailSrc, price, payment];
                     console.log("방문세차 예약 정보: ", datas);
     
                     pool.query(sqlWashReserv, datas, function(err){
@@ -544,7 +544,67 @@ app.get('/wash_resrv/:id/:number/:time/:source/:detailSrc/:type/:detail/:price/:
     })    
 })
 
+
 /***** 정비 서비스 *****/
+// 예약 insert
+app.get('/repair_resrv/:id/:number/:time/:source/:detailSrc/:type/:detail/:dest_name/:dest_addr/:price/:payment', function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var time = req.params.time;
+    var source = req.params.source;
+    var detailSrc = req.params.detailSrc;
+    var type = req.params.type;
+    var detail = req.params.detail;
+    var dest_name = req.params.dest_name;
+    var dest_addr = req.params.dest_addr;
+    var price = req.params.price;
+    var payment = req.params.payment;
+
+    var datetime = time.split(' ');
+    var onlydate = datetime[0].split('-');
+    var onlytime = datetime[1].split(':');
+    var beforeTime = onlydate[0]+'-'+onlydate[1]+'-'+onlydate[2]+'\u0020'+String(onlytime[0]*1-2)+':'+onlytime[1];   // 2시간 이전 예약 존재하는지 확인
+    var afterTime = onlydate[0]+"-"+onlydate[1]+"-"+onlydate[2]+'\u0020'+String(onlytime[0]*1+2)+":"+onlytime[1];   // 2시간 이후 예약 존재하는지 확인
+    console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
+
+    pool.getConnection(function(err, connection){
+        // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
+        var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
+        connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
+            if(err){
+                console.log("동일한 예약 존재 확인 오류:", row[0]);
+                res.send(false);
+            }
+            else{
+                if(row[0].count === 0){   // 정보 없으면 예약 가능
+                    console.log("대리정비 예약 가능");
+                    
+                    // 예약 정보 table에 insert
+                    var sqlWashReserv = "INSERT INTO REPAIR_RESRV (`id`,`number`,`time`,`type`,`detail`,`source`,`detailSrc`,`dest_name`,`dest_addr`,`price`,`payment`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                    var datas = [id, number, time, type, detail, source, detailSrc, dest_name, dest_addr, price, payment];
+                    console.log("대리정비 예약 정보: ", datas);
+    
+                    pool.query(sqlWashReserv, datas, function(err){
+                        if(err){
+                            console.log('대리정비 예약 INSERT 오류', err);
+                            res.send(false);
+                        }
+                        else{
+                            console.log('대리정비 예약 INSERT 성공');
+                            res.send(true);
+                        }
+                    })
+                }
+                else{   // 동일한 정보 존재하면 예약 불가능
+                    console.log("동일한 시간, 차량 예약 이미 존재:", row[0]);
+                    console.log('대리정비 예약 INSERT 실패');
+                    res.send(false);
+                }
+            }
+            connection.release();
+        })
+    })    
+})
 
 
 /***** 대리운전 서비스 *****/
