@@ -317,7 +317,6 @@ Future<List> cardata(String id) async {
     for (var i = 0; i < json.length; i++) {
       carList.add(Car.fromJson(json[i]));
     }
-    print(carList);
     return carList;
   } else {
     throw Exception('Failed to load car data');

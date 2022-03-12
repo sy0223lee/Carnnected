@@ -25,9 +25,9 @@ class _LoginPageState extends State<LoginPage> {
   void initState(){
     super.initState();
     // 비동기로 flutter secure storage 정보를 불러오는 작업
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
-    //   asyncMethod();
-    // });
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      asyncMethod();
+    });
   }
 
   asyncMethod() async {
