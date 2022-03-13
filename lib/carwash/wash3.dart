@@ -31,6 +31,8 @@ class _WashconfirmState extends State<Washconfirm> {
   String id = 'mouse0429'; //사용자 아이디
   String carNum = '12가1234'; //해당 차량
   int price = 15; //가격
+  late var arr = widget.type.split(',');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,8 +72,8 @@ class _WashconfirmState extends State<Washconfirm> {
               ],
             ),
             SizedBox(height: 10.0),
-            splitrow('외부 세차', '${widget.type.split(",")}'),
-            splitrow('내부 세차', '${widget.type.split(",")}'),
+            splitrow('외부 세차', '${arr[0]}'),
+            splitrow('내부 세차', '${arr[1]}'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -80,6 +80,7 @@ class _WashsecondState extends State<Washsecond> {
                             buttonIndex++) {
                           if (buttonIndex == index) {
                             isSelected[buttonIndex] = true;
+                            type1 = typeList[buttonIndex];
                           } else {
                             isSelected[buttonIndex] = false;
                           }
@@ -140,6 +141,7 @@ class _WashsecondState extends State<Washsecond> {
                             buttonIndex2++) {
                           if (buttonIndex2 == index2) {
                             isSelected2[buttonIndex2] = true;
+                            type2 = typeList2[buttonIndex2];
                           } else {
                             isSelected2[buttonIndex2] = false;
                           }
