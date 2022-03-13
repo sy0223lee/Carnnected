@@ -55,7 +55,9 @@ class _OilstartState extends State<Oilstart> {
         centerTitle: true,
         title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: Icon(
             Icons.arrow_back,
             color: Colors.black,
