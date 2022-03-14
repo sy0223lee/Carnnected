@@ -7,7 +7,6 @@ var pool = mySQL.createPool({
     host:'localhost',
     port: 3306,
     user: 'root',
-    password: '1234',
     database: 'carnnected'
 });
 
@@ -617,4 +616,22 @@ app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
             res.send(response);
         }
     }, 30000);
+})
+
+/*index 찾고 그 아이템 가져오기*/
+app.get('/replace_item/:index', function(req, res){
+	var index = req.params.index;
+	console.log("index: ", index);
+
+	pool.getConnection(function(err, connection){
+		var sqlItem = "SELECT * FROM REPLACE_ITEM WHERE `index` = ?";
+		connection.query(sqlItem, index, function(err, row){
+			if(err) console.log("교체 아이템 불러오기 에러");
+			else {
+				console.log("리스트 성공");
+				res.send(row[0]);
+			}
+		})
+		connection.release();
+	})
 })
