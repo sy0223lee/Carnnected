@@ -3,16 +3,17 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/oiling/oilprice.dart';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:proj4dart/proj4dart.dart';
-import 'package:mosigg/delivery/deliveryconfirm.dart';
 
 class Deliverysecond extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
-  final String fuel;
+  final String desLocation;
+  final String desDetailLocation;
   final String payment;
   final LatLng carCoord;
 
@@ -21,7 +22,8 @@ class Deliverysecond extends StatefulWidget {
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
-      required this.fuel,
+      required this.desLocation,
+      required this.desDetailLocation,
       required this.payment,
       required this.carCoord})
       : super(key: key);
@@ -137,18 +139,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
         child: TextButton(
           child: text("계속하기", 14.0, FontWeight.w500, Color(0xffffffff)),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => Deliveryconfirm(
-                      dateAndTime: widget.dateAndTime,
-                      carLocation: widget.carLocation,
-                      carDetailLocation: widget.carDetailLocation,
-                      fuel: widget.fuel,
-                      payment: widget.payment,
-                      gasStationName: gasStationName,
-                      price: widget.carLocation, // 머,,
-                      )));
+            // 팝업,,
           },
           style: TextButton.styleFrom(
             backgroundColor: Color(0xff001A5D),

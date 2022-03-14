@@ -6,9 +6,9 @@ class Deliveryconfirm extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
-  final String fuel;
+  final String desLocation;
+  final String desDetailLocation;
   final String payment;
-  final String gasStationName;
   final String price;
 
   const Deliveryconfirm(
@@ -16,9 +16,9 @@ class Deliveryconfirm extends StatefulWidget {
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
-      required this.fuel,
+      required this.desLocation,
+      required this.desDetailLocation,
       required this.payment,
-      required this.gasStationName,
       required this.price})
       : super(key: key);
 
@@ -38,7 +38,7 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         centerTitle: true,
-        title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
+        title: text('딜리버리 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -55,7 +55,7 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             text('예약 내역을 확인해주세요', 12.0, FontWeight.w400, Color(0xff9a9a9a)),
-            text(widget.gasStationName, 16.0, FontWeight.bold, Colors.black),
+            text('딜리버리 서비스 예약기 완료되었습니다', 16.0, FontWeight.bold, Colors.black),
             SizedBox(height: 34.0),
             splitrow('차량번호', '12가 1234'),
             SizedBox(height: 20.0),
@@ -69,8 +69,6 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
                     Colors.black)
               ],
             ),
-            SizedBox(height: 10.0),
-            splitrow('유종', '${widget.fuel}'),
             Divider(
               height: 47,
               color: Color(0xffcbcbcb),
@@ -89,15 +87,15 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
-                      gasRsv(
+                      deliveryRsv(
                           id,
                           carNum,
                           widget.dateAndTime,
                           widget.carLocation,
                           widget.carDetailLocation,
-                          widget.fuel,
+                          widget.desLocation,
+                          widget.desDetailLocation,
                           widget.payment,
-                          widget.gasStationName,
                           int.parse(widget.price));
                       Navigator.push(
                           context,
@@ -117,20 +115,20 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
   }
 }
 
-Future<void> gasRsv(
+Future<void> deliveryRsv(
     String id,
     String carNum,
     String dateAndTime,
     String carLocation,
     String carDetailLocation,
-    String fuel,
+    String desLocation,
+    String desDetailLocation,
     String payment,
-    String gasStationName,
     int price) async {
   String amount = (price * 10000).toString();
   String exPrice = ((price + 2) * 10000).toString();
   final response = await http.get(Uri.parse(
-      'http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/gas_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${fuel}/${gasStationName}/${amount}/${exPrice}/${payment}'));
+      'http://10.0.2.2:8080/deliv_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${desLocation}/${desDetailLocation}/${price}/${payment}'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
   } else {

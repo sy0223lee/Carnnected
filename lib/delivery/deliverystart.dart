@@ -37,6 +37,8 @@ class _DeliverystartState extends State<Deliverystart> {
   String? payment;
   String? carLocation;
   String? carDetailLocation;
+  String? desLocation;
+  String? desDetailLocation;
   late LatLng carCoord;
 
   @override
@@ -113,8 +115,7 @@ class _DeliverystartState extends State<Deliverystart> {
               color: Color(0xffcbcbcb),
               thickness: 2.0,
             ),
-            text('달력 버튼을 눌러 원하시는 예약 날짜를 입력하세요!', 10.0, FontWeight.w400,
-                Color(0xff9d9d9d)),
+            text('달력 버튼을 눌러 원하시는 예약 날짜를 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19),
             text('예약 시간', 14.0, FontWeight.w400, Colors.black),
             Row(
@@ -150,8 +151,7 @@ class _DeliverystartState extends State<Deliverystart> {
               color: Color(0xffcbcbcb),
               thickness: 2.0,
             ),
-            text('시계 버튼을 눌러 원하시는 예약 시간을 입력하세요!', 10.0, FontWeight.w400,
-                Color(0xff9d9d9d)),
+            text('시계 버튼을 눌러 원하시는 예약 시간을 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19),
             text('차량 위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
@@ -183,8 +183,8 @@ class _DeliverystartState extends State<Deliverystart> {
                 final result = await Navigator.pushNamed(context, '/location1');
                 if (result is Addr) {
                   setState(() {
-                    carLocation = result.addr;
-                    carDetailLocation = result.detailAddr;
+                    desLocation = result.addr;
+                    desDetailLocation = result.detailAddr;
                   });
                 }
               },
@@ -197,6 +197,7 @@ class _DeliverystartState extends State<Deliverystart> {
               color: Color(0xffcbcbcb),
               thickness: 2.0,
             ),
+            SizedBox(height: 6),
             text('원하시는 배달 위치를 입력해주세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19.0),
             text('결제수단', 14.0, FontWeight.w400, Colors.black),
@@ -241,12 +242,6 @@ class _DeliverystartState extends State<Deliverystart> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () async {
-                      if (_selectedDate != null &&
-                          _selectedTime != null &&
-                          carLocation != null &&
-                          carDetailLocation != null &&
-                          fuel != null &&
-                          payment != null) {
                         String dateAndTime =
                             _selectedDate.toString().substring(0, 10) +
                                 ' ' +
@@ -254,17 +249,16 @@ class _DeliverystartState extends State<Deliverystart> {
                                 ':00';
                         LatLng carCoord = await getCarCoord(carLocation!);
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => Deliverysecond(
-                                    dateAndTime: dateAndTime,
-                                    carLocation: carLocation!,
-                                    carDetailLocation: carDetailLocation!,
-                                    fuel: fuel!,
-                                    payment: payment!,
-                                    carCoord: carCoord)));
-                      }
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) => Deliverysecond(
+                              dateAndTime: dateAndTime,
+                              carLocation: carLocation!,
+                              carDetailLocation: carDetailLocation!,
+                              desLocation: desLocation!,
+                              desDetailLocation: desDetailLocation!,
+                              payment: payment!,
+                              carCoord: carCoord
+                            )));
                     },
                     child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
