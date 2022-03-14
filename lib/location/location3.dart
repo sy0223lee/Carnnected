@@ -21,6 +21,7 @@ class _LocationSearchPage3State extends State<LocationSearchPage3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {

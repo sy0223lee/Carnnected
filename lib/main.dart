@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/replacement/change3.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/login/login.dart';
@@ -45,8 +46,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => StartPage(),
           '/oilstart': (context) => Oilstart(),
           '/location1': (context) => LocationSearchPage1(),
-          '/replacement': (context) => Changestart(),
-        },
+          '/replacement': (context) => Changestart()},
         //home: RepConfirm()//Oilstart() //TabBarPage() //StartPage(),
         );
   }
