@@ -6,6 +6,7 @@ CREATE TABLE `REPLACE_ITEM`(
     `company` VARCHAR(30) NOT NULL,
     `item` VARCHAR(30) NOT NULL,
     `detail` VARCHAR(100) NOT NULL,
+    `image` VARCHAR(50),
     `price` INT NOT NULL,
     PRIMARY KEY (`index`));
 

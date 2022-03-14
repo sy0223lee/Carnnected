@@ -106,7 +106,7 @@ CREATE TABLE `REPLACE_RESRV`(
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
 	`item` VARCHAR(30) NOT NULL,		# 교체 용품
-    `repair` BOOLEAN NOT NULL,			# 간단 정비 옵션
+    `repair` BOOLEAN NOT NULL,			# 간단 정비 옵션 - true, false
 	`detail` VARCHAR(600),				# 추가 요청 사항
     `source` VARCHAR(100) NOT NULL,		# 차량 위치
     `detailSrc` VARCHAR(100) NOT NULL,	# 차량 상세 위치
