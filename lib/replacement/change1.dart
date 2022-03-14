@@ -1,16 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/oiling/oilsecond.dart';
-import 'package:http/http.dart' as http;
+import 'package:mosigg/replacement/repselect.dart';
 
-class Oilstart extends StatefulWidget {
-  const Oilstart({Key? key}) : super(key: key);
+class Changestart extends StatefulWidget {
+  final String? carLocation;
+  final String? carDetailLocation;
+
+  const Changestart({Key? key, this.carLocation, this.carDetailLocation})
+      : super(key: key);
 
   @override
-  State<Oilstart> createState() => _OilstartState();
+  State<Changestart> createState() => _ChangestartState();
 }
 
 const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
@@ -26,34 +26,32 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
   900: Color(0xff001a5d),
 });
 
-class _OilstartState extends State<Oilstart> {
-  final isSelected = <bool>[false, false, false, false, false];
+class _ChangestartState extends State<Changestart> {
   final isSelected2 = <bool>[false, false, false, false];
-  List<String> fuelList = ['휘발유', '경유', 'LPG', '고급휘발유', '전기'];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String? _selectedTime = "";
   DateTime? _selectedDate;
-
-  String? fuel;
-  String? payment;
+  String? _selectedHour = '';
+  String? _selectedMinute = '';
   String? carLocation;
   String? carDetailLocation;
-  late LatLng carCoord;
+  String? payment;
 
   @override
   void initState() {
     super.initState();
+    carLocation = widget.carLocation;
+    carDetailLocation = widget.carDetailLocation;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
         centerTitle: true,
-        title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
+        title: text('교체 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -74,13 +72,14 @@ class _OilstartState extends State<Oilstart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _selectedDate?.year != null
-                    ? text(
-                        '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
-                        12.0,
-                        FontWeight.w400,
-                        Colors.black)
-                    : text("", 12.0, FontWeight.w400, Colors.black),
+                if (_selectedDate?.year != null)
+                  text(
+                      '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
+                      12.0,
+                      FontWeight.w400,
+                      Colors.black),
+                if (_selectedDate?.year == null)
+                  text("", 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -121,7 +120,11 @@ class _OilstartState extends State<Oilstart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
+                if (_selectedMinute != '0')
+                  text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
+                if (_selectedMinute == '0')
+                  text(
+                      '$_selectedHour:00', 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -138,7 +141,9 @@ class _OilstartState extends State<Oilstart> {
                       selectedTime.then((timeOfDay) {
                         setState(() {
                           _selectedTime =
-                              timeOfDay.toString().substring(10, 15);
+                              '${timeOfDay?.hour}:${timeOfDay?.minute}';
+                          _selectedHour = '${timeOfDay?.hour}';
+                          _selectedMinute = '${timeOfDay?.minute}';
                         });
                       });
                     },
@@ -169,6 +174,7 @@ class _OilstartState extends State<Oilstart> {
               child: carLocation == null
                   ? Container(height: 17)
                   : text(carLocation, 12.0, FontWeight.w400, Colors.black),
+                
             ),
             Divider(
               height: 10.0,
@@ -177,41 +183,6 @@ class _OilstartState extends State<Oilstart> {
             ),
             text('차량 위치를 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19),
-            text('연료', 14.0, FontWeight.w400, Colors.black),
-            SizedBox(height: 6),
-            Container(
-              height: 24,
-              child: ToggleButtons(
-                  color: Colors.black,
-                  selectedColor: Colors.white,
-                  selectedBorderColor: Color(0xff001a5d),
-                  fillColor: Color(0xff001a5d),
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int buttonIndex = 0;
-                          buttonIndex < isSelected.length;
-                          buttonIndex++) {
-                        if (buttonIndex == index) {
-                          isSelected[buttonIndex] = true;
-                          fuel = fuelList[buttonIndex];
-                        } else {
-                          isSelected[buttonIndex] = false;
-                        }
-                      }
-                    });
-                  },
-                  children: [
-                    toggleItem(context, fuelList[0], fuelList.length),
-                    toggleItem(context, fuelList[1], fuelList.length),
-                    toggleItem(context, fuelList[2], fuelList.length),
-                    toggleItem(context, fuelList[3], fuelList.length),
-                    toggleItem(context, fuelList[4], fuelList.length),
-                  ],
-                  isSelected: isSelected),
-            ),
-            SizedBox(height: 6),
-            text('차량에 맞는 연료를 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
-            SizedBox(height: 19.0),
             text('결제수단', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
             Container(
@@ -242,48 +213,46 @@ class _OilstartState extends State<Oilstart> {
                     toggleItem(context, paymentList[3], 5),
                   ],
                   isSelected: isSelected2),
-            ),
+                    ),
             SizedBox(height: 6),
-            text('결제 수단을 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
+            text(
+                '이용하실 결제 수단을 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             Expanded(
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_selectedDate != null &&
-                          _selectedTime != null &&
-                          carLocation != null &&
-                          carDetailLocation != null &&
-                          fuel != null &&
-                          payment != null) {
-                        String dateAndTime =
-                            _selectedDate.toString().substring(0, 10) +
-                                ' ' +
-                                _selectedTime! +
-                                ':00';
-                        LatLng carCoord = await getCarCoord(carLocation!);
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_selectedDate != null &&
+                              _selectedTime != null &&
+                              carLocation != null &&
+                              carDetailLocation != null &&
+                              payment != null) {
+                            String dateAndTime =
+                                _selectedDate.toString().substring(0, 10) +
+                                    ' ' +
+                                    _selectedTime! +
+                                    ':00';
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => GasRsrv(
-                                    dateAndTime: dateAndTime,
-                                    carLocation: carLocation!,
-                                    carDetailLocation: carDetailLocation!,
-                                    fuel: fuel!,
-                                    payment: payment!,
-                                    carCoord: carCoord)));
-                        }
-                    },
-                    child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
-                    style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-                  ),
-                ),
-              ],
+                          Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) => RepSelect(
+                                                  dateAndTime: dateAndTime,
+                                                  carLocation: carLocation!,
+                                                  carDetailLocation: carDetailLocation!,
+                                                  payment: payment!
+                                                  )));
+                            }
+                        },
+                        child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
+                        style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+                      ),
+                    )
+                  ],
             ))
           ],
         ),
@@ -307,27 +276,4 @@ Container toggleItem(context, text, itemNum) {
       ),
     ),
   );
-}
-
-Future<LatLng> getCarCoord(String carLocation) async {
-  Map<String, String> headers = {
-    'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
-    'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
-  };
-
-  late LatLng carCoord;
-
-  final response = await http.get(
-      Uri.parse(
-          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${carLocation}'),
-      headers: headers);
-
-  if (response.statusCode == 200) {
-    carCoord = LatLng(
-        double.parse(jsonDecode(response.body)['addresses'][0]['y']),
-        double.parse(jsonDecode(response.body)['addresses'][0]['x']));
-    return carCoord;
-  } else {
-    throw Exception('Failed to get coordinates of car');
-  }
 }

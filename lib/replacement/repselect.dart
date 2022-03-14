@@ -1,40 +1,68 @@
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:mosigg/provider/replaceProvider.dart';
+import 'package:mosigg/replacement/change3.dart';
+import 'package:mosigg/replacement/common/replacelist.dart';
+import 'package:mosigg/replacement/repselect2.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 
-enum Select { One, Two, Three, Four, Five, Six, Seven }
-enum Using { One }
+var list1 = [];
+var list2 = [];
+var list3 = [];
+var list4 = [];
 
 class RepSelect extends StatefulWidget {
-  final String image;
-  final String name;
-  final String price;
+  final String dateAndTime;
+  final String carLocation;
+  final String carDetailLocation;
+  final String payment;
 
   const RepSelect(
-      {Key? key, required this.image, required this.name, required this.price})
-      : super(key: key);
+    {Key? key,
+    required this.dateAndTime,
+    required this.carLocation,
+    required this.carDetailLocation,
+    required this.payment})
+    : super(key: key);
 
   @override
   _RepSelectState createState() => _RepSelectState();
 }
 
 class _RepSelectState extends State<RepSelect> {
-  List<CustomRadio> size = [
-    CustomRadio(true, '300mm', '10,000'),
-    CustomRadio(false, '350mm', '10,000'),
-    CustomRadio(false, '400mm', '10,000'),
-    CustomRadio(false, '450mm', '10,000'),
-    CustomRadio(false, '450mm', '10,000'),
-    CustomRadio(false, '500mm', '10,000'),
-    CustomRadio(false, '550mm', '10,000'),
-    CustomRadio(false, '600mm', '10,000'),
-  ];
-  Select? select = Select.One;
-  Using? using = Using.One;
+  
+  @override
+  void initState() {
+    for (var i = 0; i < repList.length; i++) {
+      if (repList[i]['type'] == '와이퍼') {
+        list1.add(repList[i]);
+      } else if (repList[i]['type'] == '워셔액') {
+        list2.add(repList[i]);
+      } else if (repList[i]['type'] == '엔진오일') {
+        list3.add(repList[i]);
+      } else {
+        list4.add(repList[i]);
+      }
+    }
+    super.initState();
+  }
+
+void onPressedFunction(
+    BuildContext context,
+    String dateAndTime,
+    String carLocation,
+    String carDetailLocation,
+    String payment) {
+  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Changeplus(
+                            dateAndTime: dateAndTime,
+                            carLocation: carLocation,
+                            carDetailLocation: carDetailLocation,
+                            payment: payment
+                            )));
+}
 
   @override
   Widget build(BuildContext context) {
@@ -54,92 +82,69 @@ class _RepSelectState extends State<RepSelect> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 212,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(widget.image),
-                ),
-              ),
+      body: DefaultTabController(
+        length: 5,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          floatingActionButton: Container(
+            height: 56,
+            width: 56,
+            child: FloatingActionButton(
+              onPressed: () {
+                onPressedFunction(
+                  context,
+                  widget.dateAndTime,
+                  widget.carLocation,
+                  widget.carDetailLocation,
+                  widget.payment
+                );
+              },
+              shape: CircleBorder(),
+              child: Badge(
+                  position: BadgePosition.topEnd(top: -8, end: -6),
+                  toAnimate: true,
+                  shape: BadgeShape.circle,
+                  badgeContent: Text(
+                    '${context.watch<CountPurchase>().count}',
+                    style: TextStyle(color: Color(0xff001a5d), fontSize: 8),
+                  ),
+                  badgeColor: Colors.white,
+                  showBadge: context.watch<CountPurchase>().count == 0 ? false : true,
+                  child: Icon(Icons.shopping_bag_rounded)),
+              backgroundColor: Color(0xff001a5d),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 17, horizontal: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  text(widget.name, 18.0, FontWeight.w500, Colors.black),
-                  SizedBox(height: 14),
-                  text('사이즈', 16.0, FontWeight.w500, Colors.black),
-                  SizedBox(height: 8),
-                  Container(
-                    height: 28.0 * size.length,
-                    child: ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: size.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                              splashColor: Colors.grey[50],
-                              onTap: () {
-                                setState(() {
-                                  size.forEach((element) {
-                                    element.isSelected = false;
-                                  });
-                                  size[index].isSelected = true;
-                                });
-                              },
-                              child: CustomRadioItem(item: size[index]));
-                        }),
-                  ),
-                  SizedBox(height: 11),
-                  text('용도', 16.0, FontWeight.w500, Colors.black),
-                  RadioListTile(
-                      title: Transform.translate(
-                          offset: Offset(-18, 0),
-                          child: Row(
-                            children: [
-                              text('조수석', 14.0, FontWeight.w400, Colors.black),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width - 174),
-                              text('+0원', 14.0, FontWeight.w400, Colors.black)
-                            ],
-                          )),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                      value: Using.One,
-                      groupValue: using,
-                      onChanged: (value) {
-                        setState(() {
-                          using = value as Using?;
-                        });
-                      }),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 50,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        context.read<CountPurchase>().increase();
-                        Navigator.pop(context);
-                      },
-                      child: text('${widget.price}원 담기', 14.0, FontWeight.w500,
-                          Colors.white),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xff001A5D),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        elevation: 0.0,
-                      ),
-                    ),
-                  ),
+          ),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(48),
+            child: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              bottom: TabBar(
+                indicatorColor: Color(0xff001A5D),
+                labelColor: Colors.black,
+                labelStyle:
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                unselectedLabelStyle:
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                tabs: [
+                  Tab(text: 'ALL'),
+                  Tab(text: '와이퍼'),
+                  Tab(text: '워셔액'),
+                  Tab(text: '엔진오일'),
+                  Tab(text: '배터리'),
                 ],
               ),
             ),
-          ],
+          ),
+          body: TabBarView(
+            children: [
+              listview(repList.length, repList),
+              listview(list1.length, list1),
+              listview(list2.length, list2),
+              listview(list3.length, list3),
+              listview(list4.length, list4),
+            ],
+          ),
         ),
       ),
     );
@@ -151,55 +156,66 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-class CustomRadioItem extends StatelessWidget {
-  final CustomRadio item;
-
-  const CustomRadioItem({Key? key, required this.item}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 6),
-      height: 22,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(width: 2),
-          item.isSelected
-              ? Container(
-                  height: 27,
-                  width: 27,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 7.0, color: Color(0xff001A5D))),
-                )
-              : Container(
-                  height: 27,
-                  width: 27,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 1.0, color: Colors.grey)),
-                ),
-          SizedBox(width: 6),
-          Expanded(
+Widget listview(itemcount, listname) {
+  return ListView(children: [
+    ListView.separated(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: itemcount,
+      itemBuilder: (BuildContext context, int index) {
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => RepSelect2(
+                          image: listname[index]['image'],
+                          name: listname[index]['name'],
+                          price: listname[index]['price'],
+                        )));
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 90,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                text(item.option, 12.0, FontWeight.w400, Colors.black),
-                text(item.price + '원', 12.0, FontWeight.w400, Colors.black),
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('${listname[index]['image']}'),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 23),
+                    Text(
+                      '${listname[index]['name']}',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      '${listname[index]['price']}원',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff001a5d)),
+                    ),
+                  ],
+                ),
               ],
             ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class CustomRadio {
-  late bool isSelected;
-  late String option;
-  late String price;
-
-  CustomRadio(this.isSelected, this.option, this.price);
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+    ),
+  ]);
 }

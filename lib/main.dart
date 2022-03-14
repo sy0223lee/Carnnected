@@ -9,7 +9,7 @@ import 'package:mosigg/signup/signup1.dart';
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/location/location2.dart';
 import 'package:mosigg/location/common/map.dart';
-import 'package:mosigg/replacement/repconfirm.dart';
+import 'package:mosigg/replacement/change1.dart';
 
 import 'oiling/oilstart.dart';
 
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => StartPage(),
           '/oilstart': (context) => Oilstart(),
           '/location1': (context) => LocationSearchPage1(),
-          '/replacement': (context) => RepConfirm(),
+          '/replacement': (context) => Changestart(),
         },
         //home: RepConfirm()//Oilstart() //TabBarPage() //StartPage(),
         );
