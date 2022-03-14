@@ -7,6 +7,7 @@ var pool = mySQL.createPool({
     host:'localhost',
     port: 3306,
     user: 'root',
+    password: '1234',
     database: 'carnnected'
 });
 
@@ -834,6 +835,20 @@ app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
     }, 30000);
 })
 
+// 예약 요청 대기
+app.get('/deliv_resrv/waiting/:id/:number/:time', async function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var time = req.params.time;
+    var response = await http.get(Uri.parse(`http://10.0.2.2:8080/deliv_resrv/waiting/${id}/${number}/${time}`));
+
+    if(response.status == 200){
+        if(response == true)    res.send(true);
+        else    res.send(false);
+    }
+    else    res.send(false);
+})
+
 /*index 찾고 그 아이템 가져오기*/
 app.get('/replace_item/:index', function(req, res){
 	var index = req.params.index;
@@ -850,16 +865,4 @@ app.get('/replace_item/:index', function(req, res){
 		})
 		connection.release();
 	})
-// 예약 요청 대기
-app.get('/deliv_resrv/waiting/:id/:number/:time', async function(req, res){
-    var id = req.params.id;
-    var number = req.params.number;
-    var time = req.params.time;
-    var response = await http.get(Uri.parse(`http://10.0.2.2:8080/deliv_resrv/waiting/${id}/${number}/${time}`));
-
-    if(response.status == 200){
-        if(response == true)    res.send(true);
-        else    res.send(false);
-    }
-    else    res.send(false);
 })

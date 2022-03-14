@@ -4,21 +4,24 @@ use carnnected;
 CREATE TABLE `REPLACE_ITEM`(
     `index` INT AUTO_INCREMENT,
     `company` VARCHAR(30) NOT NULL,
-    `item` VARCHAR(30) NOT NULL,
-    `detail` VARCHAR(100) NOT NULL,
-    `image` VARCHAR(50),
+    `image` VARCHAR(30) NOT NULL,
+    `type` VARCHAR(30) NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
+    `op1Name` VARCHAR(10),
+    `op1` VARCHAR(100),
+    `op1Price` VARCHAR(100),
+    `op2Name` VARCHAR(10),
+    `op2` VARCHAR(100),
+    `op2Price` VARCHAR(100),
     `price` INT NOT NULL,
     PRIMARY KEY (`index`));
 
 # 교체 아이템 추가
 # item: 와이퍼, 에어컨필터, 워셔액, 엔진오일, 배터리, 타이어, 타이어 공기압
-INSERT INTO `REPLACE_ITEM` (`company`, `item`, `detail`, `price`) VALUES 
+INSERT INTO `REPLACE_ITEM` (`company`, `image`, `type`,`name`,`op1Name`, `op1`,`op1Price`, `op2Name`, `op2`, `op2Price`, `price`) VALUES
 # 와이퍼
-('보쉬', '와이퍼', '보쉬 에어로트원 와이퍼', 10000),
-('보쉬', '와이퍼', '보쉬 클리어핏 와이퍼', 4000),
-('카렉스', '와이퍼', '카렉스 레인스톰 하이브리드 와이퍼', 4500),
-('불스원', '와이퍼', '불스원 레인OK 메탈X실리콘 와이퍼', 16000),
-('불스원', '와이퍼', '불스원 레인OK 메탈 하이브리드 초발수 와이퍼', 15000),
+('보쉬', 'image/wiper.jpg', '와이퍼', '보쉬 에어로트원 와이퍼', '사이즈', '["300mm", "400mm", "500mm"]', '[1000,2000,3000]', null, null, null, 10000);
+('보쉬', 'image/wiper.jpg','와이퍼', '보쉬 클리어핏 와이퍼', '사이즈', '["300mm", "350mm", "400mm", "450mm", "500mm", "550mm", "600mm", "650mm"]', '[0, 200, 600, 900, 1600, 2300, 3500, 4200]', '유형', '["금속","플라스틱","다이아"]', '[0,0,0]', 10000);
 #에어컨 필터
 ('3M', '에어컨필터', '3M PM2.5 초미세먼지 활성탄 필터 F6274', 7000),
 ('현대모비스', '에어컨필터', '현대모비스 베스핏츠 에어컨히터 필터 97133-3SAA0', 7000),
