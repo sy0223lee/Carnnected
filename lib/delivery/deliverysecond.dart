@@ -3,12 +3,12 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:mosigg/oiling/oilprice.dart';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:proj4dart/proj4dart.dart';
+import 'package:mosigg/delivery/deliveryconfirm.dart';
 
-class Oilsecond extends StatefulWidget {
+class Deliverysecond extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -16,7 +16,7 @@ class Oilsecond extends StatefulWidget {
   final String payment;
   final LatLng carCoord;
 
-  const Oilsecond(
+  const Deliverysecond(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -26,10 +26,10 @@ class Oilsecond extends StatefulWidget {
       required this.carCoord})
       : super(key: key);
   @override
-  _OilsecondState createState() => _OilsecondState();
+  _DeliverysecondState createState() => _DeliverysecondState();
 }
 
-class _OilsecondState extends State<Oilsecond> {
+class _DeliverysecondState extends State<Deliverysecond> {
   List<Marker> _markers = [];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -140,13 +140,14 @@ class _OilsecondState extends State<Oilsecond> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => Oilprice(
+                  builder: (BuildContext context) => Deliveryconfirm(
                       dateAndTime: widget.dateAndTime,
                       carLocation: widget.carLocation,
                       carDetailLocation: widget.carDetailLocation,
                       fuel: widget.fuel,
                       payment: widget.payment,
-                      gasStationName: gasStationName
+                      gasStationName: gasStationName,
+                      price: widget.carLocation, // 머,,
                       )));
           },
           style: TextButton.styleFrom(

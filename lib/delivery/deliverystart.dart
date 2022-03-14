@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/oiling/oilsecond.dart';
+import 'package:mosigg/delivery/deliverysecond.dart';
 import 'package:http/http.dart' as http;
 
-class Oilstart extends StatefulWidget {
-  const Oilstart({Key? key}) : super(key: key);
+class Deliverystart extends StatefulWidget {
+  const Deliverystart({Key? key}) : super(key: key);
 
   @override
-  State<Oilstart> createState() => _OilstartState();
+  State<Deliverystart> createState() => _DeliverystartState();
 }
 
 const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
@@ -26,10 +26,9 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
   900: Color(0xff001a5d),
 });
 
-class _OilstartState extends State<Oilstart> {
+class _DeliverystartState extends State<Deliverystart> {
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
-  List<String> fuelList = ['휘발유', '경유', 'LPG', '고급휘발유', '전기'];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String? _selectedTime = "";
   DateTime? _selectedDate;
@@ -53,7 +52,7 @@ class _OilstartState extends State<Oilstart> {
         backgroundColor: Colors.white,
         elevation: 0.0,
         centerTitle: true,
-        title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
+        title: text('딜리버리 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -177,40 +176,28 @@ class _OilstartState extends State<Oilstart> {
             ),
             text('차량 위치를 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19),
-            text('연료', 14.0, FontWeight.w400, Colors.black),
+            text('배달 위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
-            Container(
-              height: 24,
-              child: ToggleButtons(
-                  color: Colors.black,
-                  selectedColor: Colors.white,
-                  selectedBorderColor: Color(0xff001a5d),
-                  fillColor: Color(0xff001a5d),
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int buttonIndex = 0;
-                          buttonIndex < isSelected.length;
-                          buttonIndex++) {
-                        if (buttonIndex == index) {
-                          isSelected[buttonIndex] = true;
-                          fuel = fuelList[buttonIndex];
-                        } else {
-                          isSelected[buttonIndex] = false;
-                        }
-                      }
-                    });
-                  },
-                  children: [
-                    toggleItem(context, fuelList[0], fuelList.length),
-                    toggleItem(context, fuelList[1], fuelList.length),
-                    toggleItem(context, fuelList[2], fuelList.length),
-                    toggleItem(context, fuelList[3], fuelList.length),
-                    toggleItem(context, fuelList[4], fuelList.length),
-                  ],
-                  isSelected: isSelected),
+            InkWell(
+              onTap: () async {
+                final result = await Navigator.pushNamed(context, '/location1');
+                if (result is Addr) {
+                  setState(() {
+                    carLocation = result.addr;
+                    carDetailLocation = result.detailAddr;
+                  });
+                }
+              },
+              child: carLocation == null
+                  ? Container(height: 17)
+                  : text(carLocation, 12.0, FontWeight.w400, Colors.black),
             ),
-            SizedBox(height: 6),
-            text('차량에 맞는 연료를 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
+            Divider(
+              height: 10.0,
+              color: Color(0xffcbcbcb),
+              thickness: 2.0,
+            ),
+            text('원하시는 배달 위치를 입력해주세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19.0),
             text('결제수단', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
@@ -270,7 +257,7 @@ class _OilstartState extends State<Oilstart> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => Oilsecond(
+                                builder: (BuildContext context) => Deliverysecond(
                                     dateAndTime: dateAndTime,
                                     carLocation: carLocation!,
                                     carDetailLocation: carDetailLocation!,

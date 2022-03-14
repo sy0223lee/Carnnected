@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mosigg/oiling/oilstart.dart';
+import 'package:mosigg/delivery/deliverystart.dart';
 
 List serviceList = [];
 
@@ -149,7 +150,10 @@ class _ServicechoiceState extends State<Servicechoice> {
                     children: [
                       IconButton(
                         padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) => Deliverystart()));
+                        },
                         icon: Icon(
                           Icons.person,
                           size: 60.0,
