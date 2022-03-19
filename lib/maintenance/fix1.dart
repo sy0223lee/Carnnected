@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mosigg/home.dart';
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/maintenance/fix2.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Fixstart extends StatefulWidget {
   final String? carLocation;
@@ -29,12 +32,14 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 
 class _FixstartState extends State<Fixstart> {
   final isSelected2 = <bool>[false, false, false, false];
+  List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String _selectedTime = "";
   DateTime? _selectedDate;
   String _selectedHour = '';
   String _selectedMinute = '';
   String? carLocation;
   String? carDetailLocation;
+  String? payment;
 
   @override
   void initState() {
@@ -164,14 +169,17 @@ class _FixstartState extends State<Fixstart> {
             text('차량위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
             InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LocationSearchPage1()));
+              onTap: () async {
+                final result = await Navigator.pushNamed(context, '/location1');
+                if (result is Addr) {
+                  setState(() {
+                    carLocation = result.addr;
+                    carDetailLocation = result.detailAddr;
+                  });
+                }
               },
               child: carLocation == null
-                  ? SizedBox(height: 17)
+                  ? Container(height: 17)
                   : text(carLocation, 12.0, FontWeight.w400, Colors.black),
             ),
             Divider(
@@ -197,6 +205,7 @@ class _FixstartState extends State<Fixstart> {
                           buttonIndex2++) {
                         if (buttonIndex2 == index2) {
                           isSelected2[buttonIndex2] = true;
+                          payment = paymentList[buttonIndex2];
                         } else {
                           isSelected2[buttonIndex2] = false;
                         }
@@ -253,7 +262,40 @@ class _FixstartState extends State<Fixstart> {
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [kipgoing(context)],
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_selectedDate != null &&
+                          _selectedTime != null &&
+                          carLocation != null &&
+                          carDetailLocation != null &&
+                          payment != null) {
+                        String dateAndTime =
+                            _selectedDate.toString().substring(0, 10) +
+                                ' ' +
+                                _selectedTime +
+                                ':00';
+                        LatLng carCoord = await getCarCoord(carLocation!);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => Fixplus(
+                                    dateAndTime: dateAndTime,
+                                    carLocation: carLocation!,
+                                    carDetailLocation: carDetailLocation!,
+                                    payment: payment!,
+                                    carCoord: carCoord)));
+                      }
+                    },
+                    child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
+                    style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+                  ),
+                ),
+              ],
             ))
           ],
         ),
@@ -267,25 +309,25 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Container kipgoing(BuildContext context) {
-  return Container(
-    width: double.infinity,
-    height: 40,
-    child: ElevatedButton(
-      onPressed: () {
-        //  if(dataAndTime != null& carLocation != null& type != null)
-        // Navigator.push(
-        //               context,
-        //               MaterialPageRoute(
-        //                  builder: (BuildContext context) => Fixplus(
-        //                       dateAndTime:
-        //                        carLocation: ,
-        //                        carDetailLocation:,
-        //                       type:
-        //                      )));
-      },
-      child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-    ),
-  );
+Future<LatLng> getCarCoord(String carLocation) async {
+  Map<String, String> headers = {
+    'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
+    'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
+  };
+
+  late LatLng carCoord;
+
+  final response = await http.get(
+      Uri.parse(
+          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${carLocation}'),
+      headers: headers);
+
+  if (response.statusCode == 200) {
+    carCoord = LatLng(
+        double.parse(jsonDecode(response.body)['addresses'][0]['y']),
+        double.parse(jsonDecode(response.body)['addresses'][0]['x']));
+    return carCoord;
+  } else {
+    throw Exception('Failed to get coordinates of car');
+  }
 }

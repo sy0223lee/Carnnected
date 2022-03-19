@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/maintenance/fix1.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Fixplus extends StatefulWidget {
-  const Fixplus({Key? key}) : super(key: key);
+  final String dateAndTime;
+  final String carLocation;
+  final String carDetailLocation;
+  final String? type;
+  final String? detail;
+  final String payment;
+  final LatLng carCoord;
+  const Fixplus(
+      {Key? key,
+      required this.dateAndTime,
+      required this.carLocation,
+      required this.carDetailLocation,
+      this.type,
+      this.detail,
+      required this.payment,
+      required this.carCoord})
+      : super(key: key);
 
   @override
   _FixplusState createState() => _FixplusState();
@@ -10,6 +27,8 @@ class Fixplus extends StatefulWidget {
 
 class _FixplusState extends State<Fixplus> {
   final isSelected = <bool>[false, false, false];
+  List<String> typeList = ['정기 검사', '종합 검사', '부분 검사'];
+  String type1 = '';
   TextEditingController plusRequest = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -18,6 +37,7 @@ class _FixplusState extends State<Fixplus> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0.0,
@@ -57,6 +77,7 @@ class _FixplusState extends State<Fixplus> {
                             buttonIndex2++) {
                           if (buttonIndex2 == index2) {
                             isSelected[buttonIndex2] = true;
+                            type1 = typeList[buttonIndex2];
                           } else {
                             isSelected[buttonIndex2] = false;
                           }
@@ -117,6 +138,34 @@ class _FixplusState extends State<Fixplus> {
                   border: OutlineInputBorder(borderRadius: BorderRadius.zero),
                 ),
               ),
+              Expanded(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => Fixplus(
+                                    dateAndTime: widget.dateAndTime,
+                                    carLocation: widget.carLocation,
+                                    carDetailLocation: widget.carDetailLocation,
+                                    type: type1,
+                                    payment: widget.payment,
+                                    carCoord: widget.carCoord,
+                                    detail: plusRequest.text)));
+                      },
+                      child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
+                      style:
+                          ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+                    ),
+                  ),
+                ],
+              ))
             ],
           ),
         ),
