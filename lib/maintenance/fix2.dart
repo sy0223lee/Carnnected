@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/maintenance/fix1.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mosigg/maintenance/fix3.dart';
 
 class Fixplus extends StatefulWidget {
   final String dateAndTime;
@@ -150,7 +151,7 @@ class _FixplusState extends State<Fixplus> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => Fixplus(
+                                builder: (BuildContext context) => FixRsrv(
                                     dateAndTime: widget.dateAndTime,
                                     carLocation: widget.carLocation,
                                     carDetailLocation: widget.carDetailLocation,
@@ -177,21 +178,4 @@ class _FixplusState extends State<Fixplus> {
 Text text(content, size, weight, colors) {
   return Text(content,
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
-}
-
-Container kipgoing(BuildContext context) {
-  return Container(
-    width: double.infinity,
-    height: 40,
-    child: ElevatedButton(
-      onPressed: () {
-        //  Navigator.push(
-        // context,
-        //  MaterialPageRoute(
-        //      builder: (BuildContext context) => ()));
-      },
-      child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-    ),
-  );
 }

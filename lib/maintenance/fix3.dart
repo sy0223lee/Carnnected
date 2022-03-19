@@ -3,33 +3,35 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:mosigg/oiling/oilprice.dart';
+
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:proj4dart/proj4dart.dart';
 
-class GasRsrv extends StatefulWidget {
+class FixRsrv extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
-  final String fuel;
+  final String detail;
   final String payment;
+  final String type;
   final LatLng carCoord;
 
-  const GasRsrv(
+  const FixRsrv(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
-      required this.fuel,
+      required this.detail,
       required this.payment,
+      required this.type,
       required this.carCoord})
       : super(key: key);
   @override
-  _GasRsrvState createState() => _GasRsrvState();
+  _FixRsrvState createState() => _FixRsrvState();
 }
 
-class _GasRsrvState extends State<GasRsrv> {
+class _FixRsrvState extends State<FixRsrv> {
   List<Marker> _markers = [];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -48,7 +50,7 @@ class _GasRsrvState extends State<GasRsrv> {
   }
 
   void makeMarker() async {
-    gasCoordData = await getGasinfo(widget.carLocation);
+    gasCoordData = await getFixinfo(widget.carLocation);
     for (var i = 0; i < gasCoordData.length; i++) {
       _addMarker(i, gasCoordData[i].lat, gasCoordData[i].long,
           gasCoordData[i].name, gasCoordData[i].price);
@@ -137,18 +139,7 @@ class _GasRsrvState extends State<GasRsrv> {
         height: 40.0,
         child: TextButton(
           child: text("계속하기", 14.0, FontWeight.w500, Color(0xffffffff)),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => Oilprice(
-                        dateAndTime: widget.dateAndTime,
-                        carLocation: widget.carLocation,
-                        carDetailLocation: widget.carDetailLocation,
-                        fuel: widget.fuel,
-                        payment: widget.payment,
-                        gasStationName: gasStationName)));
-          },
+          onPressed: () {},
           style: TextButton.styleFrom(
             backgroundColor: Color(0xff001A5D),
           ),
@@ -179,28 +170,6 @@ class _GasRsrvState extends State<GasRsrv> {
                     SizedBox(
                       height: 5.0,
                     ),
-                    // Row(
-                    //   children: [
-                    //     Padding(padding: EdgeInsets.only(left: 12.0)),
-                    //     Container(
-                    //       width: 24.0,
-                    //       child: Text(
-                    //         "주소",
-                    //         style: TextStyle(
-                    //             fontWeight: FontWeight.w500,
-                    //             fontSize: 8.0,
-                    //             color: Colors.black),
-                    //         textAlign: TextAlign.center,
-                    //       ),
-                    //       decoration: BoxDecoration(color: Color(0xffe8eaee)),
-                    //     ),
-                    //     SizedBox(
-                    //       width: 5.0,
-                    //     ),
-                    //     text("경기도 고양시 일산동구 식사동 861-1", 10.0, FontWeight.w500,
-                    //         Colors.black),
-                    //   ],
-                    // ),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -210,7 +179,7 @@ class _GasRsrvState extends State<GasRsrv> {
                         Container(
                           width: 24.0,
                           child: Text(
-                            "가격",
+                            "주소",
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 8.0,
@@ -222,8 +191,8 @@ class _GasRsrvState extends State<GasRsrv> {
                         SizedBox(
                           width: 5.0,
                         ),
-                        text(price.toString(), 10.0, FontWeight.w500,
-                            Colors.black),
+                        //text(price.toString(), 10.0, FontWeight.w500,
+                        // Colors.black),
                       ],
                     )
                   ],
@@ -240,7 +209,7 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Future<List> getGasinfo(String query) async {
+Future<List> getFixinfo(String query) async {
   Map<String, String> headers = {
     'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
     'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
@@ -270,15 +239,14 @@ Future<List> getGasinfo(String query) async {
     // katecY = 544837.0;
     print('주유2 ${katecX}, ${katecY}');
 
-    final responseGas = await http.get(Uri.parse(
-        'http://www.opinet.co.kr/api/aroundAll.do?code=F220207018&x=${katecX}&y=${katecY}&radius=5000&sort=1&prodcd=B027&out=json'));
+    final responseGas = await http.get(Uri.parse(''));
     if (responseGas.statusCode == 200) {
-      late List<OIL> gasList = [];
-      List<dynamic> json = jsonDecode(responseGas.body)['RESULT']['OIL'];
+      late List<FIX> fixList = [];
+      List<dynamic> json = jsonDecode(responseGas.body)['RESULT']['FIX'];
       for (var i = 0; i < json.length; i++) {
-        gasList.add(OIL.fromJson(json[i]));
+        fixList.add(FIX.fromJson(json[i]));
       }
-      return gasList;
+      return fixList;
     } else {
       throw Exception('Failed to load gas data');
     }
@@ -288,25 +256,25 @@ Future<List> getGasinfo(String query) async {
 }
 
 ///////////////////////////// 내가 원하는 OIL class /////////////////////////////
-class OIL {
+class FIX {
   final String name;
-  final int price;
+  final String address;
   final double long;
   final double lat;
 
-  OIL({
+  FIX({
     required this.name,
-    required this.price,
+    required this.address,
     required this.long,
     required this.lat,
   });
 
-  factory OIL.fromJson(Map<dynamic, dynamic> json) {
+  factory FIX.fromJson(Map<dynamic, dynamic> json) {
     Point point =
         transCoord('카텍', Point(x: json['GIS_X_COOR'], y: json['GIS_Y_COOR']));
-    return OIL(
+    return FIX(
       name: json['OS_NM'],
-      price: json['PRICE'],
+      address: json['address'],
       long: point.x,
       lat: point.y,
     );

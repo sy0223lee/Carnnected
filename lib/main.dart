@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/maintenance/fix1.dart';
 import 'package:mosigg/oiling/oilstart.dart';
 import 'package:mosigg/signup/signup1.dart';
 
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/oilstart',
         routes: {
           '/': (context) => StartPage(),
-          '/oilstart': (context) => Oilstart(),
+          '/oilstart': (context) => Fixstart(),
           '/location1': (context) => LocationSearchPage1(),
         }
         // home: Oilstart() //TabBarPage() //StartPage(),

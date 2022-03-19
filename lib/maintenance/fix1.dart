@@ -269,7 +269,6 @@ class _FixstartState extends State<Fixstart> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_selectedDate != null &&
-                          _selectedTime != null &&
                           carLocation != null &&
                           carDetailLocation != null &&
                           payment != null) {
