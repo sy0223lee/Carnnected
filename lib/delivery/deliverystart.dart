@@ -40,6 +40,7 @@ class _DeliverystartState extends State<Deliverystart> {
   String? desLocation;
   String? desDetailLocation;
   late LatLng carCoord;
+  late LatLng desCoord;
 
   @override
   void initState() {
@@ -157,7 +158,7 @@ class _DeliverystartState extends State<Deliverystart> {
             SizedBox(height: 6),
             InkWell(
               onTap: () async {
-                final result = await Navigator.pushNamed(context, '/location1');
+                final result = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LocationSearchPage1()));
                 if (result is Addr) {
                   setState(() {
                     carLocation = result.addr;
@@ -180,11 +181,11 @@ class _DeliverystartState extends State<Deliverystart> {
             SizedBox(height: 6),
             InkWell(
               onTap: () async {
-                final result = await Navigator.pushNamed(context, '/location1');
-                if (result is Addr) {
+                final result2 = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LocationSearchPage1()));
+                if (result2 is Addr) {
                   setState(() {
-                    desLocation = result.addr;
-                    desDetailLocation = result.detailAddr;
+                    desLocation = result2.addr;
+                    desDetailLocation = result2.detailAddr;
                   });
                 }
               },
@@ -242,12 +243,16 @@ class _DeliverystartState extends State<Deliverystart> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () async {
-                        String dateAndTime =
-                            _selectedDate.toString().substring(0, 10) +
-                                ' ' +
-                                _selectedTime! +
-                                ':00';
+                      if (_selectedDate != null &&
+                          _selectedTime != null &&
+                          carLocation != null &&
+                          carDetailLocation != null &&
+                          desLocation != null &&
+                          desDetailLocation != null &&
+                          payment != null) {
+                        String dateAndTime = _selectedDate.toString().substring(0, 10) +  ' ' + _selectedTime! + ':00';
                         LatLng carCoord = await getCarCoord(carLocation!);
+                        LatLng desCoord = await getCarCoord(desLocation!);
 
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) => Deliverysecond(
@@ -257,8 +262,10 @@ class _DeliverystartState extends State<Deliverystart> {
                               desLocation: desLocation!,
                               desDetailLocation: desDetailLocation!,
                               payment: payment!,
-                              carCoord: carCoord
+                              carCoord: carCoord,
+                              desCoord: desCoord
                             )));
+                      }
                     },
                     child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),

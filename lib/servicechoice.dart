@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:mosigg/oiling/oilstart.dart';
 import 'package:mosigg/delivery/deliverystart.dart';
 
-List serviceList = [];
-
 class Servicechoice extends StatefulWidget {
   const Servicechoice({Key? key}) : super(key: key);
 
@@ -15,6 +13,7 @@ class Servicechoice extends StatefulWidget {
 
 class _ServicechoiceState extends State<Servicechoice> {
   Future<List>? data;
+  List serviceList = ["1","1","1"];
 
   Future initService(String carNumber) async {
     var service = await recentservice(carNumber);
@@ -25,8 +24,8 @@ class _ServicechoiceState extends State<Servicechoice> {
 
   @override
   void initState() {
-    data = cardata('dlekdud0102');
     super.initState();
+    data = cardata('dlekdud0102');
   }
 
   @override
@@ -36,7 +35,7 @@ class _ServicechoiceState extends State<Servicechoice> {
         future: data,
         builder: (context, snapshot) {
           if(snapshot.hasData) {
-            if(serviceList == []){
+            if(serviceList[0] == "1"){
               initService(snapshot.data![0].carnumber);
             }
             return Column(
@@ -413,13 +412,15 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Future recentservice(String carnumber) async {
+Future<List> recentservice(String carnumber) async {
   final response = await http.get(Uri.parse('http://10.0.2.2:8080/recentservice/${carnumber}'));
   if (response.statusCode == 200) {
+    List service = [];
     List<dynamic> json = jsonDecode(response.body);
     for (var i = 0; i < json.length; i++) {
-      serviceList.add(Recent.fromJson(json[i]).toString());
+      service.add(Recent.fromJson(json[i]).toString());
     }
+    return service;
   } else {
     throw Exception('Failed to load recent use service');
   }
@@ -432,7 +433,7 @@ Future<List> cardata(String id) async {
     List<dynamic> json = jsonDecode(response.body);
     for (var i = 0; i < json.length; i++) {
       carList.add(Car.fromJson(json[i]));
-      recentservice(carList[i].carnumber);
+      // recentservice(carList[i].carnumber);
     }
     return carList;
   } else {

@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:mosigg/oiling/oilprice.dart';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:proj4dart/proj4dart.dart';
@@ -16,6 +15,7 @@ class Deliverysecond extends StatefulWidget {
   final String desDetailLocation;
   final String payment;
   final LatLng carCoord;
+  final LatLng desCoord;
 
   const Deliverysecond(
       {Key? key,
@@ -25,7 +25,8 @@ class Deliverysecond extends StatefulWidget {
       required this.desLocation,
       required this.desDetailLocation,
       required this.payment,
-      required this.carCoord})
+      required this.carCoord,
+      required this.desCoord})
       : super(key: key);
   @override
   _DeliverysecondState createState() => _DeliverysecondState();
@@ -64,9 +65,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
         markerId: markerId,
         icon: BitmapDescriptor.fromBytes(markerIcon),
         draggable: false,
-        infoWindow: InfoWindow(title: "여기로 예약"),
         onTap: () {
-          _infoDialog(context, name, price);
           setState(() {
             gasStationName = name;
           });
@@ -112,7 +111,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
+          title: text('딜리버리 서비스 예약', 16.0, FontWeight.w500, Colors.black),
           toolbarHeight: 56.0,
           centerTitle: true,
           elevation: 0.0,
@@ -147,83 +146,6 @@ class _DeliverysecondState extends State<Deliverysecond> {
         ),
       ),
     );
-  }
-
-  void _infoDialog(BuildContext context, String name, int price) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext ctx) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: SimpleDialog(
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Padding(padding: EdgeInsets.only(left: 12.0)),
-                        text(name, 16.0, FontWeight.bold,
-                            Colors.black),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    // Row(
-                    //   children: [
-                    //     Padding(padding: EdgeInsets.only(left: 12.0)),
-                    //     Container(
-                    //       width: 24.0,
-                    //       child: Text(
-                    //         "주소",
-                    //         style: TextStyle(
-                    //             fontWeight: FontWeight.w500,
-                    //             fontSize: 8.0,
-                    //             color: Colors.black),
-                    //         textAlign: TextAlign.center,
-                    //       ),
-                    //       decoration: BoxDecoration(color: Color(0xffe8eaee)),
-                    //     ),
-                    //     SizedBox(
-                    //       width: 5.0,
-                    //     ),
-                    //     text("경기도 고양시 일산동구 식사동 861-1", 10.0, FontWeight.w500,
-                    //         Colors.black),
-                    //   ],
-                    // ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Row(
-                      children: [
-                        Padding(padding: EdgeInsets.only(left: 12.0)),
-                        Container(
-                          width: 24.0,
-                          child: Text(
-                            "가격",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 8.0,
-                                color: Colors.black),
-                            textAlign: TextAlign.center,
-                          ),
-                          decoration: BoxDecoration(color: Color(0xffe8eaee)),
-                        ),
-                        SizedBox(
-                          width: 5.0,
-                        ),
-                        text(price.toString(), 10.0, FontWeight.w500, Colors.black),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
-          );
-        });
   }
 }
 
