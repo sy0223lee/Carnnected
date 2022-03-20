@@ -2,10 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'dart:ui' as ui;
-import 'package:proj4dart/proj4dart.dart';
 
 class Deliverysecond extends StatefulWidget {
   final String dateAndTime;
@@ -40,36 +37,29 @@ class _DeliverysecondState extends State<Deliverysecond> {
   late List gasCoordData;
 
   Completer<GoogleMapController> _controller = Completer();
-
-  late String gasStationName;
+  int price = 23000;
 
   void initState() {
     super.initState();
-    print(widget.carCoord.latitude);
-    markerCam = CameraPosition(target: widget.carCoord, zoom: 14);
+    var _latitude = (widget.carCoord.latitude+widget.desCoord.latitude)/2;
+    var _longitude = (widget.carCoord.longitude+widget.desCoord.longitude)/2;
+    markerCam = CameraPosition(target: LatLng(_latitude, _longitude), zoom: 10);
     makeMarker();
   }
 
   void makeMarker() async {
-    gasCoordData = await getGasinfo(widget.carLocation);
-    for (var i = 0; i < gasCoordData.length; i++) {
-      _addMarker(i, gasCoordData[i].lat, gasCoordData[i].long, gasCoordData[i].name, gasCoordData[i].price);
-    }
+    _addMarker(0, widget.carCoord.latitude, widget.carCoord.longitude, "출발");
+    _addMarker(1, widget.desCoord.latitude, widget.desCoord.longitude, "도착");
   }
 
-  void _addMarker(id, x, y, name, price) async {
+  void _addMarker(id, x, y, loc) async {
     final MarkerId markerId = MarkerId(id.toString());
-    Uint8List markerIcon = await getBytesFromCanvas(150, 80, price);
+    Uint8List markerIcon = await getBytesFromCanvas(120, 80, loc);
 
     Marker marker = new Marker(
         markerId: markerId,
         icon: BitmapDescriptor.fromBytes(markerIcon),
         draggable: false,
-        onTap: () {
-          setState(() {
-            gasStationName = name;
-          });
-        },
         position: LatLng(x, y));
 
     setState(() {
@@ -77,7 +67,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
     });
   }
 
-  Future<Uint8List> getBytesFromCanvas(int width, int height, int price) async {
+  Future<Uint8List> getBytesFromCanvas(int width, int height, String txt) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = Color(0xff001a5d);
@@ -93,7 +83,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
         paint);
     TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
     painter.text = TextSpan(
-      text: price.toString(),
+      text: txt,
       style: TextStyle(
           fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.white),
     );
@@ -152,99 +142,4 @@ class _DeliverysecondState extends State<Deliverysecond> {
 Text text(content, size, weight, colors) {
   return Text(content,
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
-}
-
-Future<List> getGasinfo(String query) async {
-  Map<String, String> headers = {
-    'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
-    'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
-  };
-
-  late double katecX;
-  late double katecY;
-
-  final responseCoord = await http.get(
-      Uri.parse(
-          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${query}'),
-      headers: headers);
-
-  if (responseCoord.statusCode == 200) {
-    var long =
-        double.parse(jsonDecode(responseCoord.body)['addresses'][0]['x']);
-    var lat = double.parse(jsonDecode(responseCoord.body)['addresses'][0]['y']);
-    var point = Point(x: long, y: lat);
-
-    var katecPoint = transCoord('위도', point);
-
-    katecX = katecPoint.x;
-    katecY = katecPoint.y;
-
-    /*테스트 코드*/
-    // katecX = 314681.8;
-    // katecY = 544837.0;
-    print('주유2 ${katecX}, ${katecY}');
-
-    final responseGas = await http.get(Uri.parse(
-        'http://www.opinet.co.kr/api/aroundAll.do?code=F220207018&x=${katecX}&y=${katecY}&radius=5000&sort=1&prodcd=B027&out=json'));
-    if (responseGas.statusCode == 200) {
-      late List<OIL> gasList = [];
-      List<dynamic> json = jsonDecode(responseGas.body)['RESULT']['OIL'];
-      for (var i = 0; i < json.length; i++) {
-        gasList.add(OIL.fromJson(json[i]));
-      }
-      return gasList;
-    } else {
-      throw Exception('Failed to load gas data');
-    }
-  } else {
-    throw Exception('Failed to load coordinates');
-  }
-}
-
-///////////////////////////// 내가 원하는 OIL class /////////////////////////////
-class OIL {
-  final String name;
-  final int price;
-  final double long;
-  final double lat;
-
-  OIL({
-    required this.name,
-    required this.price,
-    required this.long,
-    required this.lat,
-  });
-
-  factory OIL.fromJson(Map<dynamic, dynamic> json) {
-    Point point =
-        transCoord('카텍', Point(x: json['GIS_X_COOR'], y: json['GIS_Y_COOR']));
-    return OIL(
-      name: json['OS_NM'],
-      price: json['PRICE'],
-      long: point.x,
-      lat: point.y,
-    );
-  }
-}
-
-/*좌표 변환 함수*/
-Point transCoord(String type, Point point) {
-  late Point resultPoint;
-
-  var grs80 = Projection.get('grs80') ??
-      Projection.add('grs80',
-          '+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43');
-  var wgs84 = Projection.get('wgs84') ??
-      Projection.add('wgs84',
-          '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees');
-
-  if (type == '위도') {
-    resultPoint = wgs84.transform(grs80, point);
-  } else if (type == '카텍') {
-    resultPoint = grs80.transform(wgs84, point);
-  } else {
-    resultPoint = Point(x: 0, y: 0);
-  }
-
-  return resultPoint;
 }

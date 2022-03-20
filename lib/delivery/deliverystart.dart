@@ -189,9 +189,9 @@ class _DeliverystartState extends State<Deliverystart> {
                   });
                 }
               },
-              child: carLocation == null
+              child: desLocation == null
                   ? Container(height: 17)
-                  : text(carLocation, 12.0, FontWeight.w400, Colors.black),
+                  : text(desLocation, 12.0, FontWeight.w400, Colors.black),
             ),
             Divider(
               height: 10.0,
