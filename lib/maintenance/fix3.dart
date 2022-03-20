@@ -254,15 +254,33 @@ Future<List> getFixinfo(String query) async {
     /*테스트 코드*/
     //katecX = 314681.8;
     // katecY = 544837.0;
-    print('Fix3 ${katecX}, ${katecY}');
+    print('Fix3 ${long}, ${lat}');
 
     final responseFix = await http
-        .get(Uri.parse('http://10.0.2.2:8080/map/카센터/${katecX}/${katecY}'));
+        .get(Uri.parse('http://10.0.2.2:8080/map/카센터/${long}/${lat}'));
     if (responseFix.statusCode == 200) {
       late List<FIX> fixList = [];
-      List<dynamic> json = jsonDecode(responseFix.body);
+
+      List<dynamic> json = jsonDecode(responseFix.body)['RESULT']['FIX1'];
+
       for (var i = 0; i < json.length; i++) {
-        fixList.add(FIX.fromJson(json[i]));
+        final responseNewCoord = await http.get(
+            Uri.parse(
+                'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${json[i].address}'),
+            headers: headers);
+        if (responseNewCoord.statusCode == 200) {
+          var long2 = double.parse(
+              jsonDecode(responseNewCoord.body)['addresses'][0]['x']);
+          var lat2 = double.parse(
+              jsonDecode(responseNewCoord.body)['addresses'][0]['y']);
+
+          fixList.add(FIX(
+              type: json[i].type,
+              name: json[i].name,
+              address: json[i].address,
+              long2: long2,
+              lat2: lat2));
+        }
       }
       return fixList;
     } else {
@@ -273,33 +291,43 @@ Future<List> getFixinfo(String query) async {
   }
 }
 
-///////////////////////////// 내가 원하는 OIL class /////////////////////////////
+///////////////////////////// 내가 원하는 FIX class /////////////////////////////
 class FIX {
   final String type;
   final String name;
   final String address;
-  final double long;
-  final double lat;
+  final double long2;
+  final double lat2;
 
   FIX({
     required this.type,
     required this.name,
     required this.address,
-    required this.long,
-    required this.lat,
+    required this.long2,
+    required this.lat2,
   });
 
   factory FIX.fromJson(Map<dynamic, dynamic> json) {
-    Point point =
-        transCoord('카텍', Point(x: json['GIS_X_COOR'], y: json['GIS_Y_COOR']));
     return FIX(
       type: json['type'],
       name: json['name'],
       address: json['address'],
-      long: point.x,
-      lat: point.y,
+      long2: json['long'],
+      lat2: json['lat2'],
     );
   }
+}
+
+class FIX1 {
+  final String type;
+  final String name;
+  final String address;
+
+  FIX1({
+    required this.type,
+    required this.name,
+    required this.address,
+  });
 }
 
 /*좌표 변환 함수*/
