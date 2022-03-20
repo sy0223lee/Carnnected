@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:mosigg/maintenance/fix5.dart';
 
 class Fixconfirm extends StatefulWidget {
@@ -35,6 +36,22 @@ class _FixconfirmState extends State<Fixconfirm> {
   String carNum = '12가1234'; //해당 차량
   int price = 15;
   @override
+  void initState() {
+    fixRsrv(
+        id,
+        carNum,
+        widget.dateAndTime,
+        widget.carLocation,
+        widget.carDetailLocation,
+        widget.type,
+        widget.payment,
+        widget.detail,
+        widget.destName,
+        widget.destaddr,
+        price);
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -121,11 +138,11 @@ Future<void> fixRsrv(
     String type,
     String payment,
     String detail,
-    String destname,
+    String destName,
     String destaddr,
     int price) async {
   final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/repair_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${type}/${detail}/${destname}/${destaddr}/${price}/${payment}'));
+      'http://10.0.2.2:8080/repair_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${type}/${detail}/${destName}/${destaddr}/${price}/${payment}'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
   } else {
