@@ -82,13 +82,15 @@ class _WashconfirmState extends State<Washconfirm> {
                 Container(
                   width: 271,
                   child: Flexible(
-                    child: Text.rich(TextSpan(
-                        text: '${widget.detail}',
+                      child: RichText(
+                    textAlign: TextAlign.right,
+                    text: TextSpan(
+                        text: widget.detail,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.0,
-                            fontWeight: FontWeight.w400))),
-                  ),
+                            fontWeight: FontWeight.w400)),
+                  )),
                 )
               ],
             ),
