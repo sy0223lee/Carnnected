@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:mosigg/maintenance/fix5.dart';
 
 class Fixconfirm extends StatefulWidget {
-  const Fixconfirm({Key? key}) : super(key: key);
+  final String dateAndTime;
+  final String carLocation;
+  final String carDetailLocation;
+  final String detail;
+  final String payment;
+  final String type;
+  final String destName;
+  final String destaddr;
+  final String? price;
+  const Fixconfirm(
+      {Key? key,
+      required this.dateAndTime,
+      required this.carLocation,
+      required this.carDetailLocation,
+      required this.detail,
+      required this.payment,
+      required this.type,
+      required this.destName,
+      required this.destaddr,
+      this.price})
+      : super(key: key);
 
   @override
   State<Fixconfirm> createState() => _FixconfirmState();
 }
 
 class _FixconfirmState extends State<Fixconfirm> {
+  /*임시데이터*/
+  String id = 'mouse0429'; //사용자 아이디
+  String carNum = '12가1234'; //해당 차량
+  int price = 15;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,10 +44,7 @@ class _FixconfirmState extends State<Fixconfirm> {
         title: text('정비 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
           onPressed: () {
-            // Navigator.push(
-            //  context,
-            // MaterialPageRoute(
-            //    builder: (BuildContext context) => ()));
+            Navigator.pop(context);
           },
           icon: Icon(
             Icons.arrow_back,
@@ -37,18 +58,22 @@ class _FixconfirmState extends State<Fixconfirm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             text('예약 내역을 확인해주세요', 12.0, FontWeight.w400, Color(0xff9a9a9a)),
-            text('케이 머터스', 16.0, FontWeight.bold, Colors.black),
+            text(widget.destName, 16.0, FontWeight.bold, Colors.black),
             SizedBox(height: 34.0),
             splitrow('차량번호', '12가 1234'),
             SizedBox(height: 20.0),
-            splitrow('예약일시', '2022년 4월 29일 오후 12:00'),
-            splitrow('차량위치', '경기도'),
+            splitrow('예약일시',
+                '${widget.dateAndTime.substring(0, 4)}년 ${widget.dateAndTime.substring(5, 7)}월 ${widget.dateAndTime.substring(8, 10)}일 ${widget.dateAndTime.substring(11, 13)}:${widget.dateAndTime.substring(14, 16)}'),
+            splitrow('차량위치', widget.carLocation),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [text('상세주소', 14.0, FontWeight.w400, Colors.black)],
+              children: [
+                text(widget.carDetailLocation, 14.0, FontWeight.w400,
+                    Colors.black)
+              ],
             ),
             SizedBox(height: 10.0),
-            splitrow('검사 종류', '정기 검사'),
+            splitrow('검사 종류', widget.type),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +83,7 @@ class _FixconfirmState extends State<Fixconfirm> {
                   width: 271,
                   child: Flexible(
                     child: Text.rich(TextSpan(
-                        text: '아무생각없이 보기좋은 스낵무비 밤밤밤밤 알밤군밤고구마 룰루!',
+                        text: widget.detail,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.0,
@@ -74,7 +99,7 @@ class _FixconfirmState extends State<Fixconfirm> {
               thickness: 1.0,
             ),
             splitrow2('예상 금액', '12만원'),
-            splitrow2('결제방식', '카넥티드 결제'),
+            splitrow2('결제방식', widget.payment),
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -84,6 +109,27 @@ class _FixconfirmState extends State<Fixconfirm> {
         ),
       ),
     );
+  }
+}
+
+Future<void> fixRsrv(
+    String id,
+    String carNum,
+    String dateAndTime,
+    String carLocation,
+    String carDetailLocation,
+    String type,
+    String payment,
+    String detail,
+    String destname,
+    String destaddr,
+    int price) async {
+  final response = await http.get(Uri.parse(
+      'http://10.0.2.2:8080/repair_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${type}/${detail}/${destname}/${destaddr}/${price}/${payment}'));
+  if (response.statusCode == 200) {
+    print('댕같이성공 ${response.body}');
+  } else {
+    print('개같이실패 ${response.statusCode}');
   }
 }
 

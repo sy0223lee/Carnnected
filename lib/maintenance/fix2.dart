@@ -57,7 +57,7 @@ class _FixplusState extends State<Fixplus> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
+        body: Container(
           padding: EdgeInsets.fromLTRB(25.0, 28.0, 25.0, 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

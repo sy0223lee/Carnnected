@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/maintenance/fix4.dart';
+import 'package:mosigg/signup/signup3.dart';
 
 import 'dart:convert';
 import 'dart:ui' as ui;
@@ -36,11 +38,12 @@ class _FixRsrvState extends State<FixRsrv> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   late CameraPosition markerCam;
-  late List gasCoordData;
+  late List fixCoordData;
 
   Completer<GoogleMapController> _controller = Completer();
 
-  late String gasStationName;
+  late String fixStationName;
+  late String fixStationaddress;
 
   void initState() {
     super.initState();
@@ -50,16 +53,16 @@ class _FixRsrvState extends State<FixRsrv> {
   }
 
   void makeMarker() async {
-    gasCoordData = await getFixinfo(widget.carLocation);
-    for (var i = 0; i < gasCoordData.length; i++) {
-      _addMarker(i, gasCoordData[i].lat, gasCoordData[i].long,
-          gasCoordData[i].name, gasCoordData[i].price);
+    fixCoordData = await getFixinfo(widget.carLocation);
+    for (var i = 0; i < fixCoordData.length; i++) {
+      _addMarker(i, fixCoordData[i].lat, fixCoordData[i].long,
+          fixCoordData[i].name, fixCoordData[i].address);
     }
   }
 
-  void _addMarker(id, x, y, name, price) async {
+  void _addMarker(id, x, y, name, address) async {
     final MarkerId markerId = MarkerId(id.toString());
-    Uint8List markerIcon = await getBytesFromCanvas(150, 80, price);
+    Uint8List markerIcon = await getBytesFromCanvas(150, 80);
 
     Marker marker = new Marker(
         markerId: markerId,
@@ -67,9 +70,10 @@ class _FixRsrvState extends State<FixRsrv> {
         draggable: false,
         infoWindow: InfoWindow(title: "여기로 예약"),
         onTap: () {
-          _infoDialog(context, name, price);
+          _infoDialog(context, name, address);
           setState(() {
-            gasStationName = name;
+            fixStationName = name;
+            fixStationaddress = address;
           });
         },
         position: LatLng(x, y));
@@ -79,7 +83,7 @@ class _FixRsrvState extends State<FixRsrv> {
     });
   }
 
-  Future<Uint8List> getBytesFromCanvas(int width, int height, int price) async {
+  Future<Uint8List> getBytesFromCanvas(int width, int height) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = Color(0xff001a5d);
@@ -95,7 +99,7 @@ class _FixRsrvState extends State<FixRsrv> {
         paint);
     TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
     painter.text = TextSpan(
-      text: price.toString(),
+      text: name,
       style: TextStyle(
           fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.white),
     );
@@ -113,7 +117,7 @@ class _FixRsrvState extends State<FixRsrv> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
+          title: text('정비 서비스 예약', 16.0, FontWeight.w500, Colors.black),
           toolbarHeight: 56.0,
           centerTitle: true,
           elevation: 0.0,
@@ -139,7 +143,21 @@ class _FixRsrvState extends State<FixRsrv> {
         height: 40.0,
         child: TextButton(
           child: text("계속하기", 14.0, FontWeight.w500, Color(0xffffffff)),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Fixconfirm(
+                          dateAndTime: widget.dateAndTime,
+                          carLocation: widget.carLocation,
+                          carDetailLocation: widget.carDetailLocation,
+                          detail: widget.detail,
+                          type: widget.type,
+                          payment: widget.payment,
+                          destName: fixStationName,
+                          destaddr: fixStationaddress,
+                        )));
+          },
           style: TextButton.styleFrom(
             backgroundColor: Color(0xff001A5D),
           ),
@@ -148,7 +166,7 @@ class _FixRsrvState extends State<FixRsrv> {
     );
   }
 
-  void _infoDialog(BuildContext context, String name, int price) {
+  void _infoDialog(BuildContext context, String name, String address) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -191,8 +209,7 @@ class _FixRsrvState extends State<FixRsrv> {
                         SizedBox(
                           width: 5.0,
                         ),
-                        //text(price.toString(), 10.0, FontWeight.w500,
-                        // Colors.black),
+                        text(address, 10.0, FontWeight.w500, Colors.black),
                       ],
                     )
                   ],
@@ -235,20 +252,21 @@ Future<List> getFixinfo(String query) async {
     katecY = katecPoint.y;
 
     /*테스트 코드*/
-    // katecX = 314681.8;
+    //katecX = 314681.8;
     // katecY = 544837.0;
-    print('주유2 ${katecX}, ${katecY}');
+    print('Fix3 ${katecX}, ${katecY}');
 
-    final responseGas = await http.get(Uri.parse(''));
-    if (responseGas.statusCode == 200) {
+    final responseFix = await http
+        .get(Uri.parse('http://10.0.2.2:8080/map/카센터/${katecX}/${katecY}'));
+    if (responseFix.statusCode == 200) {
       late List<FIX> fixList = [];
-      List<dynamic> json = jsonDecode(responseGas.body)['RESULT']['FIX'];
+      List<dynamic> json = jsonDecode(responseFix.body);
       for (var i = 0; i < json.length; i++) {
         fixList.add(FIX.fromJson(json[i]));
       }
       return fixList;
     } else {
-      throw Exception('Failed to load gas data');
+      throw Exception('Failed to load fix data');
     }
   } else {
     throw Exception('Failed to load coordinates');
@@ -257,12 +275,14 @@ Future<List> getFixinfo(String query) async {
 
 ///////////////////////////// 내가 원하는 OIL class /////////////////////////////
 class FIX {
+  final String type;
   final String name;
   final String address;
   final double long;
   final double lat;
 
   FIX({
+    required this.type,
     required this.name,
     required this.address,
     required this.long,
@@ -273,7 +293,8 @@ class FIX {
     Point point =
         transCoord('카텍', Point(x: json['GIS_X_COOR'], y: json['GIS_Y_COOR']));
     return FIX(
-      name: json['OS_NM'],
+      type: json['type'],
+      name: json['name'],
       address: json['address'],
       long: point.x,
       lat: point.y,
