@@ -49,11 +49,12 @@ class _FixRsrvState extends State<FixRsrv> {
     super.initState();
     print(widget.carCoord.latitude);
     markerCam = CameraPosition(target: widget.carCoord, zoom: 14);
+    getFixinfo(widget.carCoord);
     makeMarker();
   }
 
   void makeMarker() async {
-    fixCoordData = await getFixinfo(widget.carLocation);
+    //fixCoordData = await getFixinfo(widget.carCoord);
     for (var i = 0; i < fixCoordData.length; i++) {
       _addMarker(i, fixCoordData[i].lat, fixCoordData[i].long,
           fixCoordData[i].name, fixCoordData[i].address);
@@ -226,69 +227,96 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Future<List> getFixinfo(String query) async {
+Future<void> getFixinfo(LatLng addr) async {
   Map<String, String> headers = {
     'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
     'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
   };
 
-  late double katecX;
-  late double katecY;
+  late List<FIX> fixList = [];
 
-  final responseCoord = await http.get(
-      Uri.parse(
-          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${query}'),
-      headers: headers);
+  final responseCrawling = await http.get(Uri.parse(
+      'http://10.0.2.2:8080/map/카센터/${addr.latitude}/${addr.longitude}'));
 
-  if (responseCoord.statusCode == 200) {
-    var long =
-        double.parse(jsonDecode(responseCoord.body)['addresses'][0]['x']);
-    var lat = double.parse(jsonDecode(responseCoord.body)['addresses'][0]['y']);
-    var point = Point(x: long, y: lat);
-
-    var katecPoint = transCoord('위도', point);
-
-    katecX = katecPoint.x;
-    katecY = katecPoint.y;
-
-    /*테스트 코드*/
-    //katecX = 314681.8;
-    // katecY = 544837.0;
-    print('Fix3 ${long}, ${lat}');
-
-    final responseFix = await http
-        .get(Uri.parse('http://10.0.2.2:8080/map/카센터/${long}/${lat}'));
-    if (responseFix.statusCode == 200) {
-      late List<FIX> fixList = [];
-
-      List<dynamic> json = jsonDecode(responseFix.body)['RESULT']['FIX1'];
-
+  if(responseCrawling.statusCode == 200) {
+    List<dynamic> json = jsonDecode(responseCrawling.body);
       for (var i = 0; i < json.length; i++) {
-        final responseNewCoord = await http.get(
-            Uri.parse(
-                'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${json[i].address}'),
-            headers: headers);
-        if (responseNewCoord.statusCode == 200) {
-          var long2 = double.parse(
-              jsonDecode(responseNewCoord.body)['addresses'][0]['x']);
-          var lat2 = double.parse(
-              jsonDecode(responseNewCoord.body)['addresses'][0]['y']);
-
-          fixList.add(FIX(
-              type: json[i].type,
-              name: json[i].name,
-              address: json[i].address,
-              long2: long2,
-              lat2: lat2));
-        }
+        print(json[i]);
+      //   final responseCoord = await http.get(Uri.parse(
+      //     'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${json[i].}'),
+      // headers: headers);
       }
-      return fixList;
-    } else {
-      throw Exception('Failed to load fix data');
-    }
-  } else {
-    throw Exception('Failed to load coordinates');
   }
+
+
+  // final responseCoord = await http.get(
+  //     Uri.parse(
+  //         'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${query}'),
+  //     headers: headers);
+
+  //   /*테스트 코드*/
+  //   //katecX = 314681.8;
+  //   // katecY = 544837.0;
+  //   print('Fix3 ${long}, ${lat}');
+
+  //   final responseFix = await http
+  //       .get(Uri.parse('http://10.0.2.2:8080/map/카센터/${long}/${lat}'));
+  //   if (responseFix.statusCode == 200) {
+  //     late List<FIX> fixList = [];
+
+  //     List<dynamic> json = jsonDecode(responseFix.body)['RESULT']['FIX1'];
+
+  //     for (var i = 0; i < json.length; i++) {
+  //       final responseNewCoord = await http.get(
+  //           Uri.parse(
+  //               'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${json[i].address}'),
+  //           headers: headers);
+  //       if (responseNewCoord.statusCode == 200) {
+  //         var long2 = double.parse(
+  //             jsonDecode(responseNewCoord.body)['addresses'][0]['x']);
+  //         var lat2 = double.parse(
+  //             jsonDecode(responseNewCoord.body)['addresses'][0]['y']);
+
+  //         fixList.add(FIX(
+  //             type: json[i].type,
+  //             name: json[i].name,
+  //             address: json[i].address,
+  //             long2: long2,
+  //             lat2: lat2));
+  //       }
+  //     }
+  //     return fixList;
+  //   } else {
+  //     throw Exception('Failed to load fix data');
+  //   }
+  // } else {
+  //   throw Exception('Failed to load coordinates');
+  // }
+
+  //incoming
+  // if (responseCoord.statusCode == 200) {
+  //   var long =
+  //       double.parse(jsonDecode(responseCoord.body)['addresses'][0]['x']);
+  //   var lat = double.parse(jsonDecode(responseCoord.body)['addresses'][0]['y']);
+  //   var point = Point(x: long, y: lat);
+
+
+
+  //   final responseFix = await http
+  //       .get(Uri.parse('http://10.0.2.2:8080/map/카센터/${katecX}/${katecY}'));
+  //   if (responseFix.statusCode == 200) {
+  //     late List<FIX> fixList = [];
+  //     List<dynamic> json = jsonDecode(responseFix.body);
+  //     for (var i = 0; i < json.length; i++) {
+  //       fixList.add(FIX.fromJson(json[i]));
+  //     }
+  //     return fixList;
+  //   } else {
+  //     throw Exception('Failed to load fix data');
+  //   }
+  // } else {
+  //   throw Exception('Failed to load coordinates');
+  // }
 }
 
 ///////////////////////////// 내가 원하는 FIX class /////////////////////////////
