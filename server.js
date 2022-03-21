@@ -713,23 +713,9 @@ app.get('/drive_resrv/response/:id/:number', function (req, res){
     }, 30000);
 })
 
-// 예약 요청 대기
-app.get('/drive_resrv/waiting/:id/:number', async function(req, res){
-    var id = req.params.id;
-    var number = req.params.number;
-    var response = await http.get(Uri.parse(`http://10.0.2.2:8080/drive_resrv/waiting/${id}/${number}`));
-
-    if(response.status == 200){
-        if(response == true)    res.send(true);
-        else    res.send(false);
-    }
-    else    res.send(false);
-})
-
-
 /***** 딜리버리 서비스 *****/
 // 예약 요청 insert
-app.get('/deliv_resrv/:id/:number/:time/:source/:detailSrc/:dest_name/:dest_addr/:price/:payment', function(req, res){
+app.get('/deliv_resrv/:id/:number/:time/:source/:detailSrc/:dest_name/:dest_addr/:payment/:price', function(req, res){
     var id = req.params.id;
     var number = req.params.number;
     var time = req.params.time;
@@ -760,8 +746,8 @@ app.get('/deliv_resrv/:id/:number/:time/:source/:detailSrc/:dest_name/:dest_addr
                     console.log("딜리버리 예약 가능");
                     
                     // 예약 정보 table에 insert
-                    var sqlDelivReserv = "INSERT INTO DELIV_RESRV (`id`,`number`,`time`,`source`,`detailSrc`,`dest_name`,`dest_addr`,`price`,`payment`) VALUES (?,?,?,?,?,?,?,?,?)";
-                    var datas = [id, number, time, source, detailSrc, dest_name, dest_addr, price, payment];
+                    var sqlDelivReserv = "INSERT INTO DELIV_RESRV (`id`,`number`,`time`,`source`,`detailSrc`,`dest_name`,`dest_addr`,`price`,`payment`,`status`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                    var datas = [id, number, time, source, detailSrc, dest_name, dest_addr, price, payment, "request"];
                     console.log("딜리버리 예약 정보: ", datas);
     
                     pool.query(sqlDelivReserv, datas, function(err){
@@ -791,15 +777,15 @@ app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
     var id = req.params.id;
     var number = req.params.number;
     var time = req.params.time;
+    var response = "false";
     var sqlReqCheck = "SELECT `status` FROM DELIV_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ?";
-
-    var response = false;
+    
     var timer = setInterval(() => {
         pool.getConnection(function(err, connection){
             connection.query(sqlReqCheck, [id, number, time], function(err, result){
                 if(err) {
                     console.log("딜리버리 예약 상태 확인 오류:", result[0]);
-                    return res.send(false);
+                    return res.send("false");
                 }
                 if(result[0] === undefined){
                     console.log("딜리버리 예약 요청 없음");
@@ -810,7 +796,7 @@ app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
                 else if(result[0].status === 'reserved'){
                     console.log("딜리버리 예약 요청 성공");
                     clearInterval(timer);
-                    response = true
+                    response = "true"
                     return res.send(response);
                 }
                 else if(result[0].status === 'request'){
@@ -821,7 +807,7 @@ app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
     }, 3000)
 
     setTimeout(() => {
-        if(!response){
+        if(response != "true"){
             console.log("딜리버리 예약 요청 실패");
             var sqlCancel = "DELETE FROM DELIV_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ? AND `status` = 'request'";
 
@@ -835,18 +821,24 @@ app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
     }, 30000);
 })
 
-// 예약 요청 대기
-app.get('/deliv_resrv/waiting/:id/:number/:time', async function(req, res){
+// 예약 요청 수락
+app.get('/deliv_accept/:id/:number/:time', function(req, res){
     var id = req.params.id;
     var number = req.params.number;
     var time = req.params.time;
-    var response = await http.get(Uri.parse(`http://10.0.2.2:8080/deliv_resrv/waiting/${id}/${number}/${time}`));
-
-    if(response.status == 200){
-        if(response == true)    res.send(true);
-        else    res.send(false);
-    }
-    else    res.send(false);
+    pool.getConnection(function(err, connection){
+        var sqlUpdate = "UPDATE `DELIV_RESRV` SET `status` = 'reserved' WHERE `id` = ? AND `number` = ? AND `time` >= ?";
+        connection.query(sqlUpdate, [id, number, time], function(err, rows){
+            if(err){
+                console.log("update 실패", rows);
+                res.send(false);
+            }
+            else{
+                console.log("update 성공", rows);
+                res.send(true);
+            }
+        })
+    })
 })
 
 /*index 찾고 그 아이템 가져오기*/
