@@ -171,10 +171,9 @@ class _DeliverysecondState extends State<Deliverysecond> {
         );
       }
     );
-    bool insertcheck = await deliveryRsv(id, carnumber, widget.dateAndTime, widget.carLocation, widget.carDetailLocation, widget.desLocation, widget.desDetailLocation, widget.payment, price);
+    var insertcheck = await deliveryRsv(id, carnumber, widget.dateAndTime, widget.carLocation, widget.carDetailLocation, widget.desLocation, widget.desDetailLocation, widget.payment, price);
     var loadingcheck = await loadingAction(id, carnumber, widget.dateAndTime);
     Navigator.pop(context);
-
     if(insertcheck == false || loadingcheck != "true"){
       showDialog(
         context: context,
@@ -228,7 +227,7 @@ Future<bool> deliveryRsv(
     String payment,
     int price) async {
   final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/deliv_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${desLocation}/${desDetailLocation}/${price}/${payment}'));
+      'http://10.0.2.2:8080/deliv_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${desLocation}/${desDetailLocation}/${payment}/${price}'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
     if(json.decode(response.body) == true)  return true;
@@ -243,7 +242,8 @@ Future<String> loadingAction(String id, String carnumber, String time) async {
   final response = await http.get(Uri.parse('http://10.0.2.2:8080/deliv_resrv/${id}/${carnumber}/${time}'));
 
   if (response.statusCode == 200) {
-    return json.decode(response.body).toString();
+    var rt = response.body.toString();
+    return rt;
   } else
     throw Exception('Failed to loading');
 }

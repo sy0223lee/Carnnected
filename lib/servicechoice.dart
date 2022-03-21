@@ -280,7 +280,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                 width: 200,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 3,
+                    itemCount: 2,
                     itemBuilder: (context, index) {
                       return currentservice(serviceList[index]);
                     }),

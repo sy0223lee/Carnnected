@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/oiling/oilend.dart';
+import 'package:mosigg/delivery/deliveryend.dart';
 import 'package:http/http.dart' as http;
 
 class Deliveryconfirm extends StatefulWidget {
@@ -95,20 +95,10 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
-                      deliveryRsv(
-                          id,
-                          carNum,
-                          widget.dateAndTime,
-                          widget.carLocation,
-                          widget.carDetailLocation,
-                          widget.desLocation,
-                          widget.desDetailLocation,
-                          widget.payment,
-                          int.parse(widget.price));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (BuildContext context) => Oilend()));
+                              builder: (BuildContext context) => Deliveryend()));
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -120,27 +110,6 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
         ),
       ),
     );
-  }
-}
-
-Future<void> deliveryRsv(
-    String id,
-    String carNum,
-    String dateAndTime,
-    String carLocation,
-    String carDetailLocation,
-    String desLocation,
-    String desDetailLocation,
-    String payment,
-    int price) async {
-  String amount = (price * 10000).toString();
-  String exPrice = ((price + 2) * 10000).toString();
-  final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/deliv_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${desLocation}/${desDetailLocation}/${price}/${payment}'));
-  if (response.statusCode == 200) {
-    print('댕같이성공 ${response.body}');
-  } else {
-    print('개같이실패 ${response.statusCode}');
   }
 }
 
