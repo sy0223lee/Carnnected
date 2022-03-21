@@ -713,6 +713,26 @@ app.get('/drive_resrv/response/:id/:number', function (req, res){
     }, 30000);
 })
 
+// 예약 요청 수락
+app.get('/drive_accept/:id/:number/:time', function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var time = req.params.time;
+    pool.getConnection(function(err, connection){
+        var sqlUpdate = "UPDATE `DRIVE_RESRV` SET `status` = 'reserved' WHERE `id` = ? AND `number` = ? AND `time` >= ?";
+        connection.query(sqlUpdate, [id, number, time], function(err, rows){
+            if(err){
+                console.log("update 실패", rows);
+                res.send(false);
+            }
+            else{
+                console.log("update 성공", rows);
+                res.send(true);
+            }
+        })
+    })
+})
+
 /***** 딜리버리 서비스 *****/
 // 예약 요청 insert
 app.get('/deliv_resrv/:id/:number/:time/:source/:detailSrc/:dest_name/:dest_addr/:payment/:price', function(req, res){
