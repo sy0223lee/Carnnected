@@ -177,7 +177,7 @@ class _DrivestartState extends State<Drivestart> {
             ),
             text('차량 위치를 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             SizedBox(height: 19),
-            text('배달 위치', 14.0, FontWeight.w400, Colors.black),
+            text('목적지', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
             InkWell(
               onTap: () async {

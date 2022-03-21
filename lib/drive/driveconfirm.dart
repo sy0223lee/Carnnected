@@ -69,7 +69,7 @@ class _DriveconfirmState extends State<Driveconfirm> {
                     Colors.black)
               ],
             ),
-            splitrow('배달위치', '${widget.desLocation}'),
+            splitrow('목적지', '${widget.desLocation}'),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
