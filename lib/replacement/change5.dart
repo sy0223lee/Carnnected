@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home.dart';
 
-class Changeend extends StatefulWidget {
-  const Changeend({Key? key}) : super(key: key);
+class ChangeEnd extends StatefulWidget {
+  const ChangeEnd({Key? key}) : super(key: key);
 
   @override
-  State<Changeend> createState() => _ChangeendState();
+  State<ChangeEnd> createState() => _ChangeEndState();
 }
 
-class _ChangeendState extends State<Changeend> {
+class _ChangeEndState extends State<ChangeEnd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

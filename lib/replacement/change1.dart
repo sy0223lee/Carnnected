@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/replacement/repselect.dart';
 
-class Changestart extends StatefulWidget {
+class ChangeStart extends StatefulWidget {
   final String? carLocation;
   final String? carDetailLocation;
 
-  const Changestart({Key? key, this.carLocation, this.carDetailLocation})
+  const ChangeStart({Key? key, this.carLocation, this.carDetailLocation})
       : super(key: key);
 
   @override
-  State<Changestart> createState() => _ChangestartState();
+  State<ChangeStart> createState() => _ChangeStartState();
 }
 
 const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
@@ -26,7 +26,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
   900: Color(0xff001a5d),
 });
 
-class _ChangestartState extends State<Changestart> {
+class _ChangeStartState extends State<ChangeStart> {
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String? _selectedTime = "";

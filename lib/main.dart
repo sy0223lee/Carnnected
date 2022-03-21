@@ -11,6 +11,7 @@ import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/location/location2.dart';
 import 'package:mosigg/location/common/map.dart';
 import 'package:mosigg/replacement/change1.dart';
+import 'package:mosigg/replacement/repselect.dart';
 
 import 'oiling/oilstart.dart';
 
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => StartPage(),
           '/oilstart': (context) => Oilstart(),
           '/location1': (context) => LocationSearchPage1(),
-          '/replacement': (context) => Changestart()},
+          '/replacement': (context) => RepSelect(dateAndTime: '1', carLocation: '2', carDetailLocation: '3', payment: '카드')},
         //home: RepConfirm()//Oilstart() //TabBarPage() //StartPage(),
         );
   }

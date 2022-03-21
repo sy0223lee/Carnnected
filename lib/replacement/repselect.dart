@@ -1,15 +1,14 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:mosigg/replacement/change3.dart';
-import 'package:mosigg/replacement/common/replacelist.dart';
 import 'package:mosigg/replacement/repselect2.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
-var list1 = [];
-var list2 = [];
-var list3 = [];
-var list4 = [];
+var priceFormat = NumberFormat.currency(locale: "ko_KR", symbol: "");
 
 class RepSelect extends StatefulWidget {
   final String dateAndTime;
@@ -29,40 +28,88 @@ class RepSelect extends StatefulWidget {
   _RepSelectState createState() => _RepSelectState();
 }
 
-class _RepSelectState extends State<RepSelect> {
-  
+class _RepSelectState extends State<RepSelect> with TickerProviderStateMixin {
+  Future<List>? itemListData;
+
+  late TabController _controller;
+  late AnimationController _animationControllerOn;
+  late AnimationController _animationControllerOff;
+  late Animation _colorTweenBackgroundOn;
+  late Animation _colorTweenBackgroundOff;
+
+  int _currentIndex = 0;
+  int _prevControllerIndex = 0;
+  double _aniValue = 0.0;
+  double _prevAniValue = 0.0;
+
+  List _tabs = [
+    'ALL',
+    '와이퍼',
+    '에어컨필터',
+    '워셔액',
+    '엔진오일',
+    '배터리',
+    '타이어',
+    '타이어 공기압'
+  ];
+
+  Color _backgroundOn = Color(0xff001a5d);
+  Color _backgroundOff = Colors.grey;
+
+  ScrollController _scrollController = new ScrollController();
+  List _keys = [];
+  bool _buttonTap = false;
+
   @override
   void initState() {
-    for (var i = 0; i < repList.length; i++) {
-      if (repList[i]['type'] == '와이퍼') {
-        list1.add(repList[i]);
-      } else if (repList[i]['type'] == '워셔액') {
-        list2.add(repList[i]);
-      } else if (repList[i]['type'] == '엔진오일') {
-        list3.add(repList[i]);
-      } else {
-        list4.add(repList[i]);
-      }
-    }
     super.initState();
+    itemListData = getItemList();
+
+    for (int index = 0; index < _tabs.length; index++) {
+      _keys.add(new GlobalKey());
+    }
+
+    _controller = TabController(vsync: this, length: _tabs.length);
+    _controller.animation!.addListener(_handleTabAnimation);
+    _controller.addListener(_handleTabChange);
+
+    _animationControllerOff =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 75));
+    _animationControllerOff.value = 1.0;
+    _colorTweenBackgroundOff =
+        ColorTween(begin: _backgroundOn, end: _backgroundOff)
+            .animate(_animationControllerOff);
+
+    _animationControllerOn =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
+    _animationControllerOn.value = 1.0;
+    _colorTweenBackgroundOn =
+        ColorTween(begin: _backgroundOff, end: _backgroundOn)
+            .animate(_animationControllerOn);
   }
 
-void onPressedFunction(
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void onPressedFunction(
     BuildContext context,
     String dateAndTime,
     String carLocation,
     String carDetailLocation,
     String payment) {
-  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Changeplus(
-                            dateAndTime: dateAndTime,
-                            carLocation: carLocation,
-                            carDetailLocation: carDetailLocation,
-                            payment: payment
-                            )));
-}
+    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => ChangePlus(
+                              dateAndTime: dateAndTime,
+                              carLocation: carLocation,
+                              carDetailLocation: carDetailLocation,
+                              payment: payment
+                              )));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,72 +129,249 @@ void onPressedFunction(
           ),
         ),
       ),
-      body: DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          floatingActionButton: Container(
-            height: 56,
-            width: 56,
-            child: FloatingActionButton(
-              onPressed: () {
-                onPressedFunction(
-                  context,
-                  widget.dateAndTime,
-                  widget.carLocation,
-                  widget.carDetailLocation,
-                  widget.payment
+      body: Column(
+        children: [
+          Container(
+            height: 49.0,
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              itemCount: _tabs.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  key: _keys[index],
+                  padding: EdgeInsets.all(6.0),
+                  child: ButtonTheme(
+                      child: AnimatedBuilder(
+                    animation: _colorTweenBackgroundOn,
+                    builder: (context, child) => TextButton(
+                      style: TextButton.styleFrom(
+                        primary: _getBackgroundColor(index),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(7.0)),
+                        ),
+                      onPressed: () {
+                        setState(() {
+                          _buttonTap = true;
+                          _controller.animateTo(index);
+                          _setCurrentIndex(index);
+                          _scrollTo(index);
+                        });
+                      },
+                      child: Text(
+                        '${_tabs[index]}',
+                      )),
+                  ))
                 );
-              },
-              shape: CircleBorder(),
-              child: Badge(
-                  position: BadgePosition.topEnd(top: -8, end: -6),
-                  toAnimate: true,
-                  shape: BadgeShape.circle,
-                  badgeContent: Text(
-                    '${context.watch<CountPurchase>().count}',
-                    style: TextStyle(color: Color(0xff001a5d), fontSize: 8),
-                  ),
-                  badgeColor: Colors.white,
-                  showBadge: context.watch<CountPurchase>().count == 0 ? false : true,
-                  child: Icon(Icons.shopping_bag_rounded)),
-              backgroundColor: Color(0xff001a5d),
+              }
             ),
           ),
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(48),
-            child: AppBar(
-              backgroundColor: Colors.white,
-              elevation: 0,
-              bottom: TabBar(
-                indicatorColor: Color(0xff001A5D),
-                labelColor: Colors.black,
-                labelStyle:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                unselectedLabelStyle:
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                tabs: [
-                  Tab(text: 'ALL'),
-                  Tab(text: '와이퍼'),
-                  Tab(text: '워셔액'),
-                  Tab(text: '엔진오일'),
-                  Tab(text: '배터리'),
-                ],
+          Flexible(
+            child: TabBarView(
+              controller: _controller,
+              children: [
+                FutureBuilder<List>(
+                  future: itemListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return listview(snapshot.data!.length, snapshot.data!);
+                    } else {
+                      return Text('상품 불러오는 중!');
+                    }
+                  }
+                ),
+                // FutureBuilder<Item>(
+                //   future: item,
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       return listview(snapshot.data!.list1!.length, snapshot.data!.list1);
+                //     } else {
+                //       return Text('상품 불러오는 중!');
+                //     }
+                //   }
+                // ),
+                // FutureBuilder<Item>(
+                //   future: item,
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       return listview(snapshot.data!.list2!.length, snapshot.data!.list2);
+                //     } else {
+                //       return Text('상품 불러오는 중!');
+                //     }
+                //   }
+                // ),
+                // FutureBuilder<Item>(
+                //   future: item,
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       return listview(snapshot.data!.list3!.length, snapshot.data!.list3);
+                //     } else {
+                //       return Text('상품 불러오는 중!');
+                //     }
+                //   }
+                // ),
+                // FutureBuilder<Item>(
+                //   future: item,
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       return listview(snapshot.data!.list4!.length, snapshot.data!.list4);
+                //     } else {
+                //       return Text('상품 불러오는 중!');
+                //     }
+                //   }
+                // ),
+                // FutureBuilder<Item>(
+                //   future: item,
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       return listview(snapshot.data!.list5!.length, snapshot.data!.list5);
+                //     } else {
+                //       return Text('상품 불러오는 중!');
+                //     }
+                //   }
+                // ),
+                // FutureBuilder<Item>(
+                //   future: item,
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       return listview(snapshot.data!.list6!.length, snapshot.data!.list6);
+                //     } else {
+                //       return Text('상품 불러오는 중!');
+                //     }
+                //   }
+                // ),
+                // FutureBuilder<Item>(
+                //   future: item,
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       return listview(snapshot.data!.list7!.length, snapshot.data!.list7);
+                //     } else {
+                //       return Text('상품 불러오는 중!');
+                //     }
+                //   }
+                // ),
+                Text('1'),
+                Text('1'),
+                Text('1'),
+                Text('1'),
+                Text('1'),
+                Text('1'),
+                Text('1'),
+              ],
+            ),
+          ),
+
+        ]
+      ),
+      backgroundColor: Colors.white,
+      floatingActionButton: Container(
+        height: 56,
+        width: 56,
+        child: FloatingActionButton(
+          onPressed: () {
+            onPressedFunction(
+              context,
+              widget.dateAndTime,
+              widget.carLocation,
+              widget.carDetailLocation,
+              widget.payment
+            );
+          },
+          shape: CircleBorder(),
+          child: Badge(
+              position: BadgePosition.topEnd(top: -8, end: -6),
+              toAnimate: true,
+              shape: BadgeShape.circle,
+              badgeContent: Text(
+                '${context.watch<CountPurchase>().count}',
+                style: TextStyle(color: Color(0xff001a5d), fontSize: 8),
               ),
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              listview(repList.length, repList),
-              listview(list1.length, list1),
-              listview(list2.length, list2),
-              listview(list3.length, list3),
-              listview(list4.length, list4),
-            ],
-          ),
+              badgeColor: Colors.white,
+              showBadge: context.watch<CountPurchase>().count == 0 ? false : true,
+              child: Icon(Icons.shopping_bag_rounded)),
+          backgroundColor: Color(0xff001a5d),
         ),
       ),
     );
+  }
+
+  _handleTabAnimation() {
+    _aniValue = _controller.animation!.value;
+
+    if (!_buttonTap && ((_aniValue - _prevAniValue).abs() < 1)) {
+      _setCurrentIndex(_aniValue.round());
+    }
+    _prevAniValue = _aniValue;
+  }
+
+  _handleTabChange() {
+    if (_buttonTap) _setCurrentIndex(_controller.index);
+
+    if ((_controller.index == _prevControllerIndex) ||
+        (_controller.index == _aniValue.round())) _buttonTap = false;
+
+    _prevControllerIndex = _controller.index;
+  }
+
+  _setCurrentIndex(int index) {
+    if (index != _currentIndex) {
+      setState(() {
+        _currentIndex = index;
+      });
+
+      _triggerAnimation();
+      _scrollTo(index);
+    }
+  }
+
+  _triggerAnimation() {
+    _animationControllerOn.reset();
+    _animationControllerOff.reset();
+
+    _animationControllerOn.forward();
+    _animationControllerOff.forward();
+  }
+
+  _scrollTo(int index) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    RenderBox renderBox = _keys[index].currentContext.findRenderObject();
+    double size = renderBox.size.width;
+    double position = renderBox.localToGlobal(Offset.zero).dx;
+    
+    double offset = (position + size / 2) - screenWidth / 2;
+
+    if (offset < 0) {
+      renderBox = _keys[0].currentContext.findRenderObject();
+      position = renderBox.localToGlobal(Offset.zero).dx;
+
+      if (position > offset) offset = position;
+    } else {
+
+      renderBox = _keys[_tabs.length - 1].currentContext.findRenderObject();
+      position = renderBox.localToGlobal(Offset.zero).dx;
+      size = renderBox.size.width;
+
+      if (position + size < screenWidth) screenWidth = position + size;
+
+      if (position + size - offset < screenWidth) {
+        offset = position + size - screenWidth;
+      }
+    }
+
+    _scrollController.animateTo(offset + _scrollController.offset,
+        duration: new Duration(milliseconds: 150), curve: Curves.easeInOut);
+  }
+
+  _getBackgroundColor(int index) {
+    if (index == _currentIndex) {
+      return _colorTweenBackgroundOn.value;
+    } else if (index == _prevControllerIndex) {
+      return _colorTweenBackgroundOff.value;
+    } else {
+      return _backgroundOff;
+    }
   }
 }
 
@@ -171,9 +395,10 @@ Widget listview(itemcount, listname) {
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => RepSelect2(
-                          image: listname[index]['image'],
-                          name: listname[index]['name'],
-                          price: listname[index]['price'],
+                          index : listname[index].index,
+                          image: listname[index].image,
+                          name: listname[index].name,
+                          price: listname[index].price,
                         )));
           },
           child: Container(
@@ -186,7 +411,9 @@ Widget listview(itemcount, listname) {
                   height: 60,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('${listname[index]['image']}'),
+                      image: (listname[index].image == null)
+                              ? AssetImage('image/none.png')
+                              : AssetImage('${listname[index].image}'),
                     ),
                   ),
                 ),
@@ -196,13 +423,13 @@ Widget listview(itemcount, listname) {
                   children: [
                     SizedBox(height: 23),
                     Text(
-                      '${listname[index]['name']}',
+                      '${listname[index].name}',
                       style:
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 4),
                     Text(
-                      '${listname[index]['price']}원',
+                      '${priceFormat.format(int.parse(listname[index].price))}원',
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -218,4 +445,37 @@ Widget listview(itemcount, listname) {
       separatorBuilder: (BuildContext context, int index) => Divider(),
     ),
   ]);
+}
+
+Future<List> getItemList() async {
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8080/replace_item/list'));
+  late List<ItemList> itemList = [];
+
+  if (response.statusCode == 200) {
+    print(response.body);
+    var json = jsonDecode(response.body);
+    for (var i = 0; i < json.length; i++) {
+      itemList.add(ItemList.fromJson(json[i]));
+    }
+    return itemList;
+  } else {
+    throw Exception("교체 리스트를 불러오는데 실패했습니다");
+  }
+}
+
+class ItemList{
+  final int index;
+  final String? image;
+  final String? type;
+  final String? name;
+  final String? price;
+
+  ItemList({required this.index, required this.image, required this.type,
+            required this.name, required this.price});
+  
+  factory ItemList.fromJson(Map<String, dynamic> json) {
+    return ItemList(index: json['index'], image: json['image'], type: json['type'],
+                name: json['name'], price: json['price'].toString());
+  }
 }

@@ -1,26 +1,18 @@
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:provider/provider.dart';
-
-enum Select { One, Two, Three, Four, Five, Six, Seven }
-enum Using { One }
-
-var optionItem = [];
-var optionPrice = [];
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class RepSelect2 extends StatefulWidget {
+  final int index;
   final String image;
   final String name;
   final String price;
 
   const RepSelect2(
-      {Key? key, 
-      required this.image,
-      required this.name,
-      required this.price})
+      {Key? key, required this.index, required this.image, required this.name, required this.price})
       : super(key: key);
 
   @override
@@ -28,18 +20,20 @@ class RepSelect2 extends StatefulWidget {
 }
 
 class _RepSelect2State extends State<RepSelect2> {
-  List<CustomRadio> size = [
-    CustomRadio(true, '300mm', '10,000'),
-    CustomRadio(false, '350mm', '10,000'),
-    CustomRadio(false, '400mm', '10,000'),
-    CustomRadio(false, '450mm', '10,000'),
-    CustomRadio(false, '450mm', '10,000'),
-    CustomRadio(false, '500mm', '10,000'),
-    CustomRadio(false, '550mm', '10,000'),
-    CustomRadio(false, '600mm', '10,000'),
-  ];
-  Select? select = Select.One;
-  Using? using = Using.One;
+  Future<Item>? item;
+
+  /*가격*/
+  var priceFormat = NumberFormat.currency(locale: "ko_KR", symbol: "");
+  late int total;
+  int? op1Price;
+  int? op2Price;
+
+  @override
+  void initState() {
+    super.initState();
+    item = getItemDetail(widget.index);
+    total = int.parse(widget.price);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +53,22 @@ class _RepSelect2State extends State<RepSelect2> {
           ),
         ),
       ),
+      floatingActionButton: Container(
+          margin: EdgeInsets.only(bottom: 16),
+          width: MediaQuery.of(context).size.width - 50,
+          height: 40,
+          child: FloatingActionButton(
+            backgroundColor: Color(0xff001A5D),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+            elevation: 0.0,
+            onPressed: () {
+              context.read<CountPurchase>().increase();
+              Navigator.pop(context);
+            },
+            child: text('${priceFormat.format(total)}원 담기', 14.0, FontWeight.w500, Colors.white),
+          )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +78,9 @@ class _RepSelect2State extends State<RepSelect2> {
               height: 212,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(widget.image),
+                  image: (widget.image == null)
+                          ? AssetImage('image/none.png')
+                          : AssetImage(widget.image),
                 ),
               ),
             ),
@@ -77,72 +89,154 @@ class _RepSelect2State extends State<RepSelect2> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  text(widget.name, 18.0, FontWeight.w500, Colors.black),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      text(widget.name, 18.0, FontWeight.w500, Colors.black),
+                      text(priceFormat.format(int.parse(widget.price)) + '원', 18.0, FontWeight.w500,
+                          Colors.black),
+                    ],
+                  ),
                   SizedBox(height: 14),
-                  text('사이즈', 16.0, FontWeight.w500, Colors.black),
-                  SizedBox(height: 8),
-                  Container(
-                    height: 28.0 * size.length,
-                    child: ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: size.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                              splashColor: Colors.grey[50],
-                              onTap: () {
-                                setState(() {
-                                  size.forEach((element) {
-                                    element.isSelected = false;
-                                  });
-                                  size[index].isSelected = true;
-                                });
-                              },
-                              child: CustomRadioItem(item: size[index]));
-                        }),
-                  ),
-                  SizedBox(height: 11),
-                  text('용도', 16.0, FontWeight.w500, Colors.black),
-                  RadioListTile(
-                      title: Transform.translate(
-                          offset: Offset(-18, 0),
-                          child: Row(
-                            children: [
-                              text('조수석', 14.0, FontWeight.w400, Colors.black),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width - 174),
-                              text('+0원', 14.0, FontWeight.w400, Colors.black)
-                            ],
-                          )),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                      value: Using.One,
-                      groupValue: using,
-                      onChanged: (value) {
-                        setState(() {
-                          using = value as Using?;
-                        });
+                  FutureBuilder<Item>(
+                      future: item,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data!.op1Name == null) {
+                            return Container();
+                          } else {
+                            if (snapshot.data!.op2Name == null) {
+                              return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    text(snapshot.data!.op1Name, 16.0,
+                                        FontWeight.w500, Colors.black),
+                                    SizedBox(height: 8),
+                                    Container(
+                                      height: 28.0 * snapshot.data!.op1!.length,
+                                      child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: snapshot.data!.op1!.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return InkWell(
+                                                splashColor: Colors.grey[50],
+                                                onTap: () {
+                                                  setState(() {
+                                                    snapshot.data!.op1!
+                                                        .forEach((element) {
+                                                      element.isSelected =
+                                                          false;
+                                                    });
+                                                    snapshot.data!.op1![index]
+                                                        .isSelected = true;
+                                                    op1Price = snapshot
+                                                            .data!.op1Price![index];
+                                                    total = int.parse(
+                                                            widget.price) +
+                                                        op1Price! +
+                                                        (op2Price == null
+                                                            ? 0
+                                                            : op2Price!);
+                                                  });
+                                                },
+                                                child: CustomRadioItem(
+                                                    item: snapshot
+                                                        .data!.op1![index]));
+                                          }),
+                                    ),
+                                    SizedBox(height: 50),
+                                  ]);
+                            } else {
+                              return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    text(snapshot.data!.op1Name, 16.0,
+                                        FontWeight.w500, Colors.black),
+                                    SizedBox(height: 8),
+                                    Container(
+                                      height: 28.0 * snapshot.data!.op1!.length,
+                                      child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: snapshot.data!.op1!.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return InkWell(
+                                                splashColor: Colors.grey[50],
+                                                onTap: () {
+                                                  setState(() {
+                                                    snapshot.data!.op1!
+                                                        .forEach((element) {
+                                                      element.isSelected =
+                                                          false;
+                                                    });
+                                                    snapshot.data!.op1![index]
+                                                        .isSelected = true;
+                                                    op1Price = snapshot
+                                                            .data!.op1Price![index];
+                                                    total = int.parse(
+                                                            widget.price) +
+                                                        op1Price! +
+                                                        (op2Price == null
+                                                            ? 0
+                                                            : op2Price!);
+                                                  });
+                                                },
+                                                child: CustomRadioItem(
+                                                    item: snapshot
+                                                        .data!.op1![index]));
+                                          }),
+                                    ),
+                                    SizedBox(height: 15),
+                                    text(snapshot.data!.op2Name, 16.0,
+                                        FontWeight.w500, Colors.black),
+                                    SizedBox(height: 8),
+                                    Container(
+                                      height: 28.0 * snapshot.data!.op2!.length,
+                                      child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: snapshot.data!.op2!.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return InkWell(
+                                                splashColor: Colors.grey[50],
+                                                onTap: () {
+                                                  setState(() {
+                                                    snapshot.data!.op2!
+                                                        .forEach((element) {
+                                                      element.isSelected =
+                                                          false;
+                                                    });
+                                                    snapshot.data!.op2![index]
+                                                        .isSelected = true;
+                                                    op2Price = snapshot
+                                                            .data!.op2Price![index];
+                                                    total = int.parse(
+                                                            widget.price) +
+                                                        (op1Price == null
+                                                            ? 0
+                                                            : op1Price!) +
+                                                        (op2Price == null
+                                                            ? 0
+                                                            : op2Price!);
+                                                  });
+                                                },
+                                                child: CustomRadioItem(
+                                                    item: snapshot
+                                                        .data!.op2![index]));
+                                          }),
+                                    ),
+                                    SizedBox(height: 50),
+                                  ]);
+                            }
+                          }
+                        } else {
+                          return Text('옵션 불러오는 중!');
+                        }
                       }),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 50,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        context.read<CountPurchase>().increase();
-                        optionItem.add(widget.name);
-                        optionPrice.add(widget.price);
-                        Navigator.pop(context);
-                      },
-                      child: text('${widget.price}원 담기', 14.0, FontWeight.w500,
-                          Colors.white),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xff001A5D),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        elevation: 0.0,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -193,7 +287,8 @@ class CustomRadioItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 text(item.option, 12.0, FontWeight.w400, Colors.black),
-                text(item.price + '원', 12.0, FontWeight.w400, Colors.black),
+                text('+' + item.price + '원', 12.0, FontWeight.w400,
+                    Colors.black),
               ],
             ),
           )
@@ -209,4 +304,66 @@ class CustomRadio {
   late String price;
 
   CustomRadio(this.isSelected, this.option, this.price);
+}
+
+Future<Item> getItemDetail(int index) async {
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8080/replace_item/${index}'));
+
+  late Item item;
+
+  if (response.statusCode == 200) {
+    print(response.body);
+    var json = jsonDecode(response.body);
+    item = Item.fromJson(json);
+    return item;
+  } else {
+    throw Exception('Failed to load item data');
+  }
+}
+
+class Item {
+  final String? op1Name;
+  final String? op2Name;
+  final List? op1;
+  final List? op2;
+  final List? op1Price;
+  final List? op2Price;
+
+  Item(
+      {this.op1Name,
+      this.op2Name,
+      this.op1,
+      this.op2,
+      this.op1Price,
+      this.op2Price});
+  factory Item.fromJson(Map<dynamic, dynamic> json) {
+    List<CustomRadio> op1List = [];
+    List<CustomRadio> op2List = [];
+    List op1Price = [];
+    List op2Price =[];
+
+    if (json['op1'] != null) {
+      for (var i = 0; i < jsonDecode(json['op1']).length; i++) {
+        op1List.add(CustomRadio(false, jsonDecode(json['op1'])[i].toString(),
+            jsonDecode(json['op1Price'])[i].toString()));
+        op1Price.add(jsonDecode(json['op1Price'])[i]);
+      }
+    }
+    if (json['op2'] != null) {
+      for (var i = 0; i < jsonDecode(json['op2']).length; i++) {
+        op2List.add(CustomRadio(false, jsonDecode(json['op2'])[i].toString(),
+            jsonDecode(json['op2Price'])[i].toString()));
+        op2Price.add(jsonDecode(json['op2Price'])[i]);
+      }
+    }
+    return Item(
+      op1Name: json['op1Name'],
+      op2Name: json['op2Name'],
+      op1: op1List,
+      op2: op2List,
+      op1Price: op1Price,
+      op2Price: op2Price,
+    );
+  }
 }

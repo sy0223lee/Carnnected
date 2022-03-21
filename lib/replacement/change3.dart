@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/replacement/change4.dart';
 
-class Changeplus extends StatefulWidget {
+class ChangePlus extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
   final String payment;
 
-  const Changeplus(
+  const ChangePlus(
     {Key? key,
     required this.dateAndTime,
     required this.carLocation,
@@ -16,10 +16,10 @@ class Changeplus extends StatefulWidget {
     : super(key: key);
 
   @override
-  _ChangeplusState createState() => _ChangeplusState();
+  _ChangePlusState createState() => _ChangePlusState();
 }
 
-class _ChangeplusState extends State<Changeplus> {
+class _ChangePlusState extends State<ChangePlus> {
   final isSelected = <bool>[false, false];
   List<String> maintList = ['없음', '적용'];
   String? maintenance;
@@ -109,19 +109,19 @@ class _ChangeplusState extends State<Changeplus> {
                       height: 40,
                       child: ElevatedButton(
                         onPressed: () {
-                          if(maintenance != null && plusRequest != null){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => Changeconfirm(
-                                    dateAndTime: widget.dateAndTime,
-                                    carLocation: widget.carLocation,
-                                    carDetailLocation: widget.carDetailLocation,
-                                    payment: widget.payment,
-                                    maintenance: maintenance!,
-                                    plusRequest: plusRequest.text,
-                                  )));
-                          }
+                          // if(maintenance != null && plusRequest != null){
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (BuildContext context) => ChangeConfirm(
+                          //           dateAndTime: widget.dateAndTime,
+                          //           carLocation: widget.carLocation,
+                          //           carDetailLocation: widget.carDetailLocation,
+                          //           payment: widget.payment,
+                          //           maintenance: maintenance!,
+                          //           plusRequest: plusRequest.text,
+                          //         )));
+                          // }
                         },
                         child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                         style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
