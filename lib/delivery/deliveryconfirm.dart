@@ -28,8 +28,8 @@ class Deliveryconfirm extends StatefulWidget {
 
 class _DeliveryconfirmState extends State<Deliveryconfirm> {
   /*임시데이터*/
-  String id = 'mouse0429'; //사용자 아이디
-  String carNum = '12가1234'; //해당 차량
+  String id = 'dlekdud0102'; //사용자 아이디
+  String carNum = '102허2152'; //해당 차량
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +55,9 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             text('예약 내역을 확인해주세요', 12.0, FontWeight.w400, Color(0xff9a9a9a)),
-            text('딜리버리 서비스 예약기 완료되었습니다', 16.0, FontWeight.bold, Colors.black),
+            text('딜리버리 서비스 예약이 완료되었습니다', 16.0, FontWeight.bold, Colors.black),
             SizedBox(height: 34.0),
-            splitrow('차량번호', '12가 1234'),
+            splitrow('차량번호', carNum),
             SizedBox(height: 20.0),
             splitrow('예약일시',
                 '${widget.dateAndTime.substring(0, 4)}년 ${widget.dateAndTime.substring(5, 7)}월 ${widget.dateAndTime.substring(8, 10)}일 ${widget.dateAndTime.substring(11, 13)}:${widget.dateAndTime.substring(14, 16)}'),
@@ -66,6 +66,14 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 text('${widget.carDetailLocation}', 14.0, FontWeight.w400,
+                    Colors.black)
+              ],
+            ),
+            splitrow('배달위치', '${widget.desLocation}'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                text('${widget.desDetailLocation}', 14.0, FontWeight.w400,
                     Colors.black)
               ],
             ),

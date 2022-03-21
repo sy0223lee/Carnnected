@@ -130,7 +130,7 @@ Future<void> gasRsv(
   String amount = (price * 10000).toString();
   String exPrice = ((price + 2) * 10000).toString();
   final response = await http.get(Uri.parse(
-      'http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/gas_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${fuel}/${gasStationName}/${amount}/${exPrice}/${payment}'));
+      'http://10.0.2.2:8080/gas_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${fuel}/${gasStationName}/${amount}/${exPrice}/${payment}'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
   } else {

@@ -3,6 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:mosigg/delivery/deliveryconfirm.dart';
 
 class Deliverysecond extends StatefulWidget {
   final String dateAndTime;
@@ -30,6 +33,8 @@ class Deliverysecond extends StatefulWidget {
 }
 
 class _DeliverysecondState extends State<Deliverysecond> {
+  String id = 'dlekdud0102';
+  String carnumber = '102허2152';
   List<Marker> _markers = [];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -128,7 +133,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
         child: TextButton(
           child: text("계속하기", 14.0, FontWeight.w500, Color(0xffffffff)),
           onPressed: () {
-            // 팝업,,
+            showLoadingIndicator();
           },
           style: TextButton.styleFrom(
             backgroundColor: Color(0xff001A5D),
@@ -137,6 +142,110 @@ class _DeliverysecondState extends State<Deliverysecond> {
       ),
     );
   }
+
+  void showLoadingIndicator() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 29.0),
+              CircularProgressIndicator(color: Color(0xff001A5D)),
+              SizedBox(height: 13.0),
+              text("예약 진행중!", 14.0, FontWeight.w500, Colors.black),
+              text("예약 진행을 취소하시려면 아래 취소 버튼을 눌러주세요!", 10.0, FontWeight.w400, Colors.black),
+              SizedBox(height: 23.0),
+              SizedBox(
+                width: 260.0,
+                child: TextButton(
+                  onPressed: (){Navigator.pop(context);},
+                  child: text("취소", 14.0, FontWeight.w500, Color(0xffffffff)),
+                  style: TextButton.styleFrom(backgroundColor: Color(0xff001A5D)),
+                ),
+              )
+            ],
+          ),
+        );
+      }
+    );
+    bool insertcheck = await deliveryRsv(id, carnumber, widget.dateAndTime, widget.carLocation, widget.carDetailLocation, widget.desLocation, widget.desDetailLocation, widget.payment, price);
+    var loadingcheck = await loadingAction(id, carnumber, widget.dateAndTime);
+    Navigator.pop(context);
+
+    if(insertcheck == false || loadingcheck != "true"){
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 29.0),
+                SizedBox(height: 13.0),
+                text("앗! 예약에 실패했습니다!", 14.0, FontWeight.w500, Colors.black),
+                SizedBox(height: 23.0),
+                SizedBox(
+                  width: 260.0,
+                  child: TextButton(
+                    onPressed: (){Navigator.pop(context);},
+                    child: text("확인", 14.0, FontWeight.w500, Color(0xffffffff)),
+                    style: TextButton.styleFrom(backgroundColor: Color(0xff001A5D)),
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+      );
+    }
+    else{
+      Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => Deliveryconfirm(
+          dateAndTime: widget.dateAndTime,
+          carLocation: widget.carLocation,
+          carDetailLocation: widget.carDetailLocation,
+          desLocation: widget.desLocation,
+          desDetailLocation: widget.desDetailLocation,
+          payment: widget.payment,
+          price: price.toString(),
+        )));
+    }
+  }
+}
+
+Future<bool> deliveryRsv(
+    String id,
+    String carNum,
+    String dateAndTime,
+    String carLocation,
+    String carDetailLocation,
+    String desLocation,
+    String desDetailLocation,
+    String payment,
+    int price) async {
+  final response = await http.get(Uri.parse(
+      'http://10.0.2.2:8080/deliv_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${desLocation}/${desDetailLocation}/${price}/${payment}'));
+  if (response.statusCode == 200) {
+    print('댕같이성공 ${response.body}');
+    if(json.decode(response.body) == true)  return true;
+    else  return false;
+  } else {
+    print('개같이실패 ${response.statusCode}');
+    return false;
+  }
+}
+
+Future<String> loadingAction(String id, String carnumber, String time) async {
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/deliv_resrv/${id}/${carnumber}/${time}'));
+
+  if (response.statusCode == 200) {
+    return json.decode(response.body).toString();
+  } else
+    throw Exception('Failed to loading');
 }
 
 Text text(content, size, weight, colors) {
