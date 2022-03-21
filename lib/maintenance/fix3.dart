@@ -8,7 +8,6 @@ import 'package:mosigg/signup/signup3.dart';
 
 import 'dart:convert';
 import 'dart:ui' as ui;
-import 'package:proj4dart/proj4dart.dart';
 
 class FixRsrv extends StatefulWidget {
   final String dateAndTime;
@@ -47,9 +46,7 @@ class _FixRsrvState extends State<FixRsrv> {
 
   void initState() {
     super.initState();
-    print(widget.carCoord.latitude);
     markerCam = CameraPosition(target: widget.carCoord, zoom: 14);
-    //getFixinfo(widget.carCoord);
     makeMarker();
   }
 
@@ -84,7 +81,8 @@ class _FixRsrvState extends State<FixRsrv> {
     });
   }
 
-  Future<Uint8List> getBytesFromCanvas(int width, int height, String name) async {
+  Future<Uint8List> getBytesFromCanvas(
+      int width, int height, String name) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = Color(0xff001a5d);
@@ -249,10 +247,12 @@ Future<List> getFixinfo(LatLng addr) async {
           headers: headers);
       if (responseCoord.statusCode == 200) {
         var jsonCoord = jsonDecode(responseCoord.body);
+        if (jsonCoord['error'] != null || jsonCoord['addresses'].length == 0)
+          continue;
         var long = double.parse(jsonCoord['addresses'][0]['x']);
         var lat = double.parse(jsonCoord['addresses'][0]['y']);
 
-        print('네이버 주소 결과] $long $lat');
+        print('네이버 좌표 결과] $long $lat');
         fixList.add(FIX(
             type: jsonCrawl[i]['type'],
             name: jsonCrawl[i]['name'],
@@ -306,26 +306,4 @@ class FIX1 {
     required this.name,
     required this.address,
   });
-}
-
-/*좌표 변환 함수*/
-Point transCoord(String type, Point point) {
-  late Point resultPoint;
-
-  var grs80 = Projection.get('grs80') ??
-      Projection.add('grs80',
-          '+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43');
-  var wgs84 = Projection.get('wgs84') ??
-      Projection.add('wgs84',
-          '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees');
-
-  if (type == '위도') {
-    resultPoint = wgs84.transform(grs80, point);
-  } else if (type == '카텍') {
-    resultPoint = grs80.transform(wgs84, point);
-  } else {
-    resultPoint = Point(x: 0, y: 0);
-  }
-
-  return resultPoint;
 }
