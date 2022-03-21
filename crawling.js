@@ -1,19 +1,18 @@
 const {Builder, By, Capabilities} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-const options = new chrome.Options().headless();
-// 창 안 보이게 크롤링
-// https://stackoverflow.com/questions/44197253/headless-automation-with-nodejs-selenium-webdriver
+const options = new chrome.Options();
+options.addArguments("--incognito");  // 시크릿 모드로
 
 const search = async (keyword, x, y) => { 
   var driver = await new Builder()
     .forBrowser('chrome')
-    .setChromeOptions(options)
+    .setChromeOptions(options.headless()) // 창 없이
     .build();
 
   var urlList = [];
   var elements = [];
 
-  await driver.get('https://www.google.com/maps/search/' + keyword + '/@' + x + ',' + y);
+  await driver.get('https://www.google.com/maps/search/' + keyword + '/@' + x + ',' + y + ',14z');
   
   await driver.findElements(By.css('.a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd')).then(function (item){
     for(var i = 0; i < item.length; i++){
