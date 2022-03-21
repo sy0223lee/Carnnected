@@ -49,12 +49,12 @@ class _FixRsrvState extends State<FixRsrv> {
     super.initState();
     print(widget.carCoord.latitude);
     markerCam = CameraPosition(target: widget.carCoord, zoom: 14);
-    getFixinfo(widget.carCoord);
+    //getFixinfo(widget.carCoord);
     makeMarker();
   }
 
   void makeMarker() async {
-    //fixCoordData = await getFixinfo(widget.carCoord);
+    fixCoordData = await getFixinfo(widget.carCoord);
     for (var i = 0; i < fixCoordData.length; i++) {
       _addMarker(i, fixCoordData[i].lat, fixCoordData[i].long,
           fixCoordData[i].name, fixCoordData[i].address);
@@ -63,7 +63,7 @@ class _FixRsrvState extends State<FixRsrv> {
 
   void _addMarker(id, x, y, name, address) async {
     final MarkerId markerId = MarkerId(id.toString());
-    Uint8List markerIcon = await getBytesFromCanvas(150, 80);
+    Uint8List markerIcon = await getBytesFromCanvas(150, 80, name);
 
     Marker marker = new Marker(
         markerId: markerId,
@@ -84,7 +84,7 @@ class _FixRsrvState extends State<FixRsrv> {
     });
   }
 
-  Future<Uint8List> getBytesFromCanvas(int width, int height) async {
+  Future<Uint8List> getBytesFromCanvas(int width, int height, String name) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = Color(0xff001a5d);
@@ -227,7 +227,7 @@ Text text(content, size, weight, colors) {
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
-Future<void> getFixinfo(LatLng addr) async {
+Future<List> getFixinfo(LatLng addr) async {
   Map<String, String> headers = {
     'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
     'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
@@ -238,85 +238,35 @@ Future<void> getFixinfo(LatLng addr) async {
   final responseCrawling = await http.get(Uri.parse(
       'http://10.0.2.2:8080/map/카센터/${addr.latitude}/${addr.longitude}'));
 
-  if(responseCrawling.statusCode == 200) {
-    List<dynamic> json = jsonDecode(responseCrawling.body);
-      for (var i = 0; i < json.length; i++) {
-        print(json[i]);
-      //   final responseCoord = await http.get(Uri.parse(
-      //     'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${json[i].}'),
-      // headers: headers);
+  if (responseCrawling.statusCode == 200) {
+    List<dynamic> jsonCrawl = jsonDecode(responseCrawling.body);
+    for (var i = 0; i < jsonCrawl.length; i++) {
+      print('[크롤링 결과] ${jsonCrawl[i]}');
+      var addr = jsonCrawl[i]['address'];
+      final responseCoord = await http.get(
+          Uri.parse(
+              'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=$addr'),
+          headers: headers);
+      if (responseCoord.statusCode == 200) {
+        var jsonCoord = jsonDecode(responseCoord.body);
+        var long = double.parse(jsonCoord['addresses'][0]['x']);
+        var lat = double.parse(jsonCoord['addresses'][0]['y']);
+
+        print('네이버 주소 결과] $long $lat');
+        fixList.add(FIX(
+            type: jsonCrawl[i]['type'],
+            name: jsonCrawl[i]['name'],
+            address: jsonCrawl[i]['address'],
+            long: long,
+            lat: lat));
+      } else {
+        throw Exception('Failed to load fix data');
       }
+    }
+    return fixList;
+  } else {
+    throw Exception('Failed to load coordinates');
   }
-
-
-  // final responseCoord = await http.get(
-  //     Uri.parse(
-  //         'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${query}'),
-  //     headers: headers);
-
-  //   /*테스트 코드*/
-  //   //katecX = 314681.8;
-  //   // katecY = 544837.0;
-  //   print('Fix3 ${long}, ${lat}');
-
-  //   final responseFix = await http
-  //       .get(Uri.parse('http://10.0.2.2:8080/map/카센터/${long}/${lat}'));
-  //   if (responseFix.statusCode == 200) {
-  //     late List<FIX> fixList = [];
-
-  //     List<dynamic> json = jsonDecode(responseFix.body)['RESULT']['FIX1'];
-
-  //     for (var i = 0; i < json.length; i++) {
-  //       final responseNewCoord = await http.get(
-  //           Uri.parse(
-  //               'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${json[i].address}'),
-  //           headers: headers);
-  //       if (responseNewCoord.statusCode == 200) {
-  //         var long2 = double.parse(
-  //             jsonDecode(responseNewCoord.body)['addresses'][0]['x']);
-  //         var lat2 = double.parse(
-  //             jsonDecode(responseNewCoord.body)['addresses'][0]['y']);
-
-  //         fixList.add(FIX(
-  //             type: json[i].type,
-  //             name: json[i].name,
-  //             address: json[i].address,
-  //             long2: long2,
-  //             lat2: lat2));
-  //       }
-  //     }
-  //     return fixList;
-  //   } else {
-  //     throw Exception('Failed to load fix data');
-  //   }
-  // } else {
-  //   throw Exception('Failed to load coordinates');
-  // }
-
-  //incoming
-  // if (responseCoord.statusCode == 200) {
-  //   var long =
-  //       double.parse(jsonDecode(responseCoord.body)['addresses'][0]['x']);
-  //   var lat = double.parse(jsonDecode(responseCoord.body)['addresses'][0]['y']);
-  //   var point = Point(x: long, y: lat);
-
-
-
-  //   final responseFix = await http
-  //       .get(Uri.parse('http://10.0.2.2:8080/map/카센터/${katecX}/${katecY}'));
-  //   if (responseFix.statusCode == 200) {
-  //     late List<FIX> fixList = [];
-  //     List<dynamic> json = jsonDecode(responseFix.body);
-  //     for (var i = 0; i < json.length; i++) {
-  //       fixList.add(FIX.fromJson(json[i]));
-  //     }
-  //     return fixList;
-  //   } else {
-  //     throw Exception('Failed to load fix data');
-  //   }
-  // } else {
-  //   throw Exception('Failed to load coordinates');
-  // }
 }
 
 ///////////////////////////// 내가 원하는 FIX class /////////////////////////////
@@ -324,15 +274,15 @@ class FIX {
   final String type;
   final String name;
   final String address;
-  final double long2;
-  final double lat2;
+  final double long;
+  final double lat;
 
   FIX({
     required this.type,
     required this.name,
     required this.address,
-    required this.long2,
-    required this.lat2,
+    required this.long,
+    required this.lat,
   });
 
   factory FIX.fromJson(Map<dynamic, dynamic> json) {
@@ -340,8 +290,8 @@ class FIX {
       type: json['type'],
       name: json['name'],
       address: json['address'],
-      long2: json['long'],
-      lat2: json['lat2'],
+      long: json['long'],
+      lat: json['lat2'],
     );
   }
 }
