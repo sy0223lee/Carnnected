@@ -14,3 +14,27 @@ class CountPurchase with ChangeNotifier {
     notifyListeners();
   }
 }
+
+class MyCart with ChangeNotifier {
+  final List<CartItem> _items = [];
+  List<CartItem> get items => _items;
+
+  int get totalPrice => items.fold(0, (total, current) => total + current.price);
+
+  void add(CartItem item) {
+    _items.add(item);
+    notifyListeners();
+  }
+
+  void remove(CartItem item) {
+    _items.remove(item);
+    notifyListeners();
+  }
+}
+
+class CartItem {
+  final String name;
+  final int price;
+
+  CartItem(this.name, this.price);
+}

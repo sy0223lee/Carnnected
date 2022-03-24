@@ -181,83 +181,76 @@ class _RepSelectState extends State<RepSelect> with TickerProviderStateMixin {
                     }
                   }
                 ),
-                // FutureBuilder<Item>(
-                //   future: item,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return listview(snapshot.data!.list1!.length, snapshot.data!.list1);
-                //     } else {
-                //       return Text('상품 불러오는 중!');
-                //     }
-                //   }
-                // ),
-                // FutureBuilder<Item>(
-                //   future: item,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return listview(snapshot.data!.list2!.length, snapshot.data!.list2);
-                //     } else {
-                //       return Text('상품 불러오는 중!');
-                //     }
-                //   }
-                // ),
-                // FutureBuilder<Item>(
-                //   future: item,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return listview(snapshot.data!.list3!.length, snapshot.data!.list3);
-                //     } else {
-                //       return Text('상품 불러오는 중!');
-                //     }
-                //   }
-                // ),
-                // FutureBuilder<Item>(
-                //   future: item,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return listview(snapshot.data!.list4!.length, snapshot.data!.list4);
-                //     } else {
-                //       return Text('상품 불러오는 중!');
-                //     }
-                //   }
-                // ),
-                // FutureBuilder<Item>(
-                //   future: item,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return listview(snapshot.data!.list5!.length, snapshot.data!.list5);
-                //     } else {
-                //       return Text('상품 불러오는 중!');
-                //     }
-                //   }
-                // ),
-                // FutureBuilder<Item>(
-                //   future: item,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return listview(snapshot.data!.list6!.length, snapshot.data!.list6);
-                //     } else {
-                //       return Text('상품 불러오는 중!');
-                //     }
-                //   }
-                // ),
-                // FutureBuilder<Item>(
-                //   future: item,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return listview(snapshot.data!.list7!.length, snapshot.data!.list7);
-                //     } else {
-                //       return Text('상품 불러오는 중!');
-                //     }
-                //   }
-                // ),
-                Text('1'),
-                Text('1'),
-                Text('1'),
-                Text('1'),
-                Text('1'),
-                Text('1'),
-                Text('1'),
+                FutureBuilder<List>(
+                  future: itemListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return listview2(snapshot.data!.length, snapshot.data!, '와이퍼');
+                    } else {
+                      return Text('상품 불러오는 중!');
+                    }
+                  }
+                ),
+                FutureBuilder<List>(
+                  future: itemListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return listview2(snapshot.data!.length, snapshot.data!, '에어컨필터');
+                    } else {
+                      return Text('상품 불러오는 중!');
+                    }
+                  }
+                ),
+                FutureBuilder<List>(
+                  future: itemListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return listview2(snapshot.data!.length, snapshot.data!, '워셔액');
+                    } else {
+                      return Text('상품 불러오는 중!');
+                    }
+                  }
+                ),
+                FutureBuilder<List>(
+                  future: itemListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return listview2(snapshot.data!.length, snapshot.data!, '엔진오일');
+                    } else {
+                      return Text('상품 불러오는 중!');
+                    }
+                  }
+                ),
+                FutureBuilder<List>(
+                  future: itemListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return listview2(snapshot.data!.length, snapshot.data!, '배터리');
+                    } else {
+                      return Text('상품 불러오는 중!');
+                    }
+                  }
+                ),
+                FutureBuilder<List>(
+                  future: itemListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return listview2(snapshot.data!.length, snapshot.data!, '타이어');
+                    } else {
+                      return Text('상품 불러오는 중!');
+                    }
+                  }
+                ),
+                FutureBuilder<List>(
+                  future: itemListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return listview2(snapshot.data!.length, snapshot.data!, '공기압');
+                    } else {
+                      return Text('상품 불러오는 중!');
+                    }
+                  }
+                ),
               ],
             ),
           ),
@@ -422,10 +415,18 @@ Widget listview(itemcount, listname) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 23),
-                    Text(
-                      '${listname[index].name}',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    Container(
+                      width: 253,
+                      child: Flexible(
+                        child: RichText(
+                          textAlign: TextAlign.left,
+                          text: TextSpan(
+                            text: listname[index].name,
+                            style:
+                              TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(height: 4),
                     Text(
@@ -443,6 +444,86 @@ Widget listview(itemcount, listname) {
         );
       },
       separatorBuilder: (BuildContext context, int index) => Divider(),
+    ),
+  ]);
+}
+
+Widget listview2(itemcount, listname, type) {
+  return ListView(children: [
+    ListView.separated(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: itemcount,
+      itemBuilder: (BuildContext context, int index) {
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => RepSelect2(
+                          index : listname[index].index,
+                          image: listname[index].image,
+                          name: listname[index].name,
+                          price: listname[index].price,
+                        )));
+          },
+          child: (listname[index].type != type)
+                  ? SizedBox(height: 0)
+                  : Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 90,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: (listname[index].image == null)
+                                        ? AssetImage('image/none.png')
+                                        : AssetImage('${listname[index].image}'),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 23),
+                              Container(
+                                width: 253,
+                                child: Flexible(
+                                  child: RichText(
+                                    textAlign: TextAlign.left,
+                                    text: TextSpan(
+                                      text: listname[index].name,
+                                      style:
+                                        TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                                    ),                                  
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                '${priceFormat.format(int.parse(listname[index].price))}원',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff001a5d)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => 
+            (listname[index].type != type)
+            ? SizedBox(height: 0)
+            : Divider(),
     ),
   ]);
 }

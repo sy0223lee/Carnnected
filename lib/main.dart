@@ -22,6 +22,7 @@ void main() {
     MultiProvider (
       providers: [
         ChangeNotifierProvider(create: (_) => CountPurchase()),
+        ChangeNotifierProvider(create: (_) => MyCart()),
       ],
       child: MyApp()
     )
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => StartPage(),
           '/oilstart': (context) => Oilstart(),
           '/location1': (context) => LocationSearchPage1(),
-          '/replacement': (context) => RepSelect(dateAndTime: '1', carLocation: '2', carDetailLocation: '3', payment: '카드')},
+          '/replacement': (context) => ChangeStart()},
         //home: RepConfirm()//Oilstart() //TabBarPage() //StartPage(),
         );
   }

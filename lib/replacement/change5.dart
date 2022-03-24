@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home.dart';
+import 'package:mosigg/login/login.dart';
 
 class ChangeEnd extends StatefulWidget {
   const ChangeEnd({Key? key}) : super(key: key);
@@ -57,8 +58,8 @@ Container gohome(BuildContext context) {
     padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 16.0),
     child: ElevatedButton(
       onPressed: () {
-        // Navigator.push(context,
-        //     MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
       },
       child: text('홈', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),

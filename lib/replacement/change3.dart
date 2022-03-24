@@ -109,19 +109,19 @@ class _ChangePlusState extends State<ChangePlus> {
                       height: 40,
                       child: ElevatedButton(
                         onPressed: () {
-                          // if(maintenance != null && plusRequest != null){
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (BuildContext context) => ChangeConfirm(
-                          //           dateAndTime: widget.dateAndTime,
-                          //           carLocation: widget.carLocation,
-                          //           carDetailLocation: widget.carDetailLocation,
-                          //           payment: widget.payment,
-                          //           maintenance: maintenance!,
-                          //           plusRequest: plusRequest.text,
-                          //         )));
-                          // }
+                          if(maintenance != null && plusRequest != null){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => ChangeConfirm(
+                                    dateAndTime: widget.dateAndTime,
+                                    carLocation: widget.carLocation,
+                                    carDetailLocation: widget.carDetailLocation,
+                                    payment: widget.payment,
+                                    maintenance: maintenance!,
+                                    plusRequest: plusRequest.text,
+                                  )));
+                          }
                         },
                         child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                         style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),

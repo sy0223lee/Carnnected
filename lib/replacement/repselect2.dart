@@ -64,6 +64,7 @@ class _RepSelect2State extends State<RepSelect2> {
             elevation: 0.0,
             onPressed: () {
               context.read<CountPurchase>().increase();
+              context.read<MyCart>().add(CartItem(widget.name, total));
               Navigator.pop(context);
             },
             child: text('${priceFormat.format(total)}원 담기', 14.0, FontWeight.w500, Colors.white),
@@ -92,7 +93,20 @@ class _RepSelect2State extends State<RepSelect2> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      text(widget.name, 18.0, FontWeight.w500, Colors.black),
+                      Container(
+                        width: 250,
+                        child: Flexible(
+                          child: RichText(
+                            textAlign: TextAlign.left,
+                            text: TextSpan(
+                              text: widget.name,
+                              style: TextStyle(
+                                color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w500
+                              )
+                            ),
+                          )
+                        ),
+                      ),
                       text(priceFormat.format(int.parse(widget.price)) + '원', 18.0, FontWeight.w500,
                           Colors.black),
                     ],
