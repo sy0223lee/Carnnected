@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var mySQL = require('mysql');
+const { STRING } = require('mysql/lib/protocol/constants/types');
 
 // mySQL 연동
 var pool = mySQL.createPool({
@@ -8,7 +9,8 @@ var pool = mySQL.createPool({
     port: 3306,
     user: 'root',
     password: '1234',
-    database: 'carnnected'
+    database: 'carnnected',
+    multipleStatements: true,   // 다중 쿼리 처리 가능하도록
 });
 
 // server port
@@ -334,14 +336,30 @@ app.get('/map/:keyword/:x/:y', function(req, res){
     var search = require('./crawling.js');
     
     pool.getConnection(async function(err, connection){
-        var fixList = await search(keyword, x, y);
+        var storeList = await search(keyword, x, y);
         setTimeout(() => {
-            console.log(keyword, ":", fixList);
-            res.send(fixList);
+            console.log(keyword, ":", storeList);
+            res.send(storeList);
         }, 45000);
         connection.release();
     })
 })
+
+// app.get('/map/all/:x/:y', function(req, res){
+//     var keyword = [""];
+//     var x = req.params.x;
+//     var y = req.params.y;
+//     var search = require('./crawling.js');
+    
+//     pool.getConnection(async function(err, connection){
+//         var storeList = await search(keyword, x, y);
+//         setTimeout(() => {
+//             console.log(keyword, ":", storeList);
+//             res.send(storeList);
+//         }, 45000);
+//         connection.release();
+//     })
+// })
 
 
 /***** 주유 서비스 *****/
@@ -482,6 +500,24 @@ app.get('/replace_resrv/:id/:number/:time/:source/:detailSrc/:items/:repair/:det
             connection.release();
         })
     })    
+})
+
+// index 찾고 그 아이템 가져오기
+app.get('/replace_item/:index', function(req, res){
+	var index = req.params.index;
+	console.log("index: ", index);
+
+	pool.getConnection(function(err, connection){
+		var sqlItem = "SELECT * FROM REPLACE_ITEM WHERE `index` = ?";
+		connection.query(sqlItem, index, function(err, row){
+			if(err) console.log("교체 아이템 불러오기 에러");
+			else {
+				console.log("리스트 성공");
+				res.send(row[0]);
+			}
+		})
+		connection.release();
+	})
 })
 
 
@@ -861,20 +897,112 @@ app.get('/deliv_accept/:id/:number/:time', function(req, res){
     })
 })
 
-/*index 찾고 그 아이템 가져오기*/
-app.get('/replace_item/:index', function(req, res){
-	var index = req.params.index;
-	console.log("index: ", index);
 
-	pool.getConnection(function(err, connection){
-		var sqlItem = "SELECT * FROM REPLACE_ITEM WHERE `index` = ?";
-		connection.query(sqlItem, index, function(err, row){
-			if(err) console.log("교체 아이템 불러오기 에러");
-			else {
-				console.log("리스트 성공");
-				res.send(row[0]);
-			}
-		})
-		connection.release();
-	})
+/***** 일정 서비스 *****/
+app.get('/calendar/:id/:month', function(req, res){
+    var id = req.params.id;
+    var month = req.params.month;
+
+    pool.getConnection(function(err, connection){           
+        var sqlGasSelect = "SELECT id, number, tablename, time FROM GAS_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
+        var sqlWashSelect = "SELECT id, number, tablename, time FROM WASH_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
+        var sqlReplaceSelect = "SELECT id, number, tablename, time FROM REPLACE_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
+        var sqlRepairSelect = "SELECT id, number, tablename, time FROM REPAIR_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
+        var sqlDriveSelect = "SELECT id, number, tablename, time FROM DRIVE_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
+        var sqlDelivSelect = "SELECT id, number, tablename, time FROM DELIV_RESRV WHERE `id` = ? and MONTH(time) = ?;";
+        var datas = [id, month, id, month, id, month, id, month, id, month, id, month];
+        
+        connection.query(sqlGasSelect + sqlWashSelect + sqlReplaceSelect + sqlRepairSelect + sqlDriveSelect + sqlDelivSelect, datas, function(err, rows){
+            if (err){
+                console.log(id + ":", month +'월', '일정 불러오기 오류\n', err);
+                res.send(false);
+            }
+            else {
+                console.log(id + ":", month +'월', '일정 불러오기 성공');
+
+                // 일정 모아서 넘겨주기
+                let result = [];
+                for (var i=0; i<6; i++){
+                    for (var j=0; j<rows[i].length; j++){
+                        result.push(rows[i][j]);
+                    }
+                }
+                console.log(result);
+                res.send(result);
+            }
+        })
+        connection.release();
+    })    
+})
+
+// 자세한 일정
+app.get('/calendar/:id/:number/:tablename/:time', function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var tablename = req.params.tablename;
+    var time = req.params.time;
+
+    pool.getConnection(function(err, connection){
+        var sqlDetail;
+        if (tablename === '주유')         
+            sqlDetail = "SELECT * FROM GAS_RESRV WHERE `id` = ? and `number` = ? and `time` = ?; ";
+        else if (tablename === '세차')
+            sqlDetail = "SELECT * FROM WASH_RESRV WHERE `id` = ? and `number` = ? and `time` = ?; ";
+        else if (tablename === '딜리버리')
+            sqlDetail = "SELECT * FROM DELIV_RESRV WHERE `id` = ? and `number` = ? and `time` = ?; ";
+        else if (tablename === '대리운전')
+            sqlDetail = "SELECT * FROM DRIVE_RESRV WHERE `id` = ? and `number` = ? and `time` = ?; ";
+        else if (tablename === '방문교체')
+            sqlDetail = "SELECT * FROM REPLACE_RESRV WHERE `id` = ? and `number` = ? and `time` = ?; ";
+        else if (tablename === '대리정비')
+            sqlDetail = "SELECT * FROM REPAIR_RESRV WHERE `id` = ? and `number` = ? and `time` = ?; ";
+        var datas = [id, number, time];
+        
+        connection.query(sqlDetail, datas, function(err, row){
+            if (err){
+                console.log(id, number, tablename, time + ":", '자세한 일정 불러오기 오류\n', err);
+                res.send(false);
+            }
+            else {
+                console.log(id, number, tablename, time + ":", '자세한 일정 불러오기 성공');
+                if (tablename === '방문교체') {
+                    var items = row[0].item.split(',');
+                    var itemList = [];
+                    var itemName = ""; var itemPrice = 0;
+                    for (var i=0; i<items.length; i++) {
+                        var item_op = items[i].split('-');
+
+                        (function(item_op){
+                            var sqlItem = "SELECT name, price, opPrice FROM REPLACE_ITEM WHERE `index` = ?;";
+                            pool.query(sqlItem, 1*item_op[0], function(err, itemRow) {
+                                if(err) console.log("교체 아이템 맵핑 오류", err)
+                                else {
+                                    itemName = itemRow[0].name;
+                                    
+                                    if (item_op[1] !== undefined) {
+                                        var optionPrice = itemRow[0].opPrice.substr(1, itemRow[0].opPrice.length-2).split(',');
+                                        itemPrice = 1*itemRow[0].price + 1*optionPrice[1*item_op[1]];
+                                    }
+                                    else itemPrice = itemRow[0].price;
+
+                                    itemList.push(itemName, itemPrice);
+                                }
+                            });
+                        }(item_op));
+                    }
+                    row[0].item = itemList;
+
+                    setTimeout(() => {
+                        console.log(row);
+                        res.send(row);
+                    }, 200*items.length);
+                }
+                else {
+                    console.log(row);
+                    res.send(row);   
+                }                             
+            }
+        })
+        connection.release();
+    })    
 })
