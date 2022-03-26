@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var mySQL = require('mysql');
-const { STRING } = require('mysql/lib/protocol/constants/types');
 
 // mySQL 연동
 var pool = mySQL.createPool({
@@ -344,22 +343,6 @@ app.get('/map/:keyword/:x/:y', function(req, res){
         connection.release();
     })
 })
-
-// app.get('/map/all/:x/:y', function(req, res){
-//     var keyword = [""];
-//     var x = req.params.x;
-//     var y = req.params.y;
-//     var search = require('./crawling.js');
-    
-//     pool.getConnection(async function(err, connection){
-//         var storeList = await search(keyword, x, y);
-//         setTimeout(() => {
-//             console.log(keyword, ":", storeList);
-//             res.send(storeList);
-//         }, 45000);
-//         connection.release();
-//     })
-// })
 
 
 /***** 주유 서비스 *****/
