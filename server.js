@@ -186,6 +186,26 @@ app.get('/favorite_addr/delete/:id/:addr/:detailAddr', function(req, res){
     })
 })
 
+// 회원 정보 조회
+app.get('/memberinfo/:id', function(req, res){
+    var id = req.params.id;
+
+    pool.getConnection(function(err, connection){
+        var sqlMeminfo = "SELECT * FROM MEMBER WHERE id = ?";
+        connection.query(sqlMeminfo, id, function(err, row){
+            if(err){
+                console.log("회원 정보 전송 오류: ", err);
+                res.send(false);
+            }
+            else{
+                console.log("회원 정보 전송 성공: ", row);
+                res.send(row);
+            }
+            connection.release();
+        })
+    })
+})
+
 // 차량 정보 반환 
 app.get('/carinfo/:id', function(req,res){
     var id = req.params.id;
