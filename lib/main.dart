@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/setting/setting1.dart';
+import 'package:mosigg/setting/setting2.dart';
+import 'package:mosigg/setting/setting3.dart';
+import 'package:mosigg/setting/setting4.dart';
 import 'package:mosigg/signup/signup1.dart';
 
 //void main() => runApp(MyApp());
@@ -15,22 +19,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CARNNECTED',
-      theme: ThemeData(
-          fontFamily: 'NotoSansKR',
-          primaryColor: Colors.white,
-          colorScheme:
-              ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
-          scaffoldBackgroundColor: Colors.white),
-      debugShowCheckedModeBanner: false,
-      // initialRoute: '/oilstart',
-      //   routes: {
-      //     '/': (context) => StartPage(),
-      //     '/oilstart': (context) => Oilstart(),
-      //     '/location1': (context) => LocationSearchPage1(),
-      //   }
-      home: StartPage()
-    );
+        title: 'CARNNECTED',
+        theme: ThemeData(
+            fontFamily: 'NotoSansKR',
+            primaryColor: Colors.white,
+            colorScheme:
+                ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
+            scaffoldBackgroundColor: Colors.white),
+        debugShowCheckedModeBanner: false,
+        // initialRoute: '/oilstart',
+        //   routes: {
+        //     '/': (context) => StartPage(),
+        //     '/oilstart': (context) => Oilstart(),
+        //     '/location1': (context) => LocationSearchPage1(),
+        //   }
+        home: Settingstart());
   }
 }
 
