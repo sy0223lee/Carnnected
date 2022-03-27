@@ -57,8 +57,12 @@ class _SettingidState extends State<Settingid> {
                       SizedBox(height: 20.0),
                       text('비밀번호', 14.0, FontWeight.w500, Colors.black),
                       SizedBox(height: 10.0),
-                      text(snapshot.data![0].pwd, 12.0, FontWeight.w400,
-                          Colors.black),
+                      Row(
+                        children: [
+                          for (var i = 0; i < snapshot.data![0].pwd.length; i++)
+                            text('*', 12.0, FontWeight.w400, Colors.black),
+                        ],
+                      ),
                       Divider(
                         height: 6.0,
                         color: Color(0xffcbcbcb),
@@ -77,8 +81,20 @@ class _SettingidState extends State<Settingid> {
                       SizedBox(height: 20.0),
                       text('생년월일', 14.0, FontWeight.w500, Colors.black),
                       SizedBox(height: 10.0),
-                      text(snapshot.data![0].birth, 12.0, FontWeight.w400,
-                          Colors.black),
+                      if (int.parse(snapshot.data![0].birth.substring(0, 2)) >
+                          23)
+                        text(
+                            "19${snapshot.data![0].birth.substring(0, 2)}년 ${snapshot.data![0].birth.substring(2, 4)}월 ${snapshot.data![0].birth.substring(4, 6)}일",
+                            12.0,
+                            FontWeight.w400,
+                            Colors.black),
+                      if (int.parse(snapshot.data![0].birth.substring(0, 2)) <
+                          24)
+                        text(
+                            "20${snapshot.data![0].birth.substring(0, 2)}년 ${snapshot.data![0].birth.substring(2, 4)}월 ${snapshot.data![0].birth.substring(4, 6)}일",
+                            12.0,
+                            FontWeight.w400,
+                            Colors.black),
                       Divider(
                         height: 6.0,
                         color: Color(0xffcbcbcb),
@@ -95,12 +111,12 @@ class _SettingidState extends State<Settingid> {
 
 Future<List> userdata(String id) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/member/${id}'));
+      await http.get(Uri.parse('http://10.0.2.2:8080/memberinfo/${id}'));
   late List<User> dataList = [];
   if (response.statusCode == 200) {
-    List<dynamic> json = jsonDecode(response.body);
-    for (var i = 0; i < json.length; i++) {
-      dataList.add(User.fromJson(json[i]));
+    List<dynamic> json1 = jsonDecode(response.body);
+    for (int i = 0; i < json1.length; i++) {
+      dataList.add(User.fromJson(json1[i]));
     }
     return dataList;
   } else {
@@ -112,19 +128,20 @@ class User {
   final String id;
   final String pwd;
   final String phone;
+  final String name;
   final String birth;
-  User({
-    required this.id,
-    required this.pwd,
-    required this.phone,
-    required this.birth,
-  });
+  User(
+      {required this.id,
+      required this.pwd,
+      required this.phone,
+      required this.birth,
+      required this.name});
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
-      pwd: json['name'],
-      phone: json['number'],
-      birth: json['birth'],
-    );
+        id: json['id'],
+        pwd: json['pwd'],
+        phone: json['phone'],
+        birth: json['birth'],
+        name: json['name']);
   }
 }
