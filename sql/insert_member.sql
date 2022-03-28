@@ -12,8 +12,7 @@ INSERT INTO `MEMBER` VALUES
 ('highlightdnpn','password1234','손동운','910606','01089756421');
 
 INSERT INTO `GAS_RESRV` VALUES('주유','dlekdud0102','102허2152','2022-03-02 15:00:00','경유',50000,'어쩌구저쩌구','여기요여기','GS칼텍스',50000,'카카오페이','progress');
-INSERT INTO `DRIVE_RESRV` VALUES('대리운전','dlekdud0102','102허2152','2022-03-02 18:00:00','여기요여기','여기라구요여기','저기저기','저기라니까',10000,'카카오페이','progress');
-INSERT INTO `DELIV_RESRV` VALUES('딜리버리','dlekdud0102','102허2152','2022-03-04 17:15:00','빨리 와주세요','여기','여기여기','저기저기','저기요저기',15000,'카카오페이','reserved');
+INSERT INTO `REPLACE_RESRV` VALUES('방문교체','dlekdud0102','102허2152','2022-03-02 18:00:00','아이템',true,'디테일','출발지','디테일출발지',15000,'카카오페이','reserved');
 
 INSERT INTO `CAR` VALUES
 ('dlekdud0102','페리도트 그린','2018','102허2152','완고한 고집의 힘','',1),

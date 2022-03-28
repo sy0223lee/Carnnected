@@ -7,7 +7,7 @@ var pool = mySQL.createPool({
     host:'localhost',
     port: 3306,
     user: 'root',
-    password: '1234',
+    password: 'dayoungqlqjs123!',
     database: 'carnnected',
     multipleStatements: true,   // 다중 쿼리 처리 가능하도록
 });
@@ -229,94 +229,18 @@ app.get('/carinfo/:id', function(req,res){
 app.get('/usingservice/:carnumber', function(req, res){
     var carnumber = req.params.carnumber;
     pool.getConnection(function(err, connection){
-        var sqlUsinggas = "SELECT `time` FROM GAS_RESRV WHERE number = ? AND status = 'progress'";
-        connection.query(sqlUsinggas, carnumber, function(err, rows1){
+        var sqlUsingservice = "SELECT tablename, `time` FROM DELIV_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM DRIVE_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM GAS_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM REPAIR_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM REPLACE_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM WASH_RESRV WHERE number = '102허2152' AND status = 'progress' LIMIT 1;";
+        connection.query(sqlUsingservice, carnumber, function(err, rows){
             if(err){
-                console.log("사용중인 주유 서비스 오류: ", rows1);
+                console.log("사용중인 서비스 오류: ", rows);
                 res.send(false);
             }
             else{
-                if(rows1.length != 0){
-                    console.log("사용중인 주유 서비스 존재: ", rows1);
-                    res.send("주유");
+                if(rows.length != 0){
+                    console.log("사용중인 서비스 존재: ", rows);
+                    res.send(rows[0].tablename);
                 }
-                else{
-                    var sqlUsingwash = "SELECT `time` FROM WASH_RESRV WHERE number = ? AND status = 'progress'";
-                    connection.query(sqlUsingwash, carnumber, function(err, rows2){
-                        if(err){
-                            console.log("사용중인 세차 서비스 전송 오류: ", rows1);
-                            res.send(false);
-                        }
-                        else{
-                            if(rows2.length != 0){
-                                console.log("사용중인 세차 서비스 존재: ", rows2);
-                                res.send("세차");
-                            }
-                            else{
-                                var sqlUsingdeliv = "SELECT `time` FROM DELIV_RESRV WHERE number = ? AND status = 'progress'";
-                                connection.query(sqlUsingdeliv, carnumber, function(err, rows3){
-                                    if(err){
-                                        console.log("사용중인 딜리버리 서비스 오류: ", rows1);
-                                        res.send(false);
-                                    }
-                                    else{
-                                        if(rows3.length != 0){
-                                            console.log("사용중인 딜리버리 서비스 존재: ", rows3);
-                                            res.send( "딜리버리");
-                                        }
-                                        else{
-                                            var sqlUsingdrive = "SELECT `time` FROM DRIVE_RESRV WHERE number = ? AND status = 'progress'";
-                                            connection.query(sqlUsingdrive, carnumber, function(err, rows4){
-                                                if(err){
-                                                    console.log("사용중인 대리운전 서비스 오류: ", rows1);
-                                                    res.send(false);
-                                                }
-                                                else{
-                                                    if(rows4.length != 0){
-                                                        console.log("사용중인 대리운전 서비스 존재: ", rows4);
-                                                        res.send("대리운전");
-                                                    }
-                                                    else{
-                                                        var sqlUsingreplace = "SELECT `time` FROM REPLACE_RESRV WHERE number = ? AND status = 'progress'";
-                                                        connection.query(sqlUsingreplace, carnumber, function(err, rows5){
-                                                            if(err){
-                                                                console.log("사용중인 방문교체 서비스 오류: ", rows1);
-                                                                res.send(false);
-                                                            }
-                                                            else{
-                                                                if(rows5.length != 0){
-                                                                    console.log("사용중인 방문교체 서비스 존재: ", rows5);
-                                                                    res.send("방문교체");
-                                                                }
-                                                                else{
-                                                                    var sqlUsingrepair = "SELECT `time` FROM REPAIR_RESRV WHERE number = ? AND status = 'progress'";
-                                                                    connection.query(sqlUsingrepair, carnumber, function(err, rows6){
-                                                                        if(err){
-                                                                            console.log("사용중인 대리정비 서비스 오류: ", rows1);
-                                                                            res.send(false);
-                                                                        }
-                                                                        else{
-                                                                            if(rows6.length != 0){
-                                                                                console.log("사용중인 대리정비 서비스 존재: ", rows6);
-                                                                                res.send("대리정비");
-                                                                            }
-                                                                            else
-                                                                                res.send("없음");
-                                                                        }
-                                                                    })
-                                                                }
-                                                            }
-                                                        })
-                                                    }
-                                                }
-                                            })
-                                        }
-                                    }
-                                })
-                            }
-                        }
-                    })
-                }
+                else    res.send("없음");
             }
             connection.release();
         });
@@ -327,7 +251,7 @@ app.get('/usingservice/:carnumber', function(req, res){
 app.get('/recentservice/:carnumber', function(req, res){
     var carnumber = req.params.carnumber;
     pool.getConnection(function(err, connection){
-        var sqlRecent = "SELECT tablename, `time` FROM DELIV_RESRV UNION SELECT tablename, `time` FROM DRIVE_RESRV UNION SELECT tablename, `time` FROM GAS_RESRV UNION SELECT tablename, `time` FROM REPAIR_RESRV UNION SELECT tablename, `time` FROM REPLACE_RESRV UNION SELECT tablename, `time` FROM WASH_RESRV WHERE number = ? ORDER BY `time` DESC;";
+        var sqlRecent = "SELECT tablename, `time` FROM DELIV_RESRV UNION SELECT tablename, `time` FROM DRIVE_RESRV UNION SELECT tablename, `time` FROM GAS_RESRV UNION SELECT tablename, `time` FROM REPAIR_RESRV UNION SELECT tablename, `time` FROM REPLACE_RESRV UNION SELECT tablename, `time` FROM WASH_RESRV WHERE number = ? ORDER BY `time` DESC LIMIT 3;";
         connection.query(sqlRecent, carnumber, function(err, rows){
             if(err){
                 console.log("최근 사용 서비스 전송 오류: ", rows);
@@ -703,7 +627,7 @@ app.get('/drive_resrv/:id/:number/:source/:detailSrc/:dest_name/:dest_addr/:pric
 })
 
 // 예약 요청 수락 확인
-app.get('/drive_resrv/response/:id/:number', function (req, res){
+app.get('/drive_resrv/:id/:number', function (req, res){
     var id = req.params.id;
     var number = req.params.number;
     var now = new Date();
@@ -761,16 +685,37 @@ app.get('/drive_accept/:id/:number/:time', function(req, res){
         var sqlUpdate = "UPDATE `DRIVE_RESRV` SET `status` = 'reserved' WHERE `id` = ? AND `number` = ? AND `time` >= ?";
         connection.query(sqlUpdate, [id, number, time], function(err, rows){
             if(err){
-                console.log("update 실패", rows);
+                console.log("대리운전 예약 요청 update 실패", rows);
                 res.send(false);
             }
             else{
-                console.log("update 성공", rows);
+                console.log("대리운전 예약 요청 update 성공", rows);
                 res.send(true);
             }
         })
     })
 })
+
+// 예약 취소 및 거절
+app.get('/drive_cancel/:id/:number/:time', function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var time = req.params.time;
+    pool.getConnection(function(err, connection){
+        var sqlCancel = "DELETE FROM DRIVE_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ? AND `status` = 'request'";
+        connection.query(sqlCancel, [id, number, time], function(err, result){
+            if(err){
+                console.log("대리운전 예약 요청 취소 및 거절 버튼 오류", err);
+                res.send("false");
+            }
+            else{
+                console.log("대리운전 예약 요청 취소 및 거절 버튼 성공", result);
+                res.send("true");
+            }
+        })
+    })
+})
+
 
 /***** 딜리버리 서비스 *****/
 // 예약 요청 insert
@@ -832,7 +777,7 @@ app.get('/deliv_resrv/:id/:number/:time/:source/:detailSrc/:dest_name/:dest_addr
 })
 
 // 예약 요청 수락 확인
-app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
+app.get('/deliv_resrv/:id/:number/:time', function (req, res){
     var id = req.params.id;
     var number = req.params.number;
     var time = req.params.time;
@@ -880,6 +825,23 @@ app.get('/deliv_resrv/response/:id/:number/:time', function (req, res){
     }, 30000);
 })
 
+// 예약 요청 확인
+app.get('/deliv_getreq', function(req, res){
+    pool.getConnection(function(err, connection){
+        var sqlGetreq = "SELECT FROM `` WHERE ;";
+        connection.query(sqlGetreq, function(err, result){
+            if(err){
+                console.log("예약 요청 전송 오류: ", err);
+                res.send(false);
+            }
+            else{
+                console.log("예약 요청 전송 성공: ", result);
+                res.send()
+            }
+        })
+    })
+})
+
 // 예약 요청 수락
 app.get('/deliv_accept/:id/:number/:time', function(req, res){
     var id = req.params.id;
@@ -889,17 +851,36 @@ app.get('/deliv_accept/:id/:number/:time', function(req, res){
         var sqlUpdate = "UPDATE `DELIV_RESRV` SET `status` = 'reserved' WHERE `id` = ? AND `number` = ? AND `time` >= ?";
         connection.query(sqlUpdate, [id, number, time], function(err, rows){
             if(err){
-                console.log("update 실패", rows);
+                console.log("딜리버리 예약 요청 update 실패", rows);
                 res.send(false);
             }
             else{
-                console.log("update 성공", rows);
+                console.log("딜리버리 예약 요청 update 성공", rows);
                 res.send(true);
             }
         })
     })
 })
 
+// 예약 취소 및 거절
+app.get('/deliv_cancel/:id/:number/:time', function(req, res){
+    var id = req.params.id;
+    var number = req.params.number;
+    var time = req.params.time;
+    pool.getConnection(function(err, connection){
+        var sqlCancel = "DELETE FROM DELIV_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ? AND `status` = 'request'";
+        connection.query(sqlCancel, [id, number, time], function(err, result){
+            if(err){
+                console.log("딜리버리 예약 요청 취소 및 거절 버튼 오류", err);
+                res.send("false");
+            }
+            else{
+                console.log("딜리버리 예약 요청 취소 및 거절 버튼 성공", result);
+                res.send("true");
+            }
+        })
+    })
+})
 
 /***** 일정 서비스 *****/
 app.get('/calendar/:id/:month', function(req, res){
