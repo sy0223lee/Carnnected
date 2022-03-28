@@ -138,6 +138,7 @@ class _FixplusState extends State<Fixplus> {
                       TextStyle(fontSize: 10.0, color: Color(0xff9d9d9d)),
                   border: OutlineInputBorder(borderRadius: BorderRadius.zero),
                 ),
+                minLines: 6,
               ),
               Expanded(
                   child: Column(

@@ -37,18 +37,19 @@ class _FixconfirmState extends State<Fixconfirm> {
   int price = 15;
   @override
   void initState() {
-    fixRsrv(
-        id,
-        carNum,
-        widget.dateAndTime,
-        widget.carLocation,
-        widget.carDetailLocation,
-        widget.type,
-        widget.payment,
-        widget.detail,
-        widget.destName,
-        widget.destaddr,
-        price);
+    fixrsrv(
+      id,
+      carNum,
+      widget.dateAndTime,
+      widget.carLocation,
+      widget.carDetailLocation,
+      widget.type,
+      widget.detail,
+      widget.payment,
+      widget.destName,
+      widget.destaddr,
+      price,
+    );
     super.initState();
   }
 
@@ -131,7 +132,7 @@ class _FixconfirmState extends State<Fixconfirm> {
   }
 }
 
-Future<void> fixRsrv(
+Future<void> fixrsrv(
     String id,
     String carNum,
     String dateAndTime,
