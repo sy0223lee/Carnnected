@@ -122,6 +122,9 @@ class _RepSelect2State extends State<RepSelect2> {
                           if (snapshot.data!.opName == null) {
                             return Container();
                           } else {
+                            print(snapshot.data!.opName);
+                            print(snapshot.data!.op);
+                            print(snapshot.data!.opPrice);
                             return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -259,9 +262,9 @@ class Item {
     List<CustomRadio> opList = [];
     List opPrice = [];
 
-    if (json['op'] != null) {
-      for (var i = 0; i < jsonDecode(json['op']).length; i++) {
-        opList.add(CustomRadio(false, jsonDecode(json['op'])[i].toString(),
+    if (json['option'] != null) {
+      for (var i = 0; i < jsonDecode(json['option']).length; i++) {
+        opList.add(CustomRadio(false, jsonDecode(json['option'])[i].toString(),
             jsonDecode(json['opPrice'])[i].toString()));
         opPrice.add(jsonDecode(json['opPrice'])[i]);
       }
