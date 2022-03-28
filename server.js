@@ -10,6 +10,7 @@ var pool = mySQL.createPool({
     password: 'dayoungqlqjs123!',
     database: 'carnnected',
     multipleStatements: true,   // 다중 쿼리 처리 가능하도록
+    dateStrings: 'date'
 });
 
 // server port
@@ -627,20 +628,19 @@ app.get('/drive_resrv/:id/:number/:source/:detailSrc/:dest_name/:dest_addr/:pric
 })
 
 // 예약 요청 수락 확인
-app.get('/drive_resrv/:id/:number', function (req, res){
+app.get('/drive_resrv/:id/:number/:time', function (req, res){
     var id = req.params.id;
     var number = req.params.number;
-    var now = new Date();
-    var time = String(now.getFullYear())+'-'+String(now.getMonth()+1)+'-'+String(now.getDate())+'\u0020'+String(now.getHours())+':'+String(now.getMinutes()-10);
+    var time = req.params.time;
+    var response = "false";
     var sqlReqCheck = "SELECT `status` FROM DRIVE_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ?";
-
-    var response = false;
+    
     var timer = setInterval(() => {
         pool.getConnection(function(err, connection){
             connection.query(sqlReqCheck, [id, number, time], function(err, result){
                 if(err) {
                     console.log("대리운전 예약 상태 확인 오류:", result[0]);
-                    return res.send(false);
+                    return res.send("false");
                 }
                 if(result[0] === undefined){
                     console.log("대리운전 예약 요청 없음");
@@ -651,18 +651,18 @@ app.get('/drive_resrv/:id/:number', function (req, res){
                 else if(result[0].status === 'reserved'){
                     console.log("대리운전 예약 요청 성공");
                     clearInterval(timer);
-                    response = true
+                    response = "true";
                     return res.send(response);
                 }
                 else if(result[0].status === 'request'){
-                    console.log("대리운전 예약 요청 중")
+                    console.log("대리운전 예약 요청 중");
                 }   
             })
         })
     }, 3000)
 
     setTimeout(() => {
-        if(!response){
+        if(response == "false"){
             console.log("대리운전 예약 요청 실패");
             var sqlCancel = "DELETE FROM DRIVE_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ? AND `status` = 'request'";
 
@@ -674,6 +674,23 @@ app.get('/drive_resrv/:id/:number', function (req, res){
             res.send(response);
         }
     }, 30000);
+})
+
+// 예약 요청 확인
+app.get('/drive/getreq', function(req, res){
+    pool.getConnection(function(err, connection){
+        var sqlGetreq = "SELECT `id`,`number`,`time` FROM `DRIVE_RESRV` WHERE `status`='request';";
+        connection.query(sqlGetreq, function(err, result){
+            if(err){
+                console.log("예약 요청 전송 오류: ", err);
+                res.send(false);
+            }
+            else{
+                console.log("예약 요청 전송 성공: ", result);
+                res.send(result);
+            }
+        })
+    })
 })
 
 // 예약 요청 수락
@@ -800,18 +817,18 @@ app.get('/deliv_resrv/:id/:number/:time', function (req, res){
                 else if(result[0].status === 'reserved'){
                     console.log("딜리버리 예약 요청 성공");
                     clearInterval(timer);
-                    response = "true"
+                    response = "true";
                     return res.send(response);
                 }
                 else if(result[0].status === 'request'){
-                    console.log("딜리버리 예약 요청 중")
+                    console.log("딜리버리 예약 요청 중");
                 }   
             })
         })
     }, 3000)
 
     setTimeout(() => {
-        if(response != "true"){
+        if(response == "false"){
             console.log("딜리버리 예약 요청 실패");
             var sqlCancel = "DELETE FROM DELIV_RESRV WHERE `id` = ? AND `number` = ? AND `time` >= ? AND `status` = 'request'";
 
@@ -826,9 +843,9 @@ app.get('/deliv_resrv/:id/:number/:time', function (req, res){
 })
 
 // 예약 요청 확인
-app.get('/deliv_getreq', function(req, res){
+app.get('/deliv/getreq', function(req, res){
     pool.getConnection(function(err, connection){
-        var sqlGetreq = "SELECT FROM `` WHERE ;";
+        var sqlGetreq = "SELECT `id`,`number`,`time` FROM `DELIV_RESRV` WHERE `status`='request';";
         connection.query(sqlGetreq, function(err, result){
             if(err){
                 console.log("예약 요청 전송 오류: ", err);
@@ -836,7 +853,7 @@ app.get('/deliv_getreq', function(req, res){
             }
             else{
                 console.log("예약 요청 전송 성공: ", result);
-                res.send()
+                res.send(result);
             }
         })
     })
