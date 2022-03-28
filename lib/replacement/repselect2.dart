@@ -122,9 +122,6 @@ class _RepSelect2State extends State<RepSelect2> {
                           if (snapshot.data!.opName == null) {
                             return Container();
                           } else {
-                            print(snapshot.data!.opName);
-                            print(snapshot.data!.op);
-                            print(snapshot.data!.opPrice);
                             return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
