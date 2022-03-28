@@ -48,8 +48,16 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         backgroundColor: Colors.white,
         actions: [
-          IconButton(
-            onPressed: () {},
+          IconButton( // 임시로그아웃 버튼
+            onPressed: () {
+              storage.delete(key: "login");
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage()
+                  ));
+
+            },
             icon: Icon(
               Icons.help_outline,
               color: Colors.black,

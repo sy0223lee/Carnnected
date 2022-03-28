@@ -149,24 +149,44 @@ class _DeliverysecondState extends State<Deliverysecond> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 29.0),
-              CircularProgressIndicator(color: Color(0xff001A5D)),
-              SizedBox(height: 13.0),
-              text("예약 진행중!", 14.0, FontWeight.w500, Colors.black),
-              text("예약 진행을 취소하시려면 아래 취소 버튼을 눌러주세요!", 10.0, FontWeight.w400, Colors.black),
-              SizedBox(height: 23.0),
-              SizedBox(
-                width: 260.0,
-                child: TextButton(
-                  onPressed: (){Navigator.pop(context);},
-                  child: text("취소", 14.0, FontWeight.w500, Color(0xffffffff)),
-                  style: TextButton.styleFrom(backgroundColor: Color(0xff001A5D)),
+          child: Container(
+            height: 183.0,
+            width: 300.0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 29.0),
+                SizedBox(
+                  height: 50.0,
+                  width: 50.0,
+                  child: CircularProgressIndicator(color: Color(0xff001A5D))
                 ),
-              )
-            ],
+                SizedBox(height: 13.0),
+                text("예약 진행중!", 14.0, FontWeight.w500, Colors.black),
+                text("예약 진행을 취소하시려면 아래 취소 버튼을 눌러주세요!", 10.0, FontWeight.w400, Colors.black),
+                SizedBox(height: 23.0),
+                SizedBox(
+                  width: 300.0,
+                  height: 34.0,
+                  child: TextButton(
+                    onPressed: (){
+                      cancelButton(id, carnumber, widget.dateAndTime);
+                      Navigator.pop(context);
+                    },
+                    child: text("취소", 14.0, FontWeight.w500, Color(0xffffffff)),
+                    //style: TextButton.styleFrom(backgroundColor: Color(0xff001A5D)),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Color(0xff001A5D)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0.0)
+                        )
+                      )
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         );
       }
@@ -180,22 +200,61 @@ class _DeliverysecondState extends State<Deliverysecond> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return Dialog(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 29.0),
-                SizedBox(height: 13.0),
-                text("앗! 예약에 실패했습니다!", 14.0, FontWeight.w500, Colors.black),
-                SizedBox(height: 23.0),
-                SizedBox(
-                  width: 260.0,
-                  child: TextButton(
-                    onPressed: (){Navigator.pop(context);},
-                    child: text("확인", 14.0, FontWeight.w500, Color(0xffffffff)),
-                    style: TextButton.styleFrom(backgroundColor: Color(0xff001A5D)),
+            child: Container(
+              height: 183.0,
+              width: 300.0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: 29.0),
+                  Icon(
+                    Icons.priority_high,
+                    color: Color(0xff001A5D),
+                    size: 50.0,
                   ),
-                )
-              ],
+                  SizedBox(height: 13.0),
+                  text("앗! 예약에 실패했습니다!", 14.0, FontWeight.w500, Colors.black),
+                  text("다시 시도하시려면 다시하기 버튼을 클릭해주세요!", 10.0, FontWeight.w400, Colors.black),
+                  SizedBox(height: 23.0),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 150.0,
+                        height: 34.0,
+                        child: TextButton(
+                          onPressed: (){Navigator.pop(context);},
+                          child: text("취소", 14.0, FontWeight.w500, Color(0xff000000)),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Color(0xfff5f5f5)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0.0)
+                              )
+                            )
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 150.0,
+                        height: 34.0,
+                        child: TextButton(
+                          onPressed: (){Navigator.pop(context);},
+                          child: text("다시하기", 14.0, FontWeight.w500, Color(0xffffffff)),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Color(0xff001A5D)),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0.0)
+                              )
+                            )
+                          ),
+                  
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         }
@@ -251,4 +310,14 @@ Future<String> loadingAction(String id, String carnumber, String time) async {
 Text text(content, size, weight, colors) {
   return Text(content,
       style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
+}
+
+Future<String> cancelButton(String id, String carnumber, String time) async {
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/deliv_cancel/${id}/${carnumber}/${time}'));
+
+  if (response.statusCode == 200) {
+    var rt = response.body.toString();
+    return rt;
+  } else
+    throw Exception('Failed to loading');
 }
