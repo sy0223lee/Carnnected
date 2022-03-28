@@ -43,6 +43,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
 
   Completer<GoogleMapController> _controller = Completer();
   int price = 23000;
+  var btnclicked = 0;
 
   void initState() {
     super.initState();
@@ -127,7 +128,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
         initialCameraPosition: markerCam,
       ),
       floatingActionButton: Container(
-        padding: EdgeInsets.fromLTRB(55.0, 0.0, 25.0, 0.0),
+        padding: EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 0.0),
         width: MediaQuery.of(context).size.width,
         height: 40.0,
         child: TextButton(
@@ -171,10 +172,10 @@ class _DeliverysecondState extends State<Deliverysecond> {
                   child: TextButton(
                     onPressed: (){
                       cancelButton(id, carnumber, widget.dateAndTime);
+                      btnclicked = 1;
                       Navigator.pop(context);
                     },
                     child: text("취소", 14.0, FontWeight.w500, Color(0xffffffff)),
-                    //style: TextButton.styleFrom(backgroundColor: Color(0xff001A5D)),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Color(0xff001A5D)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -194,6 +195,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
     var insertcheck = await deliveryRsv(id, carnumber, widget.dateAndTime, widget.carLocation, widget.carDetailLocation, widget.desLocation, widget.desDetailLocation, widget.payment, price);
     var loadingcheck = await loadingAction(id, carnumber, widget.dateAndTime);
     Navigator.pop(context);
+    
     if(insertcheck == false || loadingcheck != "true"){
       showDialog(
         context: context,
