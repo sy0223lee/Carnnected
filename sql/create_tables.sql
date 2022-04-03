@@ -3,7 +3,7 @@ use carnnected;
 
 # 회원 테이블
 CREATE TABLE `MEMBER`(
-    `id` VARCHAR(15) NOT NULL,
+    `id` VARCHAR(25) NOT NULL,
     `pwd` VARCHAR(20) NOT NULL,
     `name` VARCHAR(10) NOT NULL,
     `birth` CHAR(6) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE `MEMBER`(
     
 # 차량 테이블
 CREATE TABLE `CAR`(
-	`id` VARCHAR(15) NOT NULL,			# 회원 id
+	`id` VARCHAR(25) NOT NULL,			# 회원 id
     `model` VARCHAR(30) NOT NULL,		# 차종
     `year` INT NOT NULL,				# 차 연식
     `number` CHAR(11) NOT NULL,			# 차 번호
@@ -25,7 +25,7 @@ CREATE TABLE `CAR`(
 
 # 즐겨찾는 주소
 CREATE TABLE `FAVORITE_ADDR`(
-	`id` VARCHAR(15) NOT NULL,			# 회원 id
+	`id` VARCHAR(25) NOT NULL,			# 회원 id
     `addr` VARCHAR(100) NOT NULL,		# 즐겨찾는 주소
     `detailAddr` VARCHAR(100) NOT NULL,	# 즐겨찾는 상세 주소
     `num` INT NOT NULL,					# 보여줄 순서
@@ -36,7 +36,7 @@ CREATE TABLE `FAVORITE_ADDR`(
 # 주유 서비스 예약
 CREATE TABLE `GAS_RESRV`(
 	`tablename` VARCHAR(20) NOT NULL DEFAULT '주유',
-	`id` VARCHAR(15) NOT NULL,			# 회원 id
+	`id` VARCHAR(25) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
     `type` VARCHAR(20) NOT NULL,		# 연료 종류
@@ -53,7 +53,7 @@ CREATE TABLE `GAS_RESRV`(
 # 세차 서비스 예약    
 CREATE TABLE `WASH_RESRV`(
 	`tablename` VARCHAR(20) NOT NULL DEFAULT '세차',
-	`id` VARCHAR(15) NOT NULL,			# 회원 id
+	`id` VARCHAR(25) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
     `detail` VARCHAR(600),				# 추가 요청 사항
@@ -69,7 +69,7 @@ CREATE TABLE `WASH_RESRV`(
 # 딜리버리 서비스 예약
 CREATE TABLE `DELIV_RESRV`(
 	`tablename` VARCHAR(20) NOT NULL DEFAULT '딜리버리',
-	`id` VARCHAR(15) NOT NULL,			# 회원 id
+	`id` VARCHAR(25) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
     `detail` VARCHAR(600),				# 추가 요청 사항
@@ -86,7 +86,7 @@ CREATE TABLE `DELIV_RESRV`(
 # 대리운전 서비스 예약    
 CREATE TABLE `DRIVE_RESRV`(
 	`tablename` VARCHAR(20) NOT NULL DEFAULT '대리운전',
-	`id` VARCHAR(15) NOT NULL,			# 회원 id
+	`id` VARCHAR(25) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
     `source` VARCHAR(100) NOT NULL,		# 차량 위치
@@ -102,7 +102,7 @@ CREATE TABLE `DRIVE_RESRV`(
 # 방문교체 서비스 예약    
 CREATE TABLE `REPLACE_RESRV`(
 	`tablename` VARCHAR(20) NOT NULL DEFAULT '방문교체',
-	`id` VARCHAR(15) NOT NULL,			# 회원 id
+	`id` VARCHAR(25) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
 	`item` VARCHAR(30) NOT NULL,		# 교체 용품
@@ -119,7 +119,7 @@ CREATE TABLE `REPLACE_RESRV`(
 # 정비 서비스 예약
 CREATE TABLE `REPAIR_RESRV`(
 	`tablename` VARCHAR(20) NOT NULL DEFAULT '대리정비',
-	`id` VARCHAR(15) NOT NULL,			# 회원 id
+	`id` VARCHAR(25) NOT NULL,			# 회원 id
     `number` CHAR(11) NOT NULL,			# 차 번호
     `time` DATETIME NOT NULL,			# 예약 날짜, 시간
     `type` VARCHAR(30) NOT NULL,		# 검사 종류
