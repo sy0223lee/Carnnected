@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
-import 'package:mosigg/replacement/change3.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/maintenance/fix1.dart';
 import 'package:mosigg/signup/signup1.dart';
-
-/*개발용 임시import*/
 import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/location/location2.dart';
-import 'package:mosigg/location/common/map.dart';
 import 'package:mosigg/replacement/change1.dart';
-import 'package:mosigg/replacement/repselect.dart';
 
-import 'oiling/oilstart.dart';
 
 //void main() => runApp(MyApp());
 void main() {
@@ -46,7 +40,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/replacement',
         routes: {
           '/': (context) => StartPage(),
-          '/oilstart': (context) => Oilstart(),
+          '/oilstart': (context) => Fixstart(),
           '/location1': (context) => LocationSearchPage1(),
           '/replacement': (context) => ChangeStart()},
         //home: RepConfirm()//Oilstart() //TabBarPage() //StartPage(),
