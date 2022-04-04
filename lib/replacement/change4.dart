@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 var priceFormat = NumberFormat.currency(locale: "ko_KR", symbol: "");
 bool boolOfMaintenance = false;
-String itemsName = '';
+String items = '';
 
 class ChangeConfirm extends StatefulWidget {
   final String dateAndTime;
@@ -34,7 +34,9 @@ class ChangeConfirm extends StatefulWidget {
 class _ChangeConfirmState extends State<ChangeConfirm> {
 /*임시데이터*/
   String id = 'mouse0429'; //사용자 아이디
-  String carNum = '12가1234'; //해당 차량
+  String carNum = '12가1234';
+
+  get index => null; //해당 차량
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +85,17 @@ class _ChangeConfirmState extends State<ChangeConfirm> {
                 text('추가 요청', 14.0, FontWeight.w500, Colors.black),
                 Container(
                   width: 271,
-                  child: Flexible(
-                    child: Text.rich(TextSpan(
-                        text: '${widget.plusRequest}',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w400))),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text.rich(TextSpan(
+                            text: '${widget.plusRequest}',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400))),
+                      ),
+                    ],
                   ),
                 )
               ],
@@ -110,18 +116,22 @@ class _ChangeConfirmState extends State<ChangeConfirm> {
                       children: [
                         Container(
                           width: 240,
-                          child: Flexible(
-                            child: RichText(
-                              textAlign: TextAlign.left,
-                              text: TextSpan(
-                                text: context.read<MyCart>().items[index].name,
-                                style: TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w500)
+                          child: Row(
+                            children: [
+                              Flexible(
+                                child: RichText(
+                                  textAlign: TextAlign.left,
+                                  text: TextSpan(
+                                    text: context.read<MyCart>().items[index].name,
+                                    style: TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w500)
+                                  ),
+                                )
                               ),
-                            )
+                            ],
                           ),
                         ),
                         text('${priceFormat.format(context.read<MyCart>().items[index].price)}원',
-                              14.0, FontWeight.w400, Colors.black)
+                              14.0, FontWeight.w400, Colors.black),
                       ],
                     );
                   }),
@@ -145,16 +155,14 @@ class _ChangeConfirmState extends State<ChangeConfirm> {
                       if (widget.maintenance == '적용') {
                         boolOfMaintenance = true;
                       }
-                      for(var i=0; i<context.read<MyCart>().items.length; i++) {
-                        itemsName += '${context.read<MyCart>().items[i].name}';
+                      for(var i=0; i<context.read<MyCart>().items.length; i++){
+                        items += '${context.read<MyCart>().items[i].itemList}, ';
                       }
-                      print(boolOfMaintenance);
-                      print(itemsName);
                       repRsv(
                         id,
                         carNum,
                         widget.dateAndTime,
-                        itemsName,
+                        items,
                         boolOfMaintenance,
                         widget.plusRequest,
                         widget.carLocation,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/map/maplist.dart';
+import 'package:mosigg/replacement/change3.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/calender/calender.dart';
@@ -50,7 +52,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => StartPage(),
           '/oilstart': (context) => Fixstart(),
           '/location1': (context) => LocationSearchPage1(),
-          '/replacement': (context) => ChangeStart()},
+          '/replacement': (context) => ChangeStart(),
+          '/map': (context) => MapList()}
         //home: RepConfirm()//Oilstart() //TabBarPage() //StartPage(),
         );
   }

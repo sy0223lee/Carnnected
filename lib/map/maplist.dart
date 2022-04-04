@@ -1,39 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/map/common/companies.dart';
-import 'package:mosigg/map/page1.dart';
-import 'package:mosigg/map/page2.dart';
-import 'package:mosigg/map/page3.dart';
-import 'package:mosigg/map/page4.dart';
-import 'package:mosigg/map/page5.dart';
+import 'package:mosigg/map/gasstation.dart';
+import 'package:mosigg/map/carwash.dart';
+import 'package:mosigg/map/repairshop.dart';
+import 'package:mosigg/map/electriccar.dart';
 
-var companies1 = [];
-var companies2 = [];
-var companies3 = [];
-var companies4 = [];
+var gas = [];
+var wash = [];
+var repair = [];
+var electric = [];
 
-class TabBarPage extends StatefulWidget {
-  const TabBarPage({ Key? key }) : super(key: key);
+class MapList extends StatefulWidget {
+  const MapList({ Key? key }) : super(key: key);
 
   @override
-  _TabBarPageState createState() => _TabBarPageState();
+  State<MapList> createState() => _MapListState();
 }
 
-class _TabBarPageState extends State<TabBarPage> {
-  // 각 서비스 별 리스트 생성
+class _MapListState extends State<MapList> {
+
   @override
   void initState(){
     for(var i=0; i<companies.length; i++){
       if(companies[i]['type']=='주유'){
-        companies1.add(companies[i]);
+        gas.add(companies[i]);
       }
       else if(companies[i]['type']=='세차'){
-        companies2.add(companies[i]);
+        wash.add(companies[i]);
       }
       else if(companies[i]['type']=='정비'){
-        companies3.add(companies[i]);
+        repair.add(companies[i]);
       }
       else {
-        companies4.add(companies[i]);
+        electric.add(companies[i]);
       }
     }
     super.initState();
@@ -44,11 +43,11 @@ class _TabBarPageState extends State<TabBarPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
-        length: 5,
+        length: 4,
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(48),
+            preferredSize: Size.fromHeight(49),
             child: AppBar(
               backgroundColor: Colors.white,
               elevation: 0,
@@ -56,9 +55,8 @@ class _TabBarPageState extends State<TabBarPage> {
                 indicatorColor: Color(0xff001A5D),
                 labelColor: Colors.black,
                 labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                unselectedLabelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                unselectedLabelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
                 tabs: [
-                  Tab(text: 'ALL'),
                   Tab(text: '주유소'),
                   Tab(text: '세차장'),
                   Tab(text: '정비소'),
@@ -69,15 +67,19 @@ class _TabBarPageState extends State<TabBarPage> {
           ),
           body: TabBarView(
             children: [
-              Page1(),
-              Page2(),
-              Page3(),
-              Page4(),
-              Page5(),
+              GasStation(),
+              CarWash(),
+              RepairShop(),
+              ElectricCar(),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+Text text(content, size, weight, colors) {
+  return Text(content,
+      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

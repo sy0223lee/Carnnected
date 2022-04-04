@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home.dart';
-import 'package:mosigg/map/page1.dart';
+import 'package:mosigg/map/maplist.dart';
 import 'package:mosigg/servicechoice.dart';
 import 'package:mosigg/history/history.dart';
 import 'package:mosigg/options/options.dart';
@@ -40,7 +40,7 @@ class _BottomtabbarState extends State<Bottomtabbar> {
             Servicechoice(id: id), // 서비스 선택 페이지
             Calenderpage(), // 서비스 사용 내역
             HomePage(id: id, pw: pw), // 홈 페이지
-            Page1(),    // 지도
+            MapList(),    // 지도
             Settingstart(),   // 설정?
           ],
         ),
