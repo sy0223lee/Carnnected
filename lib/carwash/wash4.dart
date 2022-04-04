@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home.dart';
+import 'package:mosigg/login/login.dart';
 
 class Washend extends StatefulWidget {
   const Washend({Key? key}) : super(key: key);
@@ -58,7 +59,7 @@ Container gohome(BuildContext context) {
     child: ElevatedButton(
       onPressed: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+            MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
       },
       child: text('홈', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
