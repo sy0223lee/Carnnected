@@ -7,7 +7,7 @@ var pool = mySQL.createPool({
     host:'localhost',
     port: 3306,
     user: 'root',
-    password: '1234',
+    password: 'dayoungqlqjs123!',
     database: 'carnnected',
     multipleStatements: true,   // 다중 쿼리 처리 가능하도록
     dateStrings: 'date'

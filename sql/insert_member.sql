@@ -11,12 +11,12 @@ INSERT INTO `MEMBER` VALUES
 ('gttk0000@naver.com','password1234','이기광','900330','01001234567'),
 ('highlightdnpn@naver.com','password1234','손동운','910606','01089756421');
 
-INSERT INTO `GAS_RESRV` VALUES('주유','dlekdud0102@naver.com','102허2152','2022-03-02 15:00:00','경유',50000,'어쩌구저쩌구','여기요여기','GS칼텍스',50000,'카카오페이','progress');
-INSERT INTO `REPLACE_RESRV` VALUES('방문교체','dlekdud0102@naver.com','102허2152','2022-03-02 18:00:00','아이템',true,'디테일','출발지','디테일출발지',15000,'카카오페이','reserved');
+INSERT INTO `GAS_RESRV` VALUES('주유','mouse0429@naver.com','102허2152','2022-03-02 15:00:00','경유',50000,'어쩌구저쩌구','여기요여기','GS칼텍스',50000,'카카오페이','progress');
+INSERT INTO `REPLACE_RESRV` VALUES('방문교체','mouse0429@naver.com','102허2152','2022-03-02 18:00:00','아이템',true,'디테일','출발지','디테일출발지',15000,'카카오페이','reserved');
 
 INSERT INTO `CAR` VALUES
-('dlekdud0102@naver.com','페리도트 그린','2018','102허2152','완고한 고집의 힘','',1),
-('dlekdud0102@naver.com','제네시스','2019','215가8259','사고싶다','',2);
+('mouse0429@naver.com','페리도트 그린','2018','102허2152','완고한 고집의 힘','',1),
+('mouse0429@naver.com','제네시스','2019','215가8259','사고싶다','',2);
 
 INSERT INTO `FAVORITE_ADDR` VALUES
 ('mouse0429@naver.com','경기도 고양시 일산동구 숲속마을 1로 116','숲속마을 7단지 아파트 707동 1705호', 1),
