@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
                 ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
             scaffoldBackgroundColor: Colors.white),
         debugShowCheckedModeBanner: false,
-        initialRoute: '/replacement',
+        initialRoute: '/',
         routes: {
           '/': (context) => StartPage(),
           '/oilstart': (context) => Fixstart(),

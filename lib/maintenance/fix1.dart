@@ -59,10 +59,7 @@ class _FixstartState extends State<Fixstart> {
         title: text('정비 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => LoginPage()));
+            Navigator.pop(context);
           },
           icon: Icon(
             Icons.arrow_back,
