@@ -30,6 +30,7 @@ class _RepSelect2State extends State<RepSelect2> {
   var priceFormat = NumberFormat.currency(locale: "ko_KR", symbol: "");
   late int total;
   int? opPrice;
+  int opIndex = 0;
 
   @override
   void initState() {
@@ -67,7 +68,8 @@ class _RepSelect2State extends State<RepSelect2> {
             elevation: 0.0,
             onPressed: () {
               context.read<CountPurchase>().increase();
-              context.read<MyCart>().add(CartItem(widget.name, total));
+              context.read<MyCart>().add(CartItem(
+                  (widget.index).toString()+'-'+(opIndex).toString(), widget.name, total));
               Navigator.pop(context);
             },
             child: text('${priceFormat.format(total)}원 담기', 14.0,
@@ -79,7 +81,7 @@ class _RepSelect2State extends State<RepSelect2> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: 360,
               height: 212,
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -99,16 +101,20 @@ class _RepSelect2State extends State<RepSelect2> {
                     children: [
                       Container(
                         width: 250,
-                        child: Flexible(
-                            child: RichText(
-                          textAlign: TextAlign.left,
-                          text: TextSpan(
-                              text: widget.name,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w500)),
-                        )),
+                        child: Row(
+                          children: [
+                            Flexible(
+                                child: RichText(
+                              textAlign: TextAlign.left,
+                              text: TextSpan(
+                                  text: widget.name,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w500)),
+                            )),
+                          ],
+                        ),
                       ),
                       text(priceFormat.format(int.parse(widget.price)) + '원',
                           18.0, FontWeight.w500, Colors.black),
@@ -150,6 +156,7 @@ class _RepSelect2State extends State<RepSelect2> {
                                                   total =
                                                       int.parse(widget.price) +
                                                           opPrice!;
+                                                  opIndex = index;
                                                 });
                                               },
                                               child: CustomRadioItem(
