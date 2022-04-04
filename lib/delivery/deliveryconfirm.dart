@@ -28,7 +28,7 @@ class Deliveryconfirm extends StatefulWidget {
 
 class _DeliveryconfirmState extends State<Deliveryconfirm> {
   /*임시데이터*/
-  String id = 'dlekdud0102'; //사용자 아이디
+  String id = 'mouse0429@naver.com'; //사용자 아이디
   String carNum = '102허2152'; //해당 차량
 
   @override
