@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:mosigg/oiling/oilstart.dart';
 import 'package:mosigg/delivery/deliverystart.dart';
 import 'package:mosigg/drive/drivestart.dart';
+import 'package:mosigg/replacement/change1.dart';
 
 class Servicechoice extends StatefulWidget {
   const Servicechoice({Key? key}) : super(key: key);
@@ -116,7 +117,10 @@ class _ServicechoiceState extends State<Servicechoice> {
                     children: [
                       IconButton(
                         padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) => ChangeStart()));
+                        },
                         icon: Icon(
                           Icons.person,
                           size: 60.0,

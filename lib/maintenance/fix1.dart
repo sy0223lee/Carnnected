@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home.dart';
+import 'package:mosigg/login/login.dart';
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/maintenance/fix2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -61,7 +62,7 @@ class _FixstartState extends State<Fixstart> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => HomePage()));
+                    builder: (BuildContext context) => LoginPage()));
           },
           icon: Icon(
             Icons.arrow_back,
