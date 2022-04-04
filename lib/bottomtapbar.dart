@@ -37,7 +37,7 @@ class _BottomtabbarState extends State<Bottomtabbar> {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            Servicechoice(), // 서비스 선택 페이지
+            Servicechoice(id: id), // 서비스 선택 페이지
             Calenderpage(), // 서비스 사용 내역
             HomePage(id: id, pw: pw), // 홈 페이지
             Page1(),    // 지도

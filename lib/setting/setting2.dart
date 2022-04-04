@@ -14,7 +14,7 @@ class _SettingidState extends State<Settingid> {
   Future<List>? data;
   @override
   void initState() {
-    data = userdata('dlekdud0102');
+    data = userdata('mouse0429@naver.com');
     super.initState();
   }
 

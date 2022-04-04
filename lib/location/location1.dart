@@ -21,7 +21,7 @@ class _LocationSearchPage1State extends State<LocationSearchPage1> {
 
   @override
   void initState() {
-    favoriteAddrData = favoriteAddr('mouse0429');
+    favoriteAddrData = favoriteAddr('dlekdud0102@naver.com');
     super.initState();
   }
 

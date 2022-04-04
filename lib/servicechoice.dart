@@ -8,13 +8,16 @@ import 'package:mosigg/replacement/change1.dart';
 import 'package:mosigg/maintenance/fix1.dart';
 
 class Servicechoice extends StatefulWidget {
-  const Servicechoice({Key? key}) : super(key: key);
+  final String id;
+  Servicechoice({required this.id});
+  //const Servicechoice({Key? key}) : super(key: key);
 
   @override
   _ServicechoiceState createState() => _ServicechoiceState();
 }
 
 class _ServicechoiceState extends State<Servicechoice> {
+  late String id;
   Future<List>? data;
   List serviceList = ["1","1","1"];
 
@@ -28,7 +31,8 @@ class _ServicechoiceState extends State<Servicechoice> {
   @override
   void initState() {
     super.initState();
-    data = cardata('dlekdud0102');
+    id = widget.id;
+    data = cardata(id);
   }
 
   @override
