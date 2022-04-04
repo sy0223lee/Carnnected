@@ -395,7 +395,7 @@ Widget listview(itemcount, listname) {
                         )));
           },
           child: Container(
-            width: MediaQuery.of(context).size.width,
+            width: 360,
             height: 90,
             child: Row(
               children: [
@@ -417,15 +417,19 @@ Widget listview(itemcount, listname) {
                     SizedBox(height: 23),
                     Container(
                       width: 253,
-                      child: Flexible(
-                        child: RichText(
-                          textAlign: TextAlign.left,
-                          text: TextSpan(
-                            text: listname[index].name,
-                            style:
-                              TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: RichText(
+                              textAlign: TextAlign.left,
+                              text: TextSpan(
+                                text: listname[index].name,
+                                style:
+                                  TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                     SizedBox(height: 4),
@@ -472,7 +476,7 @@ Widget listview2(itemcount, listname, type) {
           child: (listname[index].type != type)
                   ? SizedBox(height: 0)
                   : Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: 360,
                       height: 90,
                       child: Row(
                         children: [
@@ -494,15 +498,19 @@ Widget listview2(itemcount, listname, type) {
                               SizedBox(height: 23),
                               Container(
                                 width: 253,
-                                child: Flexible(
-                                  child: RichText(
-                                    textAlign: TextAlign.left,
-                                    text: TextSpan(
-                                      text: listname[index].name,
-                                      style:
-                                        TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
-                                    ),                                  
-                                  ),
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: RichText(
+                                        textAlign: TextAlign.left,
+                                        text: TextSpan(
+                                          text: listname[index].name,
+                                          style:
+                                            TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                                        ),                                  
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               SizedBox(height: 4),

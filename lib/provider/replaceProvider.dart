@@ -33,8 +33,9 @@ class MyCart with ChangeNotifier {
 }
 
 class CartItem {
+  final String itemList;
   final String name;
   final int price;
 
-  CartItem(this.name, this.price);
+  CartItem(this.itemList, this.name, this.price);
 }
