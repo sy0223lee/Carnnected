@@ -1,41 +1,31 @@
 import 'dart:collection';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:table_calendar/table_calendar.dart';
 
-/// Example event class.
 class Event {
   final String title;
-
-  const Event(this.title);
+  final String datetime;
+  const Event(this.title, this.datetime);
 
   @override
   String toString() => title;
 }
 
-/// Example events.
-///
-/// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
-final kEvents = LinkedHashMap<DateTime, List<Event>>(
+final kEvents = LinkedHashMap(
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(_kEventSource);
 
-final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
-    key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),
-    value: (item) => List.generate(
-        item % 4 + 1, (index) => Event('Event $item | ${index + 1}')))
-  ..addAll({
-    kToday: [
-      Event('Today\'s Event 1'),
-      Event('Today\'s Event 2'),
-    ],
-  });
+Map<DateTime, dynamic> _kEventSource = {
+  DateTime(2022, 4, 3): [Event('주유서비스예약', '3일 일요일 14:00')],
+  DateTime(2022, 4, 4): [Event('세차서비스예약', '4일 월요일 15:00')],
+  DateTime(2022, 4, 5): [
+    Event('정비서비스예약', '5일 화요일 11:00'),
+    Event('딜리버리서비스예약', '5일 화요일 17:00')
+  ],
+};
 
-int getHashCode(DateTime key) {
-  return key.day * 1000000 + key.month * 10000 + key.year;
-}
-
-/// Returns a list of [DateTime] objects from [first] to [last], inclusive.
 List<DateTime> daysInRange(DateTime first, DateTime last) {
   final dayCount = last.difference(first).inDays + 1;
   return List.generate(
@@ -44,6 +34,42 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
   );
 }
 
-final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+int getHashCode(DateTime key) {
+  return key.day * 1000000 + key.month * 10000 + key.year;
+}
+
+class Event1 {
+  final String id;
+  final String number;
+  final String tablename;
+  final String time;
+  Event1({
+    required this.id,
+    required this.number,
+    required this.tablename,
+    required this.time,
+  });
+  factory Event1.fromJson(Map<String, dynamic> json) {
+    return Event1(
+      id: json['id'],
+      number: json['number'],
+      tablename: json['tablename'],
+      time: json['time'],
+    );
+  }
+}
+
+Future<List> eventdata(String id) async {
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8080/calender/${id}'));
+  late List<Event1> eventList = [];
+  if (response.statusCode == 200) {
+    List<dynamic> json = jsonDecode(response.body);
+    for (var i = 0; i < json.length; i++) {
+      eventList.add(Event1.fromJson(json[i]));
+    }
+    return eventList;
+  } else {
+    throw Exception('Failed to load event data');
+  }
+}
