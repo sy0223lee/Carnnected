@@ -6,6 +6,7 @@ import 'package:mosigg/delivery/deliverystart.dart';
 import 'package:mosigg/drive/drivestart.dart';
 import 'package:mosigg/replacement/change1.dart';
 import 'package:mosigg/maintenance/fix1.dart';
+import 'package:mosigg/carwash/wash1.dart';
 
 class Servicechoice extends StatefulWidget {
   final String id;
@@ -108,7 +109,10 @@ class _ServicechoiceState extends State<Servicechoice> {
                     children: [
                       IconButton(
                         padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) => Washstart()));
+                        },
                         icon: Icon(
                           Icons.person,
                           size: 60.0,
