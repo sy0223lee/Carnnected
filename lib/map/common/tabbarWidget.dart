@@ -30,3 +30,12 @@ class _FilterMethodState extends State<FilterMethod> {
     );
   }
 }
+
+class Location{
+  double x;
+  double y;
+  Location(this.x, this.y);
+}
+
+var latitude = '';
+var longtitude = '';

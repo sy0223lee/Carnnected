@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/map/tabbar.dart';
+import 'package:mosigg/map/maplist.dart';
 import 'package:mosigg/map/common/tabbarWidget.dart';
 import 'package:mosigg/map/googlemap.dart';
-import 'package:mosigg/map/page1.dart';
 
-class Page3 extends StatefulWidget {
-  const Page3({Key? key}) : super(key: key);
+class RepairShop extends StatefulWidget {
+  const RepairShop({Key? key}) : super(key: key);
 
   @override
-  _Page3State createState() => _Page3State();
+  _RepairShopState createState() => _RepairShopState();
 }
 
-class _Page3State extends State<Page3> {
+class _RepairShopState extends State<RepairShop> {
   @override
   Widget build(BuildContext context){
     return ListView(
       children: [
         FilterMethod(),
-        listview(companies2.length)
+        listview(repair.length)
       ],
     );
   }
@@ -39,8 +38,8 @@ Widget listview(itemcount) {
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: (){
-            latitude = companies2[index]['x'].toString();
-            longtitude = companies2[index]['y'].toString();
+            latitude = repair[index]['x'].toString();
+            longtitude = repair[index]['y'].toString();
             final location = Location(double.parse(latitude), double.parse(longtitude));
             Navigator.push(
             context,
@@ -71,20 +70,20 @@ Widget listview(itemcount) {
                   children: [
                     SizedBox(height: 7),
                     Text(
-                      '${companies2[index]['name']}',
+                      '${repair[index]['name']}',
                       style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w700
                       ),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      '${companies2[index]['address']}',
+                      '${repair[index]['address']}',
                       style: TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w400
                       ),
                     ),
                     Text(
-                      '${companies2[index]['time']}',
+                      '${repair[index]['time']}',
                       style: TextStyle(
                         fontSize: 10, fontWeight: FontWeight.w400, color: Color(0xff6A6A6A)
                       ),

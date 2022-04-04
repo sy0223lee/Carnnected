@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/map/tabbar.dart';
+import 'package:mosigg/map/maplist.dart';
 import 'package:mosigg/map/common/tabbarWidget.dart';
 import 'package:mosigg/map/googlemap.dart';
-import 'package:mosigg/map/page1.dart';
 
-class Page5 extends StatefulWidget {
-  const Page5({Key? key}) : super(key: key);
+class ElectricCar extends StatefulWidget {
+  const ElectricCar({Key? key}) : super(key: key);
 
   @override
-  _Page5State createState() => _Page5State();
+  _ElectricCarState createState() => _ElectricCarState();
 }
 
-class _Page5State extends State<Page5> {
+class _ElectricCarState extends State<ElectricCar> {
   @override
   Widget build(BuildContext context){
     return ListView(
       children: [
         FilterMethod(),
-        listview(companies4.length)
+        listview(electric.length)
       ],
     );
   }
@@ -39,8 +38,8 @@ Widget listview(itemcount) {
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: (){
-            latitude = companies4[index]['x'].toString();
-            longtitude = companies4[index]['y'].toString();
+            latitude = electric[index]['x'].toString();
+            longtitude = electric[index]['y'].toString();
             final location = Location(double.parse(latitude), double.parse(longtitude));
             Navigator.push(
             context,
@@ -71,26 +70,26 @@ Widget listview(itemcount) {
                   children: [
                     SizedBox(height: 7),
                     Text(
-                      '${companies4[index]['name']}',
+                      '${electric[index]['name']}',
                       style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w700
                       ),
                     ),
                     SizedBox(height: 5),
                     Text(
-                      '${companies4[index]['address']}',
+                      '${electric[index]['address']}',
                       style: TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w400
                       ),
                     ),
                     Text(
-                      '${companies4[index]['time']}',
+                      '${electric[index]['time']}',
                       style: TextStyle(
                         fontSize: 10, fontWeight: FontWeight.w400, color: Color(0xff6A6A6A)
                       ),
                     ),
                   ],
-                ),
+                ),                     
               ],
             ),
           ),

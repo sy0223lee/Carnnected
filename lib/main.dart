@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/map/maplist.dart';
 import 'package:mosigg/replacement/change3.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
@@ -43,12 +44,13 @@ class MyApp extends StatelessWidget {
                 ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
             scaffoldBackgroundColor: Colors.white),
         debugShowCheckedModeBanner: false,
-        initialRoute: '/replacement',
+        initialRoute: '/map',
         routes: {
           '/': (context) => StartPage(),
           '/oilstart': (context) => Oilstart(),
           '/location1': (context) => LocationSearchPage1(),
-          '/replacement': (context) => ChangeStart()},
+          '/replacement': (context) => ChangeStart(),
+          '/map': (context) => MapList()}
         //home: RepConfirm()//Oilstart() //TabBarPage() //StartPage(),
         );
   }
