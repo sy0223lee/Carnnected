@@ -5,12 +5,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/service/delivery/delivery2.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/components.dart';
 
-class Deliverystart extends StatefulWidget {
-  const Deliverystart({Key? key}) : super(key: key);
+class Delivery1 extends StatefulWidget {
+  const Delivery1({Key? key}) : super(key: key);
 
   @override
-  State<Deliverystart> createState() => _DeliverystartState();
+  State<Delivery1> createState() => _Delivery1State();
 }
 
 const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
@@ -26,7 +27,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
   900: Color(0xff001a5d),
 });
 
-class _DeliverystartState extends State<Deliverystart> {
+class _Delivery1State extends State<Delivery1> {
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
@@ -255,7 +256,7 @@ class _DeliverystartState extends State<Deliverystart> {
                         LatLng desCoord = await getCarCoord(desLocation!);
 
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Deliverysecond(
+                            MaterialPageRoute(builder: (BuildContext context) => Delivery2(
                               dateAndTime: dateAndTime,
                               carLocation: carLocation!,
                               carDetailLocation: carDetailLocation!,
@@ -278,11 +279,6 @@ class _DeliverystartState extends State<Deliverystart> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container toggleItem(context, text, itemNum) {

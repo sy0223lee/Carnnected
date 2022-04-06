@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/carwash/carwash4.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/components.dart';
 
-class Washconfirm extends StatefulWidget {
+class CarWash3 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -11,7 +12,7 @@ class Washconfirm extends StatefulWidget {
   final String payment;
   final String? price;
 
-  const Washconfirm(
+  const CarWash3(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -23,10 +24,10 @@ class Washconfirm extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Washconfirm> createState() => _WashconfirmState();
+  State<CarWash3> createState() => _CarWash3State();
 }
 
-class _WashconfirmState extends State<Washconfirm> {
+class _CarWash3State extends State<CarWash3> {
   /*임시데이터*/
   String id = 'mouse0429'; //사용자 아이디
   String carNum = '12가1234'; //해당 차량
@@ -133,11 +134,6 @@ Future<void> washRsrv(
   }
 }
 
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
-}
-
 Container reserving(BuildContext context) {
   return Container(
     width: double.infinity,
@@ -145,7 +141,7 @@ Container reserving(BuildContext context) {
     child: ElevatedButton(
       onPressed: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => Washend()));
+            MaterialPageRoute(builder: (BuildContext context) => CarWash4()));
       },
       child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),

@@ -6,8 +6,9 @@ import 'dart:ui' as ui;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mosigg/service/delivery/delivery3.dart';
+import 'package:mosigg/components.dart';
 
-class Deliverysecond extends StatefulWidget {
+class Delivery2 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -17,7 +18,7 @@ class Deliverysecond extends StatefulWidget {
   final LatLng carCoord;
   final LatLng desCoord;
 
-  const Deliverysecond(
+  const Delivery2(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -29,10 +30,10 @@ class Deliverysecond extends StatefulWidget {
       required this.desCoord})
       : super(key: key);
   @override
-  _DeliverysecondState createState() => _DeliverysecondState();
+  _Delivery2State createState() => _Delivery2State();
 }
 
-class _DeliverysecondState extends State<Deliverysecond> {
+class _Delivery2State extends State<Delivery2> {
   String id = 'mouse0429@naver.com';
   String carnumber = '102허2152';
   List<Marker> _markers = [];
@@ -264,7 +265,7 @@ class _DeliverysecondState extends State<Deliverysecond> {
     }
     else{
       Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => Deliveryconfirm(
+        MaterialPageRoute(builder: (BuildContext context) => Delivery3(
           dateAndTime: widget.dateAndTime,
           carLocation: widget.carLocation,
           carDetailLocation: widget.carDetailLocation,
@@ -307,11 +308,6 @@ Future<String> loadingAction(String id, String carnumber, String time) async {
     return rt;
   } else
     throw Exception('Failed to loading');
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Future<String> cancelButton(String id, String carnumber, String time) async {

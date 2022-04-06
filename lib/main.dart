@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => StartPage(),
-          '/oilstart': (context) => Fixstart(),
+          '/oilstart': (context) => Maintenance1(),
           '/location1': (context) => LocationSearchPage1(),
-          '/replacement': (context) => ChangeStart(),
+          '/replacement': (context) => Replacement1(),
           '/map': (context) => MapList()}
         //home: RepConfirm()//Oilstart() //TabBarPage() //StartPage(),
         );

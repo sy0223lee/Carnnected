@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/oiling/oiling5.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/components.dart';
 
-class Oilconfirm extends StatefulWidget {
+class Oiling4 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -11,7 +12,7 @@ class Oilconfirm extends StatefulWidget {
   final String gasStationName;
   final String price;
 
-  const Oilconfirm(
+  const Oiling4(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -23,10 +24,10 @@ class Oilconfirm extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Oilconfirm> createState() => _OilconfirmState();
+  State<Oiling4> createState() => _Oiling4State();
 }
 
-class _OilconfirmState extends State<Oilconfirm> {
+class _Oiling4State extends State<Oiling4> {
   /*임시데이터*/
   String id = 'mouse0429'; //사용자 아이디
   String carNum = '12가1234'; //해당 차량
@@ -102,7 +103,7 @@ class _OilconfirmState extends State<Oilconfirm> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (BuildContext context) => Oilend()));
+                              builder: (BuildContext context) => Oiling5()));
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -136,11 +137,6 @@ Future<void> gasRsv(
   } else {
     print('개같이실패 ${response.statusCode}');
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Row splitrow(type, info) {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/oiling/oiling4.dart';
+import 'package:mosigg/components.dart';
 
-class Oilprice extends StatefulWidget {
+class Oiling3 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -9,7 +10,7 @@ class Oilprice extends StatefulWidget {
   final String payment;
   final String gasStationName;
 
-  const Oilprice(
+  const Oiling3(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -20,10 +21,10 @@ class Oilprice extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Oilprice> createState() => _OilpriceState();
+  State<Oiling3> createState() => _Oiling3State();
 }
 
-class _OilpriceState extends State<Oilprice> {
+class _Oiling3State extends State<Oiling3> {
   @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
@@ -114,11 +115,6 @@ class _OilpriceState extends State<Oilprice> {
   }
 }
 
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
-}
-
 Container kipgoing(
     BuildContext context,
     controller,
@@ -137,7 +133,7 @@ Container kipgoing(
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => Oilconfirm(
+                builder: (BuildContext context) => Oiling4(
                     dateAndTime: dateAndTime,
                     carLocation: carLocation,
                     carDetailLocation: carDetailLocation,

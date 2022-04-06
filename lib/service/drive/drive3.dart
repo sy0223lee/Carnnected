@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/drive/drive4.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/components.dart';
 
-class Driveconfirm extends StatefulWidget {
+class Drive3 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -11,7 +12,7 @@ class Driveconfirm extends StatefulWidget {
   final String payment;
   final String price;
 
-  const Driveconfirm(
+  const Drive3(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -23,10 +24,10 @@ class Driveconfirm extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Driveconfirm> createState() => _DriveconfirmState();
+  State<Drive3> createState() => _Drive3State();
 }
 
-class _DriveconfirmState extends State<Driveconfirm> {
+class _Drive3State extends State<Drive3> {
   /*임시데이터*/
   String id = 'mouse0429@naver.com'; //사용자 아이디
   String carNum = '102허2152'; //해당 차량
@@ -98,7 +99,7 @@ class _DriveconfirmState extends State<Driveconfirm> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (BuildContext context) => Driveend()));
+                              builder: (BuildContext context) => Drive4()));
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -111,11 +112,6 @@ class _DriveconfirmState extends State<Driveconfirm> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Row splitrow(type, info) {

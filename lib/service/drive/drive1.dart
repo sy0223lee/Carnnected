@@ -5,12 +5,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/service/drive/drive2.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/components.dart';
 
-class Drivestart extends StatefulWidget {
-  const Drivestart({Key? key}) : super(key: key);
+class Drive1 extends StatefulWidget {
+  const Drive1({Key? key}) : super(key: key);
 
   @override
-  State<Drivestart> createState() => _DrivestartState();
+  State<Drive1> createState() => _Drive1State();
 }
 
 const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
@@ -26,7 +27,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
   900: Color(0xff001a5d),
 });
 
-class _DrivestartState extends State<Drivestart> {
+class _Drive1State extends State<Drive1> {
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
@@ -255,7 +256,7 @@ class _DrivestartState extends State<Drivestart> {
                         LatLng desCoord = await getCarCoord(desLocation!);
 
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Drivesecond(
+                            MaterialPageRoute(builder: (BuildContext context) => Drive2(
                               dateAndTime: dateAndTime,
                               carLocation: carLocation!,
                               carDetailLocation: carDetailLocation!,
@@ -278,11 +279,6 @@ class _DrivestartState extends State<Drivestart> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container toggleItem(context, text, itemNum) {

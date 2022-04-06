@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosigg/service/maintenance/maintenance4.dart';
+import 'package:mosigg/components.dart';
 
 import 'dart:convert';
 import 'dart:ui' as ui;
 
-class FixRsrv extends StatefulWidget {
+class Maintenance3 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -17,7 +18,7 @@ class FixRsrv extends StatefulWidget {
   final String type;
   final LatLng carCoord;
 
-  const FixRsrv(
+  const Maintenance3(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -28,10 +29,10 @@ class FixRsrv extends StatefulWidget {
       required this.carCoord})
       : super(key: key);
   @override
-  _FixRsrvState createState() => _FixRsrvState();
+  _Maintenance3State createState() => _Maintenance3State();
 }
 
-class _FixRsrvState extends State<FixRsrv> {
+class _Maintenance3State extends State<Maintenance3> {
   List<Marker> _markers = [];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -145,7 +146,7 @@ class _FixRsrvState extends State<FixRsrv> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => Fixconfirm(
+                    builder: (BuildContext context) => Maintenance4(
                           dateAndTime: widget.dateAndTime,
                           carLocation: widget.carLocation,
                           carDetailLocation: widget.carDetailLocation,
@@ -217,11 +218,6 @@ class _FixRsrvState extends State<FixRsrv> {
           );
         });
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Future<List> getFixinfo(LatLng addr) async {

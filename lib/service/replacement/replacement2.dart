@@ -1,22 +1,23 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/replacement/replacement3.dart';
-import 'package:mosigg/service/replacement/replacement2-2.dart';
+import 'package:mosigg/service/replacement/replacement2_2.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:mosigg/components.dart';
 
 var priceFormat = NumberFormat.currency(locale: "ko_KR", symbol: "");
 
-class RepSelect extends StatefulWidget {
+class Replacement2 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
   final String payment;
 
-  const RepSelect(
+  const Replacement2(
     {Key? key,
     required this.dateAndTime,
     required this.carLocation,
@@ -25,10 +26,10 @@ class RepSelect extends StatefulWidget {
     : super(key: key);
 
   @override
-  _RepSelectState createState() => _RepSelectState();
+  _Replacement2State createState() => _Replacement2State();
 }
 
-class _RepSelectState extends State<RepSelect> with TickerProviderStateMixin {
+class _Replacement2State extends State<Replacement2> with TickerProviderStateMixin {
   Future<List>? itemListData;
 
   late TabController _controller;
@@ -103,7 +104,7 @@ class _RepSelectState extends State<RepSelect> with TickerProviderStateMixin {
     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => ChangePlus(
+                          builder: (BuildContext context) => Replacement3(
                               dateAndTime: dateAndTime,
                               carLocation: carLocation,
                               carDetailLocation: carDetailLocation,
@@ -368,11 +369,6 @@ class _RepSelectState extends State<RepSelect> with TickerProviderStateMixin {
   }
 }
 
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
-}
-
 Widget listview(itemcount, listname) {
   return ListView(children: [
     ListView.separated(
@@ -387,7 +383,7 @@ Widget listview(itemcount, listname) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => RepSelect2(
+                    builder: (BuildContext context) => Replacement22(
                           index : listname[index].index,
                           image: listname[index].image,
                           name: listname[index].name,
@@ -466,7 +462,7 @@ Widget listview2(itemcount, listname, type) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => RepSelect2(
+                    builder: (BuildContext context) => Replacement22(
                           index : listname[index].index,
                           image: listname[index].image,
                           name: listname[index].name,

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home/home.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/components.dart';
 
-class Driveend extends StatefulWidget {
-  const Driveend({Key? key}) : super(key: key);
+class Drive4 extends StatefulWidget {
+  const Drive4({Key? key}) : super(key: key);
 
   @override
-  State<Driveend> createState() => _DriveendState();
+  State<Drive4> createState() => _Drive4State();
 }
 
-class _DriveendState extends State<Driveend> {
+class _Drive4State extends State<Drive4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +45,6 @@ class _DriveendState extends State<Driveend> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container gohome(BuildContext context) {

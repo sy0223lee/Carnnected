@@ -94,7 +94,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Oilstart()));
+                            MaterialPageRoute(builder: (BuildContext context) => Oiling1()));
                         },
                         icon: Icon(
                           Icons.person,
@@ -111,7 +111,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Washstart()));
+                            MaterialPageRoute(builder: (BuildContext context) => CarWash1()));
                         },
                         icon: Icon(
                           Icons.person,
@@ -128,7 +128,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => ChangeStart()));
+                            MaterialPageRoute(builder: (BuildContext context) => Replacement1()));
                         },
                         icon: Icon(
                           Icons.person,
@@ -151,7 +151,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Fixstart()));
+                            MaterialPageRoute(builder: (BuildContext context) => Maintenance1()));
                         },
                         icon: Icon(
                           Icons.person,
@@ -168,7 +168,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Deliverystart()));
+                            MaterialPageRoute(builder: (BuildContext context) => Delivery1()));
                         },
                         icon: Icon(
                           Icons.person,
@@ -185,7 +185,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Drivestart()));
+                            MaterialPageRoute(builder: (BuildContext context) => Drive1()));
                         },
                         icon: Icon(
                           Icons.person,

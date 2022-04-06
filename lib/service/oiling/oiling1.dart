@@ -5,12 +5,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/service/oiling/oiling2.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/components.dart';
 
-class Oilstart extends StatefulWidget {
-  const Oilstart({Key? key}) : super(key: key);
+class Oiling1 extends StatefulWidget {
+  const Oiling1({Key? key}) : super(key: key);
 
   @override
-  State<Oilstart> createState() => _OilstartState();
+  State<Oiling1> createState() => _Oiling1State();
 }
 
 const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
@@ -26,7 +27,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
   900: Color(0xff001a5d),
 });
 
-class _OilstartState extends State<Oilstart> {
+class _Oiling1State extends State<Oiling1> {
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
   List<String> fuelList = ['휘발유', '경유', 'LPG', '고급휘발유', '전기'];
@@ -270,7 +271,7 @@ class _OilstartState extends State<Oilstart> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => Oilsecond(
+                                builder: (BuildContext context) => Oiling2(
                                     dateAndTime: dateAndTime,
                                     carLocation: carLocation!,
                                     carDetailLocation: carDetailLocation!,
@@ -290,11 +291,6 @@ class _OilstartState extends State<Oilstart> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container toggleItem(context, text, itemNum) {

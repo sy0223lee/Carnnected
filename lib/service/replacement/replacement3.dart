@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/replacement/replacement4.dart';
+import 'package:mosigg/components.dart';
 
-class ChangePlus extends StatefulWidget {
+class Replacement3 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
   final String payment;
 
-  const ChangePlus(
+  const Replacement3(
     {Key? key,
     required this.dateAndTime,
     required this.carLocation,
@@ -16,10 +17,10 @@ class ChangePlus extends StatefulWidget {
     : super(key: key);
 
   @override
-  _ChangePlusState createState() => _ChangePlusState();
+  _Replacement3State createState() => _Replacement3State();
 }
 
-class _ChangePlusState extends State<ChangePlus> {
+class _Replacement3State extends State<Replacement3> {
   final isSelected = <bool>[false, false];
   List<String> maintList = ['없음', '적용'];
   String? maintenance;
@@ -113,7 +114,7 @@ class _ChangePlusState extends State<ChangePlus> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext context) => ChangeConfirm(
+                                  builder: (BuildContext context) => Replacement4(
                                     dateAndTime: widget.dateAndTime,
                                     carLocation: widget.carLocation,
                                     carDetailLocation: widget.carDetailLocation,
@@ -136,11 +137,6 @@ class _ChangePlusState extends State<ChangePlus> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container toggleItem(context, text, itemNum) {

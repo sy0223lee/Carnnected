@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/service/maintenance/maintenance3.dart';
+import 'package:mosigg/components.dart';
 
-class Fixplus extends StatefulWidget {
+class Maintenance2 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -10,7 +11,7 @@ class Fixplus extends StatefulWidget {
   final String? detail;
   final String payment;
   final LatLng carCoord;
-  const Fixplus(
+  const Maintenance2(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -22,10 +23,10 @@ class Fixplus extends StatefulWidget {
       : super(key: key);
 
   @override
-  _FixplusState createState() => _FixplusState();
+  _Maintenance2State createState() => _Maintenance2State();
 }
 
-class _FixplusState extends State<Fixplus> {
+class _Maintenance2State extends State<Maintenance2> {
   final isSelected = <bool>[false, false, false];
   List<String> typeList = ['정기 검사', '종합 검사', '부분 검사'];
   String type1 = '';
@@ -148,7 +149,7 @@ class _FixplusState extends State<Fixplus> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => FixRsrv(
+                                builder: (BuildContext context) => Maintenance3(
                                     dateAndTime: widget.dateAndTime,
                                     carLocation: widget.carLocation,
                                     carDetailLocation: widget.carDetailLocation,
@@ -170,9 +171,4 @@ class _FixplusState extends State<Fixplus> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

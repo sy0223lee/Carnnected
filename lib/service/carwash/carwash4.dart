@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home/home.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/components.dart';
 
-class Washend extends StatefulWidget {
-  const Washend({Key? key}) : super(key: key);
+class CarWash4 extends StatefulWidget {
+  const CarWash4({Key? key}) : super(key: key);
 
   @override
-  State<Washend> createState() => _WashendState();
+  State<CarWash4> createState() => _CarWash4State();
 }
 
-class _WashendState extends State<Washend> {
+class _CarWash4State extends State<CarWash4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +45,6 @@ class _WashendState extends State<Washend> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container gohome(BuildContext context) {

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home/home.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/components.dart';
 
-class Oilend extends StatefulWidget {
-  const Oilend({Key? key}) : super(key: key);
+class Oiling5 extends StatefulWidget {
+  const Oiling5({Key? key}) : super(key: key);
 
   @override
-  State<Oilend> createState() => _OilendState();
+  State<Oiling5> createState() => _Oiling5State();
 }
 
-class _OilendState extends State<Oilend> {
+class _Oiling5State extends State<Oiling5> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +45,6 @@ class _OilendState extends State<Oilend> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container gohome(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mosigg/login/login.dart'; // 로그아웃
+import 'package:mosigg/components.dart';
 
 class HomePage extends StatefulWidget {
   final String id;
@@ -208,11 +209,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Card card(String carnumber, String usingservice, String sharedstate) {

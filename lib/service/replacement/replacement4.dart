@@ -4,12 +4,13 @@ import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/service/replacement/replacement5.dart';
 import 'package:provider/src/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/components.dart';
 
 var priceFormat = NumberFormat.currency(locale: "ko_KR", symbol: "");
 bool boolOfMaintenance = false;
 String items = '';
 
-class ChangeConfirm extends StatefulWidget {
+class Replacement4 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -17,7 +18,7 @@ class ChangeConfirm extends StatefulWidget {
   final String maintenance;
   final String plusRequest;
 
-  const ChangeConfirm(
+  const Replacement4(
     {Key? key,
     required this.dateAndTime,
     required this.carLocation,
@@ -28,10 +29,10 @@ class ChangeConfirm extends StatefulWidget {
     : super(key: key);
 
   @override
-  State<ChangeConfirm> createState() => _ChangeConfirmState();
+  State<Replacement4> createState() => _Replacement4State();
 }
 
-class _ChangeConfirmState extends State<ChangeConfirm> {
+class _Replacement4State extends State<Replacement4> {
 /*임시데이터*/
   String id = 'mouse0429'; //사용자 아이디
   String carNum = '12가1234';
@@ -170,7 +171,7 @@ class _ChangeConfirmState extends State<ChangeConfirm> {
                         context.read<MyCart>().totalPrice,
                         widget.payment);
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) => ChangeEnd()));
+                          MaterialPageRoute(builder: (BuildContext context) => Replacement5()));
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -183,11 +184,6 @@ class _ChangeConfirmState extends State<ChangeConfirm> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Future<void> repRsv(

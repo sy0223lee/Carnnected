@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/carwash/carwash3.dart';
+import 'package:mosigg/components.dart';
 
-class Washsecond extends StatefulWidget {
+class CarWash2 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -9,7 +10,7 @@ class Washsecond extends StatefulWidget {
   final String? detail;
   final String payment;
 
-  const Washsecond({
+  const CarWash2({
     Key? key,
     required this.dateAndTime,
     required this.carLocation,
@@ -20,10 +21,10 @@ class Washsecond extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _WashsecondState createState() => _WashsecondState();
+  _CarWash2State createState() => _CarWash2State();
 }
 
-class _WashsecondState extends State<Washsecond> {
+class _CarWash2State extends State<CarWash2> {
   final isSelected = <bool>[false, false, false];
   final isSelected2 = <bool>[false, false];
   List<String> typeList = ['없음', '셀프 세차장 세차', '주차장 스팀 세차'];
@@ -199,7 +200,7 @@ class _WashsecondState extends State<Washsecond> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => Washconfirm(
+                                builder: (BuildContext context) => CarWash3(
                                     dateAndTime: widget.dateAndTime,
                                     carLocation: widget.carLocation,
                                     carDetailLocation: widget.carDetailLocation,
@@ -220,9 +221,4 @@ class _WashsecondState extends State<Washsecond> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosigg/service/maintenance/maintenance5.dart';
+import 'package:mosigg/components.dart';
 
-class Fixconfirm extends StatefulWidget {
+class Maintenance4 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -12,7 +13,7 @@ class Fixconfirm extends StatefulWidget {
   final String destName;
   final String destaddr;
   final String? price;
-  const Fixconfirm(
+  const Maintenance4(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -26,10 +27,10 @@ class Fixconfirm extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Fixconfirm> createState() => _FixconfirmState();
+  State<Maintenance4> createState() => _Maintenance4State();
 }
 
-class _FixconfirmState extends State<Fixconfirm> {
+class _Maintenance4State extends State<Maintenance4> {
   /*임시데이터*/
   String id = 'mouse0429'; //사용자 아이디
   String carNum = '12가1234'; //해당 차량
@@ -152,11 +153,6 @@ Future<void> fixrsrv(
   }
 }
 
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
-}
-
 Container reserving(BuildContext context) {
   return Container(
     width: double.infinity,
@@ -164,7 +160,7 @@ Container reserving(BuildContext context) {
     child: ElevatedButton(
       onPressed: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => Fixend()));
+            MaterialPageRoute(builder: (BuildContext context) => Maintenance5()));
       },
       child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
       style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),

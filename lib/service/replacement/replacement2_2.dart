@@ -4,14 +4,15 @@ import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:mosigg/components.dart';
 
-class RepSelect2 extends StatefulWidget {
+class Replacement22 extends StatefulWidget {
   final int index;
   final String image;
   final String name;
   final String price;
 
-  const RepSelect2(
+  const Replacement22(
       {Key? key,
       required this.index,
       required this.image,
@@ -20,10 +21,10 @@ class RepSelect2 extends StatefulWidget {
       : super(key: key);
 
   @override
-  _RepSelect2State createState() => _RepSelect2State();
+  _Replacement22State createState() => _Replacement22State();
 }
 
-class _RepSelect2State extends State<RepSelect2> {
+class _Replacement22State extends State<Replacement22> {
   Future<Item>? item;
 
   /*가격*/
@@ -179,11 +180,6 @@ class _RepSelect2State extends State<RepSelect2> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 class CustomRadioItem extends StatelessWidget {

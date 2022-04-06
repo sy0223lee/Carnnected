@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home/home.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/components.dart';
 
-class ChangeEnd extends StatefulWidget {
-  const ChangeEnd({Key? key}) : super(key: key);
+class Replacement5 extends StatefulWidget {
+  const Replacement5({Key? key}) : super(key: key);
 
   @override
-  State<ChangeEnd> createState() => _ChangeEndState();
+  State<Replacement5> createState() => _Replacement5State();
 }
 
-class _ChangeEndState extends State<ChangeEnd> {
+class _Replacement5State extends State<Replacement5> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +45,6 @@ class _ChangeEndState extends State<ChangeEnd> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container gohome(BuildContext context) {

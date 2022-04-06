@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/home/home.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/components.dart';
 
-class Deliveryend extends StatefulWidget {
-  const Deliveryend({Key? key}) : super(key: key);
+class Delivery4 extends StatefulWidget {
+  const Delivery4({Key? key}) : super(key: key);
 
   @override
-  State<Deliveryend> createState() => _DeliveryendState();
+  State<Delivery4> createState() => _Delivery4State();
 }
 
-class _DeliveryendState extends State<Deliveryend> {
+class _Delivery4State extends State<Delivery4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +45,6 @@ class _DeliveryendState extends State<Deliveryend> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container gohome(BuildContext context) {

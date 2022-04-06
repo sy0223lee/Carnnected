@@ -4,16 +4,17 @@ import 'package:mosigg/service/maintenance/maintenance2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:mosigg/components.dart';
 
-class Fixstart extends StatefulWidget {
+class Maintenance1 extends StatefulWidget {
   final String? carLocation;
   final String? carDetailLocation;
 
-  const Fixstart({Key? key, this.carLocation, this.carDetailLocation})
+  const Maintenance1({Key? key, this.carLocation, this.carDetailLocation})
       : super(key: key);
 
   @override
-  State<Fixstart> createState() => _FixstartState();
+  State<Maintenance1> createState() => _Maintenance1State();
 }
 
 const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
@@ -29,7 +30,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
   900: Color(0xff001a5d),
 });
 
-class _FixstartState extends State<Fixstart> {
+class _Maintenance1State extends State<Maintenance1> {
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String _selectedTime = "";
@@ -278,7 +279,7 @@ class _FixstartState extends State<Fixstart> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => Fixplus(
+                                builder: (BuildContext context) => Maintenance2(
                                     dateAndTime: dateAndTime,
                                     carLocation: carLocation!,
                                     carDetailLocation: carDetailLocation!,
@@ -297,11 +298,6 @@ class _FixstartState extends State<Fixstart> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Future<LatLng> getCarCoord(String carLocation) async {

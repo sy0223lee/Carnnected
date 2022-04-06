@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/delivery/delivery4.dart';
 import 'package:http/http.dart' as http;
+import 'package:mosigg/components.dart';
 
-class Deliveryconfirm extends StatefulWidget {
+class Delivery3 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -11,7 +12,7 @@ class Deliveryconfirm extends StatefulWidget {
   final String payment;
   final String price;
 
-  const Deliveryconfirm(
+  const Delivery3(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -23,10 +24,10 @@ class Deliveryconfirm extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<Deliveryconfirm> createState() => _DeliveryconfirmState();
+  State<Delivery3> createState() => _Delivery3State();
 }
 
-class _DeliveryconfirmState extends State<Deliveryconfirm> {
+class _Delivery3State extends State<Delivery3> {
   /*임시데이터*/
   String id = 'mouse0429@naver.com'; //사용자 아이디
   String carNum = '102허2152'; //해당 차량
@@ -98,7 +99,7 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (BuildContext context) => Deliveryend()));
+                              builder: (BuildContext context) => Delivery4()));
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -111,11 +112,6 @@ class _DeliveryconfirmState extends State<Deliveryconfirm> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Row splitrow(type, info) {

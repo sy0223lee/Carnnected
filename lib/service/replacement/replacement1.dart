@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/location/location1.dart';
 import 'package:mosigg/service/replacement/replacement2.dart';
+import 'package:mosigg/components.dart';
 
-class ChangeStart extends StatefulWidget {
+class Replacement1 extends StatefulWidget {
   final String? carLocation;
   final String? carDetailLocation;
 
-  const ChangeStart({Key? key, this.carLocation, this.carDetailLocation})
+  const Replacement1({Key? key, this.carLocation, this.carDetailLocation})
       : super(key: key);
 
   @override
-  State<ChangeStart> createState() => _ChangeStartState();
+  State<Replacement1> createState() => _Replacement1State();
 }
 
 const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
@@ -26,7 +27,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
   900: Color(0xff001a5d),
 });
 
-class _ChangeStartState extends State<ChangeStart> {
+class _Replacement1State extends State<Replacement1> {
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String? _selectedTime = "";
@@ -240,7 +241,7 @@ class _ChangeStartState extends State<ChangeStart> {
                           Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (BuildContext context) => RepSelect(
+                                              builder: (BuildContext context) => Replacement2(
                                                   dateAndTime: dateAndTime,
                                                   carLocation: carLocation!,
                                                   carDetailLocation: carDetailLocation!,
@@ -259,11 +260,6 @@ class _ChangeStartState extends State<ChangeStart> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Container toggleItem(context, text, itemNum) {

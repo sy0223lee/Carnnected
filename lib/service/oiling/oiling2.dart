@@ -7,8 +7,9 @@ import 'package:mosigg/service/oiling/oiling3.dart';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:proj4dart/proj4dart.dart';
+import 'package:mosigg/components.dart';
 
-class Oilsecond extends StatefulWidget {
+class Oiling2 extends StatefulWidget {
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -16,7 +17,7 @@ class Oilsecond extends StatefulWidget {
   final String payment;
   final LatLng carCoord;
 
-  const Oilsecond(
+  const Oiling2(
       {Key? key,
       required this.dateAndTime,
       required this.carLocation,
@@ -26,10 +27,10 @@ class Oilsecond extends StatefulWidget {
       required this.carCoord})
       : super(key: key);
   @override
-  _OilsecondState createState() => _OilsecondState();
+  _Oiling2State createState() => _Oiling2State();
 }
 
-class _OilsecondState extends State<Oilsecond> {
+class _Oiling2State extends State<Oiling2> {
   List<Marker> _markers = [];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -140,7 +141,7 @@ class _OilsecondState extends State<Oilsecond> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => Oilprice(
+                  builder: (BuildContext context) => Oiling3(
                       dateAndTime: widget.dateAndTime,
                       carLocation: widget.carLocation,
                       carDetailLocation: widget.carDetailLocation,
@@ -233,11 +234,6 @@ class _OilsecondState extends State<Oilsecond> {
           );
         });
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Future<List> getGasinfo(String query) async {
