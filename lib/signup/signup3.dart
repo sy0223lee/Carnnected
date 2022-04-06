@@ -1,10 +1,10 @@
+import 'package:mosigg/signup/signup1.dart';
+import 'package:mosigg/signup/signup2.dart';
+import 'package:mosigg/signup/signup4.dart';
+import 'package:mosigg/signup/common/signupWidget.dart';
 import 'package:flutter/material.dart';
-import './signup1.dart';
-import './signup2.dart';
-import './signup4.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import './common/signupWidget.dart';
 
 String name = '';
 String birth = '';

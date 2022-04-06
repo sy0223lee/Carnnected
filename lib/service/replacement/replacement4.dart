@@ -11,6 +11,7 @@ bool boolOfMaintenance = false;
 String items = '';
 
 class Replacement4 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -20,6 +21,7 @@ class Replacement4 extends StatefulWidget {
 
   const Replacement4(
     {Key? key,
+    required this.id,
     required this.dateAndTime,
     required this.carLocation,
     required this.carDetailLocation,
@@ -34,10 +36,16 @@ class Replacement4 extends StatefulWidget {
 
 class _Replacement4State extends State<Replacement4> {
 /*임시데이터*/
-  String id = 'mouse0429'; //사용자 아이디
+  late String id;
   String carNum = '12가1234';
 
   get index => null; //해당 차량
+
+  @override
+  void initState() {
+    id = widget.id;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +179,7 @@ class _Replacement4State extends State<Replacement4> {
                         context.read<MyCart>().totalPrice,
                         widget.payment);
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) => Replacement5()));
+                          MaterialPageRoute(builder: (BuildContext context) => Replacement5(id: id)));
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -204,25 +212,4 @@ Future<void> repRsv(
   } else {
     print('예약 실패 ${response.statusCode}');
   }
-}
-
-
-Row splitrow(type, info) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 14.0, FontWeight.w500, Colors.black),
-      text(info, 14.0, FontWeight.w400, Colors.black)
-    ],
-  );
-}
-
-Row splitrow2(type, info) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 16.0, FontWeight.w500, Colors.black),
-      text(info, 16.0, FontWeight.bold, Colors.black)
-    ],
-  );
 }

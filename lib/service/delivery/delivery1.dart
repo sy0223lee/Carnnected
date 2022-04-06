@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
 
 class Delivery1 extends StatefulWidget {
-  const Delivery1({Key? key}) : super(key: key);
+  final String id;
+  const Delivery1({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Delivery1> createState() => _Delivery1State();
@@ -28,6 +29,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 });
 
 class _Delivery1State extends State<Delivery1> {
+  late String id;
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
@@ -45,6 +47,7 @@ class _Delivery1State extends State<Delivery1> {
 
   @override
   void initState() {
+    id = widget.id;
     super.initState();
   }
 
@@ -257,6 +260,7 @@ class _Delivery1State extends State<Delivery1> {
 
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) => Delivery2(
+                              id: id,
                               dateAndTime: dateAndTime,
                               carLocation: carLocation!,
                               carDetailLocation: carDetailLocation!,

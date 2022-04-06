@@ -4,6 +4,7 @@ import 'package:mosigg/service/maintenance/maintenance3.dart';
 import 'package:mosigg/components.dart';
 
 class Maintenance2 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -11,8 +12,10 @@ class Maintenance2 extends StatefulWidget {
   final String? detail;
   final String payment;
   final LatLng carCoord;
+
   const Maintenance2(
       {Key? key,
+      required this.id,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
@@ -27,10 +30,18 @@ class Maintenance2 extends StatefulWidget {
 }
 
 class _Maintenance2State extends State<Maintenance2> {
+  late String id;
   final isSelected = <bool>[false, false, false];
   List<String> typeList = ['정기 검사', '종합 검사', '부분 검사'];
   String type1 = '';
   TextEditingController plusRequest = TextEditingController();
+
+  @override
+  void initState() {
+    id = widget.id;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -150,13 +161,14 @@ class _Maintenance2State extends State<Maintenance2> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) => Maintenance3(
-                                    dateAndTime: widget.dateAndTime,
-                                    carLocation: widget.carLocation,
-                                    carDetailLocation: widget.carDetailLocation,
-                                    type: type1,
-                                    payment: widget.payment,
-                                    carCoord: widget.carCoord,
-                                    detail: plusRequest.text)));
+                                  id: id,
+                                  dateAndTime: widget.dateAndTime,
+                                  carLocation: widget.carLocation,
+                                  carDetailLocation: widget.carDetailLocation,
+                                  type: type1,
+                                  payment: widget.payment,
+                                  carCoord: widget.carCoord,
+                                  detail: plusRequest.text)));
                       },
                       child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
                       style:

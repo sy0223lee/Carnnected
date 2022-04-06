@@ -7,10 +7,11 @@ import 'dart:convert';
 import 'package:mosigg/components.dart';
 
 class Maintenance1 extends StatefulWidget {
+  final String id;
   final String? carLocation;
   final String? carDetailLocation;
 
-  const Maintenance1({Key? key, this.carLocation, this.carDetailLocation})
+  const Maintenance1({Key? key, required this.id, this.carLocation, this.carDetailLocation})
       : super(key: key);
 
   @override
@@ -31,6 +32,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 });
 
 class _Maintenance1State extends State<Maintenance1> {
+  late String id;
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String _selectedTime = "";
@@ -44,6 +46,7 @@ class _Maintenance1State extends State<Maintenance1> {
   @override
   void initState() {
     super.initState();
+    id = widget.id;
     carLocation = widget.carLocation;
     carDetailLocation = widget.carDetailLocation;
   }
@@ -280,11 +283,12 @@ class _Maintenance1State extends State<Maintenance1> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) => Maintenance2(
-                                    dateAndTime: dateAndTime,
-                                    carLocation: carLocation!,
-                                    carDetailLocation: carDetailLocation!,
-                                    payment: payment!,
-                                    carCoord: carCoord)));
+                                  id: id,
+                                  dateAndTime: dateAndTime,
+                                  carLocation: carLocation!,
+                                  carDetailLocation: carDetailLocation!,
+                                  payment: payment!,
+                                  carCoord: carCoord)));
                       }
                     },
                     child: text('계속하기', 14.0, FontWeight.w500, Colors.white),

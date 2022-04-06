@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
 
 class Drive3 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -14,6 +15,7 @@ class Drive3 extends StatefulWidget {
 
   const Drive3(
       {Key? key,
+      required this.id,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
@@ -28,9 +30,14 @@ class Drive3 extends StatefulWidget {
 }
 
 class _Drive3State extends State<Drive3> {
-  /*임시데이터*/
-  String id = 'mouse0429@naver.com'; //사용자 아이디
+  late String id;
   String carNum = '102허2152'; //해당 차량
+
+  @override
+  void initState() {
+    id = widget.id;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +106,7 @@ class _Drive3State extends State<Drive3> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (BuildContext context) => Drive4()));
+                              builder: (BuildContext context) => Drive4(id: id)));
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -112,25 +119,4 @@ class _Drive3State extends State<Drive3> {
       ),
     );
   }
-}
-
-Row splitrow(type, info) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 14.0, FontWeight.w500, Colors.black),
-      text(info, 14.0, FontWeight.w400, Colors.black)
-    ],
-  );
-}
-
-Row splitrow2(type, info) {
-  //뚱뚱한버전
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 16.0, FontWeight.w500, Colors.black),
-      text(info, 16.0, FontWeight.bold, Colors.black)
-    ],
-  );
 }

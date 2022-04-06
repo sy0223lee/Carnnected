@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import './signup2.dart';
+import 'package:mosigg/signup/signup2.dart';
 import 'package:mosigg/main.dart';
+import 'package:mosigg/signup/common/signupWidget.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:mosigg/signup/common/signupWidget.dart';
 
 String id = '';
 

@@ -4,10 +4,11 @@ import 'package:mosigg/service/replacement/replacement2.dart';
 import 'package:mosigg/components.dart';
 
 class Replacement1 extends StatefulWidget {
+  final String id;
   final String? carLocation;
   final String? carDetailLocation;
 
-  const Replacement1({Key? key, this.carLocation, this.carDetailLocation})
+  const Replacement1({Key? key, required this.id, this.carLocation, this.carDetailLocation})
       : super(key: key);
 
   @override
@@ -28,6 +29,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 });
 
 class _Replacement1State extends State<Replacement1> {
+  late String id;
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String? _selectedTime = "";
@@ -41,6 +43,7 @@ class _Replacement1State extends State<Replacement1> {
   @override
   void initState() {
     super.initState();
+    id = widget.id;
     carLocation = widget.carLocation;
     carDetailLocation = widget.carDetailLocation;
   }
@@ -242,11 +245,12 @@ class _Replacement1State extends State<Replacement1> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (BuildContext context) => Replacement2(
-                                                  dateAndTime: dateAndTime,
-                                                  carLocation: carLocation!,
-                                                  carDetailLocation: carDetailLocation!,
-                                                  payment: payment!
-                                                  )));
+                                                id: id,
+                                                dateAndTime: dateAndTime,
+                                                carLocation: carLocation!,
+                                                carDetailLocation: carDetailLocation!,
+                                                payment: payment!
+                                                )));
                             }
                         },
                         child: text('계속하기', 14.0, FontWeight.w500, Colors.white),

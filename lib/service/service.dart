@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:mosigg/service/oiling/oiling1.dart';
 import 'package:mosigg/service/delivery/delivery1.dart';
 import 'package:mosigg/service/drive/drive1.dart';
 import 'package:mosigg/service/replacement/replacement1.dart';
 import 'package:mosigg/service/maintenance/maintenance1.dart';
 import 'package:mosigg/service/carwash/carwash1.dart';
+import 'package:mosigg/components.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Servicechoice extends StatefulWidget {
   final String id;
@@ -94,7 +95,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Oiling1()));
+                            MaterialPageRoute(builder: (BuildContext context) => Oiling1(id: id)));
                         },
                         icon: Icon(
                           Icons.person,
@@ -111,7 +112,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => CarWash1()));
+                            MaterialPageRoute(builder: (BuildContext context) => CarWash1(id: id)));
                         },
                         icon: Icon(
                           Icons.person,
@@ -128,7 +129,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Replacement1()));
+                            MaterialPageRoute(builder: (BuildContext context) => Replacement1(id: id)));
                         },
                         icon: Icon(
                           Icons.person,
@@ -151,7 +152,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Maintenance1()));
+                            MaterialPageRoute(builder: (BuildContext context) => Maintenance1(id: id)));
                         },
                         icon: Icon(
                           Icons.person,
@@ -168,7 +169,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Delivery1()));
+                            MaterialPageRoute(builder: (BuildContext context) => Delivery1(id: id)));
                         },
                         icon: Icon(
                           Icons.person,
@@ -185,7 +186,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                         padding: EdgeInsets.only(right: 35.0),
                         onPressed: () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Drive1()));
+                            MaterialPageRoute(builder: (BuildContext context) => Drive1(id: id)));
                         },
                         icon: Icon(
                           Icons.person,
@@ -425,11 +426,6 @@ Container currentservice(service) {
         color: Color(0xff001a5d),
       ),
       child: Center(child: text(service, 10.0, FontWeight.w500, Colors.white)));
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Future<List> recentservice(String carnumber) async {

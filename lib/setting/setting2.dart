@@ -1,3 +1,4 @@
+import 'package:mosigg/components.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -143,9 +144,4 @@ class User {
         birth: json['birth'],
         name: json['name']);
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

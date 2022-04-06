@@ -1,7 +1,7 @@
+import 'package:mosigg/signup/signup1.dart';
+import 'package:mosigg/signup/signup3.dart';
+import 'package:mosigg/signup/common/signupWidget.dart';
 import 'package:flutter/material.dart';
-import './signup1.dart';
-import './signup3.dart';
-import './common/signupWidget.dart';
 
 String pwd = '';
 

@@ -3,6 +3,7 @@ import 'package:mosigg/service/oiling/oiling4.dart';
 import 'package:mosigg/components.dart';
 
 class Oiling3 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -12,6 +13,7 @@ class Oiling3 extends StatefulWidget {
 
   const Oiling3(
       {Key? key,
+      required this.id,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
@@ -25,6 +27,14 @@ class Oiling3 extends StatefulWidget {
 }
 
 class _Oiling3State extends State<Oiling3> {
+  late String id;
+
+  @override
+  void initState() {
+    id = widget.id;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
@@ -113,27 +123,27 @@ class _Oiling3State extends State<Oiling3> {
       ),
     );
   }
-}
 
-Container kipgoing(
-    BuildContext context,
-    controller,
-    String dateAndTime,
-    String carLocation,
-    String carDetailLocation,
-    String fuel,
-    String payment,
-    String gasStationName) {
-  return Container(
-    width: double.infinity,
-    height: 40,
-    child: ElevatedButton(
-      onPressed: () {
-        if (controller.text != null) {}
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => Oiling4(
+  Container kipgoing(
+      BuildContext context,
+      controller,
+      String dateAndTime,
+      String carLocation,
+      String carDetailLocation,
+      String fuel,
+      String payment,
+      String gasStationName) {
+    return Container(
+      width: double.infinity,
+      height: 40,
+      child: ElevatedButton(
+        onPressed: () {
+          if (controller.text != null) {}
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => Oiling4(
+                    id: id,
                     dateAndTime: dateAndTime,
                     carLocation: carLocation,
                     carDetailLocation: carDetailLocation,
@@ -141,9 +151,10 @@ Container kipgoing(
                     payment: payment,
                     gasStationName: gasStationName,
                     price: controller.text)));
-      },
-      child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-    ),
-  );
+        },
+        child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
+        style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+      ),
+    );
+  }
 }

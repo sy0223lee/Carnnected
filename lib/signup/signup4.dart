@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import './signup3.dart';
+import 'package:mosigg/signup/signup3.dart';
 import 'package:mosigg/login/login.dart';
+import 'package:mosigg/components.dart';
 
 class SignUp4 extends StatefulWidget {
   const SignUp4({Key? key}) : super(key: key);
@@ -97,10 +98,4 @@ class _SignUp4State extends State<SignUp4> {
       }),
     );
   }
-}
-
-Text text(content, size, weight, colors){
-  return Text(
-    content, style: TextStyle(fontSize: size, fontWeight: weight, color: colors)
-  );
 }

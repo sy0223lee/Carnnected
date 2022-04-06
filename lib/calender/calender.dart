@@ -1,6 +1,7 @@
+import 'package:mosigg/calender/utils.dart';
+import 'package:mosigg/components.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:mosigg/calender/utils.dart';
 
 class Calenderpage extends StatefulWidget {
   const Calenderpage({Key? key}) : super(key: key);
@@ -163,9 +164,4 @@ class _CalenderpageState extends State<Calenderpage> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

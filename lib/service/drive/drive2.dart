@@ -9,6 +9,7 @@ import 'package:mosigg/service/drive/drive3.dart';
 import 'package:mosigg/components.dart';
 
 class Drive2 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -20,6 +21,7 @@ class Drive2 extends StatefulWidget {
 
   const Drive2(
       {Key? key,
+      required this.id,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
@@ -34,7 +36,7 @@ class Drive2 extends StatefulWidget {
 }
 
 class _Drive2State extends State<Drive2> {
-  String id = 'mouse0429@naver.com';
+  late String id;
   String carnumber = '102허2152';
   List<Marker> _markers = [];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
@@ -48,6 +50,7 @@ class _Drive2State extends State<Drive2> {
 
   void initState() {
     super.initState();
+    id = widget.id;
     var _latitude = (widget.carCoord.latitude+widget.desCoord.latitude)/2;
     var _longitude = (widget.carCoord.longitude+widget.desCoord.longitude)/2;
     markerCam = CameraPosition(target: LatLng(_latitude, _longitude), zoom: 10);
@@ -266,6 +269,7 @@ class _Drive2State extends State<Drive2> {
     else{
       Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => Drive3(
+          id: id,
           dateAndTime: widget.dateAndTime,
           carLocation: widget.carLocation,
           carDetailLocation: widget.carDetailLocation,

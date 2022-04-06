@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:mosigg/setting/setting2.dart';
 import 'package:mosigg/setting/setting3.dart';
 import 'package:mosigg/setting/setting4.dart';
+import 'package:mosigg/components.dart';
+import 'package:flutter/material.dart';
 
 class Settingstart extends StatefulWidget {
   const Settingstart({Key? key}) : super(key: key);
@@ -66,9 +67,4 @@ Row newsplitrow(BuildContext context, type, page) {
       )
     ],
   );
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

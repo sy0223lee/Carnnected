@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
 
 class CarWash3 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -14,6 +15,7 @@ class CarWash3 extends StatefulWidget {
 
   const CarWash3(
       {Key? key,
+      required this.id,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
@@ -28,11 +30,17 @@ class CarWash3 extends StatefulWidget {
 }
 
 class _CarWash3State extends State<CarWash3> {
-  /*임시데이터*/
-  String id = 'mouse0429'; //사용자 아이디
-  String carNum = '12가1234'; //해당 차량
+  late String id;
+  
+  String carNum = '102허2152'; // 차량 번호 받아와야 됨
   int price = 15; //가격
   late var arr = widget.type.split(',');
+
+  @override
+  void initState() {
+    id = widget.id;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +68,7 @@ class _CarWash3State extends State<CarWash3> {
             text('예약 내역을 확인해주세요', 12.0, FontWeight.w400, Color(0xff9a9a9a)),
             text('세차 서비스 예약 내역', 16.0, FontWeight.bold, Colors.black),
             SizedBox(height: 34.0),
-            splitrow('차량번호', '12가 1234'),
+            splitrow('차량번호', '102허2152'),
             SizedBox(height: 20.0),
             splitrow('예약일시',
                 '${widget.dateAndTime.substring(0, 4)}년 ${widget.dateAndTime.substring(5, 7)}월 ${widget.dateAndTime.substring(8, 10)}일 ${widget.dateAndTime.substring(11, 13)}:${widget.dateAndTime.substring(14, 16)}'),
@@ -113,6 +121,21 @@ class _CarWash3State extends State<CarWash3> {
       ),
     );
   }
+
+  Container reserving(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 40,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (BuildContext context) => CarWash4(id: id)));
+        },
+        child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
+        style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+      ),
+    );
+  }
 }
 
 Future<void> washRsrv(
@@ -132,40 +155,4 @@ Future<void> washRsrv(
   } else {
     print('개같이실패 ${response.statusCode}');
   }
-}
-
-Container reserving(BuildContext context) {
-  return Container(
-    width: double.infinity,
-    height: 40,
-    child: ElevatedButton(
-      onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => CarWash4()));
-      },
-      child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-    ),
-  );
-}
-
-Row splitrow(type, info) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 14.0, FontWeight.w500, Colors.black),
-      text(info, 14.0, FontWeight.w400, Colors.black)
-    ],
-  );
-}
-
-Row splitrow2(type, info) {
-  //뚱뚱한버전
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 16.0, FontWeight.w500, Colors.black),
-      text(info, 16.0, FontWeight.bold, Colors.black)
-    ],
-  );
 }

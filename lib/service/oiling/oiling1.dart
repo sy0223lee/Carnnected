@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
 
 class Oiling1 extends StatefulWidget {
-  const Oiling1({Key? key}) : super(key: key);
+  final String id;
+  const Oiling1({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Oiling1> createState() => _Oiling1State();
@@ -28,6 +29,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 });
 
 class _Oiling1State extends State<Oiling1> {
+  late String id;
   final isSelected = <bool>[false, false, false, false, false];
   final isSelected2 = <bool>[false, false, false, false];
   List<String> fuelList = ['휘발유', '경유', 'LPG', '고급휘발유', '전기'];
@@ -43,6 +45,7 @@ class _Oiling1State extends State<Oiling1> {
 
   @override
   void initState() {
+    id = widget.id;
     super.initState();
   }
 
@@ -272,12 +275,13 @@ class _Oiling1State extends State<Oiling1> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) => Oiling2(
-                                    dateAndTime: dateAndTime,
-                                    carLocation: carLocation!,
-                                    carDetailLocation: carDetailLocation!,
-                                    fuel: fuel!,
-                                    payment: payment!,
-                                    carCoord: carCoord)));
+                                  id: id,
+                                  dateAndTime: dateAndTime,
+                                  carLocation: carLocation!,
+                                  carDetailLocation: carDetailLocation!,
+                                  fuel: fuel!,
+                                  payment: payment!,
+                                  carCoord: carCoord)));
                         }
                     },
                     child: text('계속하기', 14.0, FontWeight.w500, Colors.white),

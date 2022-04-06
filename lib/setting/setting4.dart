@@ -1,9 +1,8 @@
+import 'package:mosigg/setting/button.dart';
+import 'package:mosigg/components.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'dart:convert';
-
-import 'package:mosigg/setting/button.dart';
 
 class Settingaddr extends StatefulWidget {
   const Settingaddr({Key? key}) : super(key: key);
@@ -187,11 +186,6 @@ InkWell addrWidget(
           ],
         )),
   );
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }
 
 Future<List> favoriteAddr(String id) async {

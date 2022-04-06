@@ -3,6 +3,7 @@ import 'package:mosigg/service/carwash/carwash3.dart';
 import 'package:mosigg/components.dart';
 
 class CarWash2 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -12,6 +13,7 @@ class CarWash2 extends StatefulWidget {
 
   const CarWash2({
     Key? key,
+    required this.id,
     required this.dateAndTime,
     required this.carLocation,
     required this.carDetailLocation,
@@ -25,6 +27,7 @@ class CarWash2 extends StatefulWidget {
 }
 
 class _CarWash2State extends State<CarWash2> {
+  late String id;
   final isSelected = <bool>[false, false, false];
   final isSelected2 = <bool>[false, false];
   List<String> typeList = ['없음', '셀프 세차장 세차', '주차장 스팀 세차'];
@@ -32,6 +35,13 @@ class _CarWash2State extends State<CarWash2> {
   String type1 = '';
   String type2 = '';
   TextEditingController plusRequest = TextEditingController();
+
+  @override
+  void initState() {
+    id = widget.id;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -201,6 +211,7 @@ class _CarWash2State extends State<CarWash2> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) => CarWash3(
+                                    id: id,
                                     dateAndTime: widget.dateAndTime,
                                     carLocation: widget.carLocation,
                                     carDetailLocation: widget.carDetailLocation,

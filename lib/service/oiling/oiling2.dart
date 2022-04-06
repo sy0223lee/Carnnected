@@ -10,6 +10,7 @@ import 'package:proj4dart/proj4dart.dart';
 import 'package:mosigg/components.dart';
 
 class Oiling2 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -19,6 +20,7 @@ class Oiling2 extends StatefulWidget {
 
   const Oiling2(
       {Key? key,
+      required this.id,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
@@ -31,6 +33,7 @@ class Oiling2 extends StatefulWidget {
 }
 
 class _Oiling2State extends State<Oiling2> {
+  late String id;
   List<Marker> _markers = [];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -43,6 +46,7 @@ class _Oiling2State extends State<Oiling2> {
 
   void initState() {
     super.initState();
+    id = widget.id;
     print(widget.carCoord.latitude);
     markerCam = CameraPosition(target: widget.carCoord, zoom: 14);
     makeMarker();
@@ -142,13 +146,14 @@ class _Oiling2State extends State<Oiling2> {
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => Oiling3(
-                      dateAndTime: widget.dateAndTime,
-                      carLocation: widget.carLocation,
-                      carDetailLocation: widget.carDetailLocation,
-                      fuel: widget.fuel,
-                      payment: widget.payment,
-                      gasStationName: gasStationName
-                      )));
+                    id: id,
+                    dateAndTime: widget.dateAndTime,
+                    carLocation: widget.carLocation,
+                    carDetailLocation: widget.carDetailLocation,
+                    fuel: widget.fuel,
+                    payment: widget.payment,
+                    gasStationName: gasStationName
+                    )));
           },
           style: TextButton.styleFrom(
             backgroundColor: Color(0xff001A5D),

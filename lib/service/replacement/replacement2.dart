@@ -12,6 +12,7 @@ import 'package:mosigg/components.dart';
 var priceFormat = NumberFormat.currency(locale: "ko_KR", symbol: "");
 
 class Replacement2 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -19,6 +20,7 @@ class Replacement2 extends StatefulWidget {
 
   const Replacement2(
     {Key? key,
+    required this.id,
     required this.dateAndTime,
     required this.carLocation,
     required this.carDetailLocation,
@@ -30,6 +32,7 @@ class Replacement2 extends StatefulWidget {
 }
 
 class _Replacement2State extends State<Replacement2> with TickerProviderStateMixin {
+  late String id;
   Future<List>? itemListData;
 
   late TabController _controller;
@@ -64,6 +67,7 @@ class _Replacement2State extends State<Replacement2> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
+    id = widget.id;
     itemListData = getItemList();
 
     for (int index = 0; index < _tabs.length; index++) {
@@ -105,6 +109,7 @@ class _Replacement2State extends State<Replacement2> with TickerProviderStateMix
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) => Replacement3(
+                              id: id,
                               dateAndTime: dateAndTime,
                               carLocation: carLocation,
                               carDetailLocation: carDetailLocation,

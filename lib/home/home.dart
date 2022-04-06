@@ -1,16 +1,16 @@
+import 'package:mosigg/login/login.dart'; // 로그아웃
+import 'package:mosigg/components.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mosigg/login/login.dart'; // 로그아웃
-import 'package:mosigg/components.dart';
 
 class HomePage extends StatefulWidget {
   final String id;
   final String pw;
-  HomePage({required this.id, required this.pw});
+  HomePage({Key? key, required this.id, required this.pw}) : super(key: key);
   // const HomePage({ Key? key }) : super(key: key);
 
   @override

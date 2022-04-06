@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/home/home.dart';
-import 'package:mosigg/login/login.dart';
 import 'package:mosigg/components.dart';
 
 class Drive4 extends StatefulWidget {
-  const Drive4({Key? key}) : super(key: key);
+  final String id;
+  const Drive4({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Drive4> createState() => _Drive4State();
 }
 
 class _Drive4State extends State<Drive4> {
+  late String id;
+
+  @override
+  void initState() {
+    id = widget.id;
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,20 +52,4 @@ class _Drive4State extends State<Drive4> {
       ),
     );
   }
-}
-
-Container gohome(BuildContext context) {
-  return Container(
-    width: double.infinity,
-    height: 56,
-    padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 16.0),
-    child: ElevatedButton(
-      onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => LoginPage())); //
-      },
-      child: text('홈', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-    ),
-  );
 }

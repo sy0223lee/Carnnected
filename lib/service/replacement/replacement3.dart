@@ -3,6 +3,7 @@ import 'package:mosigg/service/replacement/replacement4.dart';
 import 'package:mosigg/components.dart';
 
 class Replacement3 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -10,6 +11,7 @@ class Replacement3 extends StatefulWidget {
 
   const Replacement3(
     {Key? key,
+    required this.id,
     required this.dateAndTime,
     required this.carLocation,
     required this.carDetailLocation,
@@ -21,10 +23,18 @@ class Replacement3 extends StatefulWidget {
 }
 
 class _Replacement3State extends State<Replacement3> {
+  late String id;
   final isSelected = <bool>[false, false];
   List<String> maintList = ['없음', '적용'];
   String? maintenance;
   TextEditingController plusRequest = TextEditingController();
+
+  @override
+  void initState() {
+    id = widget.id;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -115,6 +125,7 @@ class _Replacement3State extends State<Replacement3> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) => Replacement4(
+                                    id: id,
                                     dateAndTime: widget.dateAndTime,
                                     carLocation: widget.carLocation,
                                     carDetailLocation: widget.carDetailLocation,

@@ -4,10 +4,11 @@ import 'package:mosigg/service/carwash/carwash2.dart';
 import 'package:mosigg/components.dart';
 
 class CarWash1 extends StatefulWidget {
+  final String id;
   final String? carLocation;
   final String? carDetailLocation;
 
-  const CarWash1({Key? key, this.carLocation, this.carDetailLocation})
+  const CarWash1({Key? key, required this.id, this.carLocation, this.carDetailLocation})
       : super(key: key);
 
   @override
@@ -28,6 +29,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 });
 
 class _CarWash1State extends State<CarWash1> {
+  late String id;
   final isSelected2 = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String _selectedTime = "";
@@ -37,10 +39,11 @@ class _CarWash1State extends State<CarWash1> {
   String? carLocation;
   String? carDetailLocation;
   String? payment;
-
+  
   @override
   void initState() {
     super.initState();
+    id = widget.id;
     carLocation = widget.carLocation;
     carDetailLocation = widget.carDetailLocation;
   }
@@ -276,6 +279,7 @@ class _CarWash1State extends State<CarWash1> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) => CarWash2(
+                                      id: id,
                                       dateAndTime: dateAndTime,
                                       carLocation: carLocation!,
                                       carDetailLocation: carDetailLocation!,

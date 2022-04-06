@@ -4,6 +4,7 @@ import 'package:mosigg/service/maintenance/maintenance5.dart';
 import 'package:mosigg/components.dart';
 
 class Maintenance4 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -15,6 +16,7 @@ class Maintenance4 extends StatefulWidget {
   final String? price;
   const Maintenance4(
       {Key? key,
+      required this.id,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
@@ -32,11 +34,12 @@ class Maintenance4 extends StatefulWidget {
 
 class _Maintenance4State extends State<Maintenance4> {
   /*임시데이터*/
-  String id = 'mouse0429'; //사용자 아이디
+  late String id;
   String carNum = '12가1234'; //해당 차량
   int price = 15;
   @override
   void initState() {
+    id = widget.id;
     fixrsrv(
       id,
       carNum,
@@ -130,6 +133,21 @@ class _Maintenance4State extends State<Maintenance4> {
       ),
     );
   }
+
+  Container reserving(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 40,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (BuildContext context) => Maintenance5(id: id)));
+        },
+        child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
+        style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+      ),
+    );
+  }
 }
 
 Future<void> fixrsrv(
@@ -151,40 +169,4 @@ Future<void> fixrsrv(
   } else {
     print('개같이실패 ${response.statusCode}');
   }
-}
-
-Container reserving(BuildContext context) {
-  return Container(
-    width: double.infinity,
-    height: 40,
-    child: ElevatedButton(
-      onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => Maintenance5()));
-      },
-      child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
-      style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-    ),
-  );
-}
-
-Row splitrow(type, info) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 14.0, FontWeight.w500, Colors.black),
-      text(info, 14.0, FontWeight.w400, Colors.black)
-    ],
-  );
-}
-
-Row splitrow2(type, info) {
-  //뚱뚱한버전
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 16.0, FontWeight.w500, Colors.black),
-      text(info, 16.0, FontWeight.bold, Colors.black)
-    ],
-  );
 }

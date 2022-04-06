@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 
 class Maintenance3 extends StatefulWidget {
+  final String id;
   final String dateAndTime;
   final String carLocation;
   final String carDetailLocation;
@@ -20,6 +21,7 @@ class Maintenance3 extends StatefulWidget {
 
   const Maintenance3(
       {Key? key,
+      required this.id,
       required this.dateAndTime,
       required this.carLocation,
       required this.carDetailLocation,
@@ -33,6 +35,7 @@ class Maintenance3 extends StatefulWidget {
 }
 
 class _Maintenance3State extends State<Maintenance3> {
+  late String id;
   List<Marker> _markers = [];
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -46,6 +49,7 @@ class _Maintenance3State extends State<Maintenance3> {
 
   void initState() {
     super.initState();
+    id = widget.id;
     markerCam = CameraPosition(target: widget.carCoord, zoom: 14);
     makeMarker();
   }
@@ -147,15 +151,16 @@ class _Maintenance3State extends State<Maintenance3> {
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => Maintenance4(
-                          dateAndTime: widget.dateAndTime,
-                          carLocation: widget.carLocation,
-                          carDetailLocation: widget.carDetailLocation,
-                          detail: widget.detail,
-                          type: widget.type,
-                          payment: widget.payment,
-                          destName: fixStationName,
-                          destaddr: fixStationaddress,
-                        )));
+                      id: id,
+                      dateAndTime: widget.dateAndTime,
+                      carLocation: widget.carLocation,
+                      carDetailLocation: widget.carDetailLocation,
+                      detail: widget.detail,
+                      type: widget.type,
+                      payment: widget.payment,
+                      destName: fixStationName,
+                      destaddr: fixStationaddress,
+                    )));
           },
           style: TextButton.styleFrom(
             backgroundColor: Color(0xff001A5D),
