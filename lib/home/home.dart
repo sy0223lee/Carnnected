@@ -337,21 +337,3 @@ Future<String> getUsingservice(String carnumber) async {
   } else
     throw Exception('Failed to load car data');
 }
-
-class Car {
-  final String cartype;
-  final String carname;
-  final String carnumber;
-  Car({
-    required this.cartype,
-    required this.carname,
-    required this.carnumber,
-  });
-  factory Car.fromJson(Map<String, dynamic> json) {
-    return Car(
-      cartype: json['model'],
-      carname: json['name'],
-      carnumber: json['number'],
-    );
-  }
-}

@@ -456,35 +456,3 @@ Future<List> cardata(String id) async {
     throw Exception('Failed to load car data');
   }
 }
-
-class Recent {
-  final String service;
-  Recent({ required this.service });
-
-  factory Recent.fromJson(Map<String, dynamic> json) {
-    return Recent(
-      service: json['tablename'],
-    );
-  }
-
-  @override
-  String toString() => '${service}';
-}
-
-class Car {
-  final String cartype;
-  final String carname;
-  final String carnumber;
-  Car({
-    required this.cartype,
-    required this.carname,
-    required this.carnumber,
-  });
-  factory Car.fromJson(Map<String, dynamic> json) {
-    return Car(
-      cartype: json['model'],
-      carname: json['name'],
-      carnumber: json['number'],
-    );
-  }
-}

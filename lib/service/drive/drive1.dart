@@ -295,26 +295,3 @@ Container toggleItem(context, text, itemNum) {
     ),
   );
 }
-
-Future<LatLng> getCarCoord(String carLocation) async {
-  Map<String, String> headers = {
-    'X-NCP-APIGW-API-KEY-ID': '8eluft3bx7',
-    'X-NCP-APIGW-API-KEY': 'Zt0hrdTDUsti4s8cPOlpz26QBfz4Rm6lFUHGBGfG'
-  };
-
-  late LatLng carCoord;
-
-  final response = await http.get(
-      Uri.parse(
-          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${carLocation}'),
-      headers: headers);
-
-  if (response.statusCode == 200) {
-    carCoord = LatLng(
-        double.parse(jsonDecode(response.body)['addresses'][0]['y']),
-        double.parse(jsonDecode(response.body)['addresses'][0]['x']));
-    return carCoord;
-  } else {
-    throw Exception('Failed to get coordinates of car');
-  }
-}
