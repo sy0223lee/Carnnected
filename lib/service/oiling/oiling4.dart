@@ -31,7 +31,7 @@ class Oiling4 extends StatefulWidget {
 
 class _Oiling4State extends State<Oiling4> {
   late String id;
-  String carNum = '12가1234'; //해당 차량
+  String carNum = '102허2152'; //해당 차량
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _Oiling4State extends State<Oiling4> {
             text('예약 내역을 확인해주세요', 12.0, FontWeight.w400, Color(0xff9a9a9a)),
             text(widget.gasStationName, 16.0, FontWeight.bold, Colors.black),
             SizedBox(height: 34.0),
-            splitrow('차량번호', '12가 1234'),
+            splitrow('차량번호', '102허2152'),
             SizedBox(height: 20.0),
             splitrow('예약일시',
                 '${widget.dateAndTime.substring(0, 4)}년 ${widget.dateAndTime.substring(5, 7)}월 ${widget.dateAndTime.substring(8, 10)}일 ${widget.dateAndTime.substring(11, 13)}:${widget.dateAndTime.substring(14, 16)}'),

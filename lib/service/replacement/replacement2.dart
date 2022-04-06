@@ -109,12 +109,12 @@ class _Replacement2State extends State<Replacement2> with TickerProviderStateMix
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) => Replacement3(
-                              id: id,
-                              dateAndTime: dateAndTime,
-                              carLocation: carLocation,
-                              carDetailLocation: carDetailLocation,
-                              payment: payment
-                              )));
+                            id: id,
+                            dateAndTime: dateAndTime,
+                            carLocation: carLocation,
+                            carDetailLocation: carDetailLocation,
+                            payment: payment
+                            )));
   }
 
   @override
