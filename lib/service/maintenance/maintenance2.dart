@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/service/maintenance/maintenance1.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/service/maintenance/maintenance3.dart';
 
@@ -46,10 +45,7 @@ class _FixplusState extends State<Fixplus> {
           title: text('정비 서비스 예약', 16.0, FontWeight.w500, Colors.black),
           leading: IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => Fixstart()));
+              Navigator.pop(context);
             },
             icon: Icon(
               Icons.arrow_back,

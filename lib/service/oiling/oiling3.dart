@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/oiling/oiling4.dart';
-import 'package:mosigg/service/oiling/oiling1.dart';
 
 class Oilprice extends StatefulWidget {
   final String dateAndTime;
@@ -37,10 +36,7 @@ class _OilpriceState extends State<Oilprice> {
         title: text('주유 서비스 예약', 16.0, FontWeight.w500, Colors.black),
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => Oilstart()));
+            Navigator.pop(context);
           },
           icon: Icon(
             Icons.arrow_back,

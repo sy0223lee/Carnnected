@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:mosigg/service/carwash/carwash1.dart';
 import 'package:mosigg/service/carwash/carwash3.dart';
 
 class Washsecond extends StatefulWidget {
@@ -48,10 +46,7 @@ class _WashsecondState extends State<Washsecond> {
           title: text('세차 서비스 예약', 16.0, FontWeight.w500, Colors.black),
           leading: IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => Washstart()));
+              Navigator.pop(context);
             },
             icon: Icon(
               Icons.arrow_back,
