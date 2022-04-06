@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/history/history.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -129,4 +128,9 @@ Container carcontainer(String carnumber, String cartype, String carname) {
       ],
     ),
   );
+}
+
+Text text(content, size, weight, colors) {
+  return Text(content,
+      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

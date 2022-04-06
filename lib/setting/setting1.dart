@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/history/history.dart';
 import 'package:mosigg/setting/setting2.dart';
 import 'package:mosigg/setting/setting3.dart';
 import 'package:mosigg/setting/setting4.dart';
@@ -67,4 +66,9 @@ Row newsplitrow(BuildContext context, type, page) {
       )
     ],
   );
+}
+
+Text text(content, size, weight, colors) {
+  return Text(content,
+      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
 }

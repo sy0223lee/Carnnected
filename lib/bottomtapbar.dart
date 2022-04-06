@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/home.dart';
+import 'package:mosigg/home/home.dart';
 import 'package:mosigg/map/maplist.dart';
-import 'package:mosigg/servicechoice.dart';
-import 'package:mosigg/history/history.dart';
-import 'package:mosigg/options/options.dart';
+import 'package:mosigg/service/servicechoice.dart';
 import 'package:mosigg/calender/calender.dart';
 import 'package:mosigg/setting/setting1.dart';
 
