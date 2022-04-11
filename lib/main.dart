@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:provider/provider.dart';
-import 'package:mosigg/map/maplist.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/signup/signup1.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/location/location1.dart';
-import 'package:mosigg/service/maintenance/maintenance1.dart';
-import 'package:mosigg/service/replacement/replacement1.dart';
 
 //void main() => runApp(MyApp());
 void main() {
