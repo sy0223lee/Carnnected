@@ -147,12 +147,61 @@ class _CalenderpageState extends State<Calenderpage> {
                         horizontal: 12.0,
                         vertical: 4.0,
                       ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
+                      child: Row(
+                        children: [
+                          Container(
+                              height: 54.0,
+                              width: 52.0,
+                              decoration:
+                                  BoxDecoration(color: Color(0xff001a5d)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '12가',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'NotoSansKR',
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    '1234',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'NotoSansKR',
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              )),
+                          Container(
+                            height: 54.0,
+                            width: 335,
+                            decoration: BoxDecoration(),
+                            child: ListTile(
+                              onTap: () => print('${value[index]}'),
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${value[index]}'),
+                                      Text('3일 일요일 14:00'),
+                                    ],
+                                  ),
+                                  Icon(
+                                    Icons.navigate_next,
+                                    size: 50,
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     );
                   },
