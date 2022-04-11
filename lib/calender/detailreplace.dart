@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:mosigg/components.dart';
+import 'package:mosigg/provider/replaceProvider.dart';
 
 var priceFormat = NumberFormat.currency(locale: "ko_KR", symbol: "");
 bool boolOfMaintenance = false;
@@ -139,29 +142,4 @@ class _ChangeConfirmState extends State<ChangeConfirm> {
       ),
     );
   }
-}
-
-Text text(content, size, weight, colors) {
-  return Text(content,
-      style: TextStyle(fontSize: size, fontWeight: weight, color: colors));
-}
-
-Row splitrow(type, info) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 14.0, FontWeight.w500, Colors.black),
-      text(info, 14.0, FontWeight.w400, Colors.black)
-    ],
-  );
-}
-
-Row splitrow2(type, info) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      text(type, 16.0, FontWeight.w500, Colors.black),
-      text(info, 16.0, FontWeight.bold, Colors.black)
-    ],
-  );
 }
