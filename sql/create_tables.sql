@@ -3,7 +3,9 @@ use carnnected;
 
 # 회원 테이블
 CREATE TABLE `MEMBER`(
-    `id` VARCHAR(25) NOT NULL,
+    `id` VARCHAR(50) NOT NULL,
+    `authToken` VARCHAR(500) NOT NULL,
+    `otpCode` VARCHAR(7) NOT NULL,
     `pwd` VARCHAR(20) NOT NULL,
     `name` VARCHAR(10) NOT NULL,
     `birth` CHAR(6) NOT NULL,
@@ -18,7 +20,6 @@ CREATE TABLE `CAR`(
     `number` CHAR(11) NOT NULL,			# 차 번호
     `name` VARCHAR(30) NULL,			# 차 별명
     `image` VARCHAR(50) NOT NULL,		# 차 사진 경로
-    `num` INT NOT NULL,					# 차량 리스트 순서
     PRIMARY KEY(`number`),
     FOREIGN KEY(`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
