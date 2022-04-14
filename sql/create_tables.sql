@@ -5,7 +5,6 @@ use carnnected;
 CREATE TABLE `MEMBER`(
     `id` VARCHAR(50) NOT NULL,
     `authToken` VARCHAR(500) NOT NULL,
-    `otpCode` VARCHAR(7) NOT NULL,
     `pwd` VARCHAR(20) NOT NULL,
     `name` VARCHAR(10) NOT NULL,
     `birth` CHAR(6) NOT NULL,
