@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/setting/setting4.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/signup/signup1.dart';
@@ -9,15 +10,10 @@ import 'package:mosigg/location/location1.dart';
 //void main() => runApp(MyApp());
 void main() {
   KakaoContext.clientId = 'f7926788ee7785502df4ce563f93d183';
-  runApp(
-    MultiProvider (
-      providers: [
-        ChangeNotifierProvider(create: (_) => CountPurchase()),
-        ChangeNotifierProvider(create: (_) => MyCart()),
-      ],
-      child: MyApp()
-    )
-  );
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => CountPurchase()),
+    ChangeNotifierProvider(create: (_) => MyCart()),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +32,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => StartPage(),
+          '/': (context) => Settingaddr(),
           '/location1': (context) => LocationSearchPage1()
         }
         //home: StartPage(),

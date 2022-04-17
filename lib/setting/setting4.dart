@@ -17,7 +17,7 @@ class _SettingaddrState extends State<Settingaddr> {
   int index1 = 0;
   @override
   void initState() {
-    data = favoriteAddr('mouse0429');
+    data = favoriteAddr('mouse0429@naver.com');
     super.initState();
   }
 
@@ -178,8 +178,13 @@ InkWell addrWidget(
                       size: 15.0,
                     ),
                     onTap: () {
-                      favoriteAddrdelete('mouse0429', addr, detailAddr);
-                      Navigator.pop(context);
+                      favoriteAddrdelete(
+                          'mouse0429@naver.com', addr, detailAddr);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  Settingaddr()));
                     },
                   )
                 : text('', 0.0, FontWeight.bold, Colors.white)
