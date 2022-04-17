@@ -2,7 +2,7 @@ import 'package:mosigg/login/login.dart'; // 로그아웃
 import 'package:mosigg/components.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:flutter_swiper/flutter_swiper.dart';
+//import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -84,31 +84,10 @@ class _HomePageState extends State<HomePage> {
                     text(snapshot.data![idx].carname, 14.0, FontWeight.w500,
                         Color(0xffA9A9A9)),
                     Container(
-                      height: 360,
-                      child: Swiper(
-                        onIndexChanged: (value) async {
-                          setState(() {
-                            idx = value;
-                          });
-                          usingservice = await getUsingservice(
-                              snapshot.data![idx].carnumber);
-                        },
-                        scale: 0.85,
-                        loop: false,
-                        viewportFraction: 0.61,
-                        pagination:
-                            SwiperPagination(alignment: Alignment.bottomRight),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (BuildContext context, index) {
-                          return Column(
-                            children: [
-                              card(snapshot.data![idx].carnumber, usingservice,
-                                  "공유중")
-                            ],
-                          );
-                        },
-                      ),
+                      height: 340,
+                      child: card(snapshot.data![idx].carnumber, usingservice, "공유중")
                     ),
+                    SizedBox(height: 34.0),
                     Container(
                       width: 380,
                       height: 100,
@@ -202,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ));
             } else {
-              return Container();
+              return pluscard();
             }
           },
         ),
@@ -247,6 +226,7 @@ Card card(String carnumber, String usingservice, String sharedstate) {
             backgroundImage: AssetImage('image/peridot.jpg'),
             radius: 40.0,
           ),
+          SizedBox(height: 10.0),
           text(carnumber, 18.0, FontWeight.bold, Colors.white),
           SizedBox(height: 9.0),
           Container(
@@ -254,7 +234,7 @@ Card card(String carnumber, String usingservice, String sharedstate) {
             child: Divider(
               height: 0.0,
               color: Colors.white,
-              thickness: 2.0,
+              thickness: 1.0,
             ),
           ),
           SizedBox(height: 13.0),
@@ -314,7 +294,7 @@ Card pluscard() {
 
 Future<List> cardata(String id) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/${id}'));
+      await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/$id'));
   late List<Car> carList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);
@@ -329,7 +309,7 @@ Future<List> cardata(String id) async {
 
 Future<String> getUsingservice(String carnumber) async {
   final response = await http
-      .get(Uri.parse('http://10.0.2.2:8080/usingservice/${carnumber}'));
+      .get(Uri.parse('http://10.0.2.2:8080/usingservice/$carnumber'));
 
   if (response.statusCode == 200) {
     String service = response.body.toString();

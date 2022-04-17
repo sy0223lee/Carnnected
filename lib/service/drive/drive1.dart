@@ -3,8 +3,6 @@ import 'package:mosigg/service/drive/drive2.dart';
 import 'package:mosigg/components.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class Drive1 extends StatefulWidget {
   final String id;

@@ -429,7 +429,7 @@ Container currentservice(service) {
 }
 
 Future<List> recentservice(String carnumber) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/recentservice/${carnumber}'));
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/recentservice/$carnumber'));
   if (response.statusCode == 200) {
     List service = [];
     List<dynamic> json = jsonDecode(response.body);
@@ -443,7 +443,7 @@ Future<List> recentservice(String carnumber) async {
 }
 
 Future<List> cardata(String id) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/${id}'));
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/$id'));
   late List<Car> carList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);

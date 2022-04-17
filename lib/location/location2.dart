@@ -270,7 +270,7 @@ Future<Coordinates> getCoordinates(
   } else {
     final response = await http.post(
         Uri.parse(
-            'https://www.juso.go.kr/addrlink/addrCoordApi.do?admCd=${admCd}&rnMgtSn=${rnMgtSn}&udrtYn=${udrtYn}&buldMnnm=${buldMnnm}&buldSlno=${buldSlno}&confmKey=devU01TX0FVVEgyMDIyMDIxNDA1MDA0NjExMjIzODY=&resultType=json'),
+            'https://www.juso.go.kr/addrlink/addrCoordApi.do?admCd=$admCd&rnMgtSn=$rnMgtSn&udrtYn=$udrtYn&buldMnnm=$buldMnnm&buldSlno=$buldSlno&confmKey=devU01TX0FVVEgyMDIyMDIxNDA1MDA0NjExMjIzODY=&resultType=json'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

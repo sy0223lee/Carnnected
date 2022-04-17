@@ -205,7 +205,7 @@ Future<void> repRsv(
     int totalPrice,
     String payment) async {
   final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/replace_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${item}/${maintenance}/${plusRequest}/${totalPrice}/${payment}'));
+      'http://10.0.2.2:8080/replace_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$item/$maintenance/$plusRequest/$totalPrice/$payment'));
   if (response.statusCode == 200) {
     print('예약 성공 ${response.body}');
   } else {
