@@ -1,3 +1,4 @@
+import 'package:mosigg/signup/tempsignup.dart';
 import 'package:mosigg/signup/signup2.dart';
 import 'package:mosigg/main.dart';
 import 'package:mosigg/signup/common/signupWidget.dart';
@@ -117,7 +118,8 @@ class _SignUpState extends State<SignUp1> {
                                                   MaterialPageRoute(
                                                       builder: (BuildContext
                                                               context) =>
-                                                          SignUp2()));
+                                                          //SignUp2()
+                                                          AicarSignup()));
                                             }
                                           },
                                           child: Row(children: [
