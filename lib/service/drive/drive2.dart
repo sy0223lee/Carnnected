@@ -45,7 +45,7 @@ class _Drive2State extends State<Drive2> {
   late List gasCoordData;
 
   Completer<GoogleMapController> _controller = Completer();
-  int price = 23000;
+  int price = 0;
   var btnclicked = 0;
 
   void initState() {
@@ -53,8 +53,20 @@ class _Drive2State extends State<Drive2> {
     id = widget.id;
     var _latitude = (widget.carCoord.latitude+widget.desCoord.latitude)/2;
     var _longitude = (widget.carCoord.longitude+widget.desCoord.longitude)/2;
+    getPrice(widget.carCoord, widget.desCoord);
+
     markerCam = CameraPosition(target: LatLng(_latitude, _longitude), zoom: 10);
     makeMarker();
+  }
+
+  Future<int> getPrice(LatLng src, LatLng dest) async {
+    final response = await http.get(Uri.parse('https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit&origins=${src.latitude},${src.longitude}&destinations=${dest.latitude},${dest.longitude}&region=KR&key=AIzaSyBJHfzckYIvqPrJT1rO_GY3xL6BVfQmTGs'));
+    var temp = jsonDecode(response.body)['rows'][0]['elements'][0]['distance']['text'].split(' ');
+    var dist = double.parse(temp[0]).round();
+    print(dist);
+
+    var prc = dist*3000;
+    return prc;
   }
 
   void makeMarker() async {
