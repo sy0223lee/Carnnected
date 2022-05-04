@@ -61,7 +61,7 @@ class Event1 {
 
 Future<List> eventdata(String id) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/calender/${id}'));
+      await http.get(Uri.parse('http://10.0.2.2:8080/calender/$id'));
   late List<Event1> eventList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);

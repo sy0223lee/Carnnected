@@ -59,7 +59,7 @@ class Recent {
   }
 
   @override
-  String toString() => '${service}';
+  String toString() => '$service';
 }
 
 class Car {
@@ -90,7 +90,7 @@ Future<LatLng> getCarCoord(String carLocation) async {
   };
 
   final response = await http.get(
-    Uri.parse('https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${carLocation}'),
+    Uri.parse('https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=$carLocation'),
     headers: headers
   );
 

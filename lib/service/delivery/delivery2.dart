@@ -45,7 +45,7 @@ class _Delivery2State extends State<Delivery2> {
   late List gasCoordData;
 
   Completer<GoogleMapController> _controller = Completer();
-  int price = 23000;
+  int price = 0;
   var btnclicked = 0;
 
   void initState() {
@@ -53,8 +53,20 @@ class _Delivery2State extends State<Delivery2> {
     id = widget.id;
     var _latitude = (widget.carCoord.latitude+widget.desCoord.latitude)/2;
     var _longitude = (widget.carCoord.longitude+widget.desCoord.longitude)/2;
+    getPrice(widget.carCoord, widget.desCoord);
+
     markerCam = CameraPosition(target: LatLng(_latitude, _longitude), zoom: 10);
     makeMarker();
+  }
+
+  Future<int> getPrice(LatLng src, LatLng dest) async {
+    final response = await http.get(Uri.parse('https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&mode=transit&origins=${src.latitude},${src.longitude}&destinations=${dest.latitude},${dest.longitude}&region=KR&key=AIzaSyBJHfzckYIvqPrJT1rO_GY3xL6BVfQmTGs'));
+    var temp = jsonDecode(response.body)['rows'][0]['elements'][0]['distance']['text'].split(' ');
+    var dist = double.parse(temp[0]).round();
+    print(dist);
+
+    var prc = dist*3000;
+    return prc;
   }
 
   void makeMarker() async {
@@ -293,7 +305,7 @@ Future<bool> deliveryRsv(
     String payment,
     int price) async {
   final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/deliv_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${desLocation}/${desDetailLocation}/${payment}/${price}'));
+      'http://10.0.2.2:8080/deliv_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$desLocation/$desDetailLocation/$payment/$price'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
     if(json.decode(response.body) == true)  return true;
@@ -305,7 +317,7 @@ Future<bool> deliveryRsv(
 }
 
 Future<String> loadingAction(String id, String carnumber, String time) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/deliv_resrv/${id}/${carnumber}/${time}'));
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/deliv_resrv/$id/$carnumber/$time'));
 
   if (response.statusCode == 200) {
     var rt = response.body.toString();
@@ -315,7 +327,7 @@ Future<String> loadingAction(String id, String carnumber, String time) async {
 }
 
 Future<String> cancelButton(String id, String carnumber, String time) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/deliv_cancel/${id}/${carnumber}/${time}'));
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/deliv_cancel/$id/$carnumber/$time'));
 
   if (response.statusCode == 200) {
     var rt = response.body.toString();

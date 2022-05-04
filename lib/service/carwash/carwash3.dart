@@ -11,7 +11,6 @@ class CarWash3 extends StatefulWidget {
   final String type;
   final String detail;
   final String payment;
-  final String? price;
 
   const CarWash3(
       {Key? key,
@@ -21,8 +20,7 @@ class CarWash3 extends StatefulWidget {
       required this.carDetailLocation,
       required this.type,
       required this.detail,
-      required this.payment,
-      this.price})
+      required this.payment})
       : super(key: key);
 
   @override
@@ -31,14 +29,20 @@ class CarWash3 extends StatefulWidget {
 
 class _CarWash3State extends State<CarWash3> {
   late String id;
-  
+  var price = 0;
   String carNum = '102허2152'; // 차량 번호 받아와야 됨
-  int price = 15; //가격
   late var arr = widget.type.split(',');
 
   @override
   void initState() {
     id = widget.id;
+    print("here");
+    var temp = widget.type.split(',');
+    if(temp[0] == "셀프 세차장 세차")       price = 4;
+    else if(temp[0] == "주차장 스팀 세차")  price = 5;
+    else                                    price = 0;
+    
+    if(temp[1] == "실내 클리닝")            price += 3;
     super.initState();
   }
 
@@ -109,7 +113,7 @@ class _CarWash3State extends State<CarWash3> {
               color: Color(0xffcbcbcb),
               thickness: 1.0,
             ),
-            splitrow2('예상 금액', '10 만원'),
+            splitrow2('예상 금액', '$price 만원'),
             splitrow2('결제방식', '${widget.payment}'),
             Expanded(
                 child: Column(
@@ -149,7 +153,7 @@ Future<void> washRsrv(
     String detail,
     int price) async {
   final response = await http.get(Uri.parse(
-      'http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/wash_resrv/${id}/${carNum}/${dateAndTime}/${carLocation}/${carDetailLocation}/${type}/${payment}/${detail}'));
+      'http://10.0.2.2:8080/wash_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$type/$payment/$detail'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
   } else {

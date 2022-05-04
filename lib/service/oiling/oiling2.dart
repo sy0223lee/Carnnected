@@ -252,7 +252,7 @@ Future<List> getGasinfo(String query) async {
 
   final responseCoord = await http.get(
       Uri.parse(
-          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${query}'),
+          'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=$query'),
       headers: headers);
 
   if (responseCoord.statusCode == 200) {
@@ -269,10 +269,10 @@ Future<List> getGasinfo(String query) async {
     /*테스트 코드*/
     // katecX = 314681.8;
     // katecY = 544837.0;
-    print('주유2 ${katecX}, ${katecY}');
+    print('주유2 $katecX, $katecY');
 
     final responseGas = await http.get(Uri.parse(
-        'http://www.opinet.co.kr/api/aroundAll.do?code=F220207018&x=${katecX}&y=${katecY}&radius=5000&sort=1&prodcd=B027&out=json'));
+        'http://www.opinet.co.kr/api/aroundAll.do?code=F220207018&x=$katecX&y=$katecY&radius=5000&sort=1&prodcd=B027&out=json'));
     if (responseGas.statusCode == 200) {
       late List<OIL> gasList = [];
       List<dynamic> json = jsonDecode(responseGas.body)['RESULT']['OIL'];

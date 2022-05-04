@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/delivery/delivery4.dart';
-import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
 
 class Delivery3 extends StatefulWidget {
