@@ -5,26 +5,29 @@ import 'package:table_calendar/table_calendar.dart';
 
 class Event {
   final String title;
-  final String datetime;
-  const Event(this.title, this.datetime);
+  final String time;
+  const Event(this.title, this.time);
 
   @override
-  String toString() => title;
+  String toString() => '$title';
 }
+
+late String test;
+late Map<DateTime, dynamic> kEventSource = {};
 
 final kEvents = LinkedHashMap(
   equals: isSameDay,
   hashCode: getHashCode,
-)..addAll(_kEventSource);
+)..addAll(kEventSource);
 
-Map<DateTime, dynamic> _kEventSource = {
-  DateTime(2022, 4, 3): [Event('주유서비스예약', '3일 일요일 14:00')],
-  DateTime(2022, 4, 4): [Event('세차서비스예약', '4일 월요일 15:00')],
-  DateTime(2022, 4, 5): [
-    Event('정비서비스예약', '5일 화요일 11:00'),
-    Event('딜리버리서비스예약', '5일 화요일 17:00')
-  ],
-};
+// Map<DateTime, dynamic> _kEventSource = {
+//   DateTime(2022, 4, 3): [Event('주유서비스예약', '3일 일요일 14:00')],
+//   DateTime(2022, 4, 4): [Event('세차서비스예약', '4일 월요일 15:00')],
+//   DateTime(2022, 4, 5): [
+//     Event('정비서비스예약', '5일 화요일 11:00'),
+//     Event('딜리버리서비스예약', '5일 화요일 17:00')
+//   ],
+// };
 
 List<DateTime> daysInRange(DateTime first, DateTime last) {
   final dayCount = last.difference(first).inDays + 1;
@@ -57,11 +60,14 @@ class Event1 {
       time: json['time'],
     );
   }
+
+  @override
+  String toString() => '$id $number $tablename $time';
 }
 
 Future<List> eventdata(String id) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/calender/$id'));
+      await http.get(Uri.parse('http://10.0.2.2:8080/calendar/$id'));
   late List<Event1> eventList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);

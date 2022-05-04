@@ -4,13 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calenderpage extends StatefulWidget {
-  const Calenderpage({Key? key}) : super(key: key);
+  final String id;
+  const Calenderpage({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Calenderpage> createState() => _CalenderpageState();
 }
 
 class _CalenderpageState extends State<Calenderpage> {
+  late String id;
+  Future<List>? events;
+  List? eventlist;
   late final ValueNotifier<List<Event>> _selectedEvents;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   DateTime? _selectedDay;
@@ -18,11 +22,50 @@ class _CalenderpageState extends State<Calenderpage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+  Future getEvents(String id) async {
+    Future.delayed(Duration(seconds: 1),() async {
+      events = eventdata(id);
+    eventlist = await events;
+    
+    print('eventlist: '+'$eventlist');
+    print('kEventSource: '+'$kEventSource');
+    });
+    
+  }
+
+  Future setEvents() async {
+    for(int i = 0; i < eventlist!.length; i++) {
+      String year = eventlist![i].time.substring(0, 4);
+      String month = eventlist![i].time.substring(5, 7);
+      String day = eventlist![i].time.substring(8, 10);
+      String time = eventlist![i].time.substring(11, 16);
+      String service = eventlist![i].tablename;
+      kEventSource[DateTime(int.parse(year), int.parse(month), int.parse(day))] = [Event('$service서비스예약', time)];
+    }
+  }
+
+  // Future setEvents(String datetime, String service) async {
+  //   String year = datetime.substring(0, 4);
+  //   String month = datetime.substring(5, 7);
+  //   String day = datetime.substring(8, 10);
+  //   String time = datetime.substring(11, 16);
+  //   kEventSource[DateTime(int.parse(year), int.parse(month), int.parse(day))] = [Event('$service서비스예약', time)];
+  // }
+
+  Future initEvents() async {
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
   @override
   void initState() {
     super.initState();
-    _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    id = widget.id;
+    
+    getEvents(id);
+    setEvents();
+    // kEventSource[DateTime(2022, 5, 10)] = [Event('주유서비스예약', '20:00')]; // 여기서 하는 건 되는데, async 함수 안에서 하면 kEventSource에 들어는 가는데 달력에 표시가 안 됨
+    initEvents();
   }
 
   @override
@@ -121,14 +164,14 @@ class _CalenderpageState extends State<Calenderpage> {
               ),
               rangeSelectionMode: _rangeSelectionMode,
               eventLoader: _getEventsForDay,
-              startingDayOfWeek: StartingDayOfWeek.monday,
+              startingDayOfWeek: StartingDayOfWeek.sunday,
               onRangeSelected: _onRangeSelected,
               onDaySelected: _onDaySelected,
               selectedDayPredicate: (DateTime date) {
                 return isSameDay(_selectedDay, date);
               },
-              firstDay: DateTime.utc(2020, 01, 01),
-              lastDay: DateTime.utc(2032, 12, 31),
+              firstDay: DateTime.utc(2022, 01, 01),
+              lastDay: DateTime.utc(2022, 12, 31),
               focusedDay: _focusedDay,
               rangeStartDay: _rangeStart,
               rangeEndDay: _rangeEnd,
@@ -157,22 +200,8 @@ class _CalenderpageState extends State<Calenderpage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    '12가',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'NotoSansKR',
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '1234',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'NotoSansKR',
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  text('12가', 14.0, FontWeight.bold, Colors.white),
+                                  text('1234', 14.0, FontWeight.bold, Colors.white),
                                 ],
                               )),
                           Container(
@@ -180,7 +209,9 @@ class _CalenderpageState extends State<Calenderpage> {
                             width: 335,
                             decoration: BoxDecoration(),
                             child: ListTile(
-                              onTap: () => print('${value[index]}'),
+                              onTap: () {
+                                print('${value[index]}');
+                              },
                               title: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -189,8 +220,9 @@ class _CalenderpageState extends State<Calenderpage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('${value[index]}'),
-                                      Text('3일 일요일 14:00'),
+                                      text('${value[index]}', 14.0, FontWeight.w500, Colors.black),
+                                      SizedBox(height: 5.0),
+                                      text('14:00', 12.0, FontWeight.w400, Colors.black),
                                     ],
                                   ),
                                   Icon(
