@@ -16,6 +16,8 @@ class _SignUp2State extends State<SignUp2> {
   var pwdcheck = false;
   final inputPwd = TextEditingController();
   final inputCpwd = TextEditingController();
+  final inputname = TextEditingController();
+  final inputssn = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,18 @@ class _SignUp2State extends State<SignUp2> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        TextFieldMethod(
+                            controller: inputname,
+                            intro: '이름',
+                            helperText: '이름을 입력해주세요!',
+                            obsecure: false),
+                        SizedBox(height: 15.0),
+                        TextFieldMethod(
+                            controller: inputssn,
+                            intro: '주민번호 앞자리',
+                            helperText: '주민번호 앞 6자리를 입력해주세요!',
+                            obsecure: false),
+                        SizedBox(height: 15.0),
                         TextFieldMethod(
                             controller: inputPwd,
                             intro: '비밀번호',

@@ -17,7 +17,7 @@ class _SettingaddrState extends State<Settingaddr> {
   int index1 = 0;
   @override
   void initState() {
-    data = favoriteAddr('mouse0429');
+    data = favoriteAddr('mouse0429@naver.com');
     super.initState();
   }
 
