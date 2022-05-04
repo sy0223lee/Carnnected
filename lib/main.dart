@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/home/home.dart';
+import 'package:mosigg/service/service.dart';
 import 'package:mosigg/setting/setting4.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => Settingaddr(),
+          '/': (context) => StartPage(),
           '/location1': (context) => LocationSearchPage1()
         }
         //home: StartPage(),
