@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
-import 'package:mosigg/login/login.dart';
+import 'package:mosigg/home/home.dart';
+import 'package:mosigg/service/service.dart';
+import 'package:mosigg/setting/setting4.dart';
+import 'package:provider/provider.dart';
+import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/signup/signup1.dart';
+import 'package:mosigg/login/login.dart';
+import 'package:mosigg/location/location1.dart';
 
 //void main() => runApp(MyApp());
 void main() {
   KakaoContext.clientId = 'f7926788ee7785502df4ce563f93d183';
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => CountPurchase()),
+    ChangeNotifierProvider(create: (_) => MyCart()),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,22 +24,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CARNNECTED',
-      theme: ThemeData(
-          fontFamily: 'NotoSansKR',
-          primaryColor: Colors.white,
-          colorScheme:
-              ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
-          scaffoldBackgroundColor: Colors.white),
-      debugShowCheckedModeBanner: false,
-      // initialRoute: '/oilstart',
-      //   routes: {
-      //     '/': (context) => StartPage(),
-      //     '/oilstart': (context) => Oilstart(),
-      //     '/location1': (context) => LocationSearchPage1(),
-      //   }
-      home: StartPage()
-    );
+        title: 'CARNNECTED',
+        theme: ThemeData(
+            fontFamily: 'NotoSansKR',
+            primaryColor: Colors.white,
+            colorScheme:
+                ThemeData().colorScheme.copyWith(primary: Color(0xff9a9a9a)),
+            scaffoldBackgroundColor: Colors.white),
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => StartPage(),
+          '/location1': (context) => LocationSearchPage1()
+        }
+        //home: StartPage(),
+        );
   }
 }
 

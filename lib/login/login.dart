@@ -1,12 +1,11 @@
+import 'package:mosigg/main.dart';
+import 'package:mosigg/bottomtapbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mosigg/main.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:mosigg/home.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mosigg/bottomtapbar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -205,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 Future login(String id, String pwd) async {
-  final response = await http.get(Uri.parse('http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/login/${id}/${pwd}'));
+  final response = await http.get(Uri.parse('http://10.0.2.2:8080/login/$id/$pwd'));
 
   if(response.statusCode == 200) {
     if(json.decode(response.body) == true)  return true;  // 로그인 성공

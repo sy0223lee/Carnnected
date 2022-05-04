@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mosigg/home.dart';
-import 'package:mosigg/map/page1.dart';
-import 'package:mosigg/servicechoice.dart';
-import 'package:mosigg/history/history.dart';
-import 'package:mosigg/options/options.dart';
+import 'package:mosigg/home/home.dart';
+import 'package:mosigg/map/maplist.dart';
+import 'package:mosigg/service/service.dart';
+import 'package:mosigg/calender/calender.dart';
+import 'package:mosigg/setting/setting1.dart';
 
 class Bottomtabbar extends StatefulWidget {
   final String id;
@@ -35,11 +35,11 @@ class _BottomtabbarState extends State<Bottomtabbar> {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            Servicechoice(), // 서비스 선택 페이지
-            History(), // 서비스 사용 내역
+            Servicechoice(id: id), // 서비스 선택 페이지
+            Calenderpage(), // 서비스 사용 내역
             HomePage(id: id, pw: pw), // 홈 페이지
-            Page1(),    // 지도
-            Options(),   // 설정?
+            MapList(),    // 지도
+            Settingstart(),   // 설정?
           ],
         ),
         bottomNavigationBar: Container(

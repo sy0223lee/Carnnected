@@ -1,10 +1,10 @@
+import 'package:mosigg/signup/signup1.dart';
+import 'package:mosigg/signup/signup2.dart';
+import 'package:mosigg/signup/signup4.dart';
+import 'package:mosigg/signup/common/signupWidget.dart';
 import 'package:flutter/material.dart';
-import './signup1.dart';
-import './signup2.dart';
-import './signup4.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import './common/signupWidget.dart';
 
 String name = '';
 String birth = '';
@@ -84,8 +84,8 @@ class _SignUp3State extends State<SignUp3> {
                               FocusScope.of(context).unfocus();
                               name = inputName.text;
                               birth = inputBirth.text;
-                              bool sign = await signup('${id}', '${pwd}',
-                                  '${name}', '${birth}', '01000000000');
+                              bool sign = await signup('$id', '$pwd',
+                                  '$name', '$birth', '01000000000');
                               if (sign == true &&
                                   name.length != 0 &&
                                   birth.length != 0) {
@@ -125,7 +125,7 @@ class _SignUp3State extends State<SignUp3> {
 Future<bool> signup(
     String id, String pwd, String name, String birth, String phone) async {
   final response = await http.get(Uri.parse(
-      'http://ec2-18-208-168-144.compute-1.amazonaws.com:8080/signup/${id}/${pwd}/${name}/${birth}/${phone}'));
+      'http://10.0.2.2:8080/signup/$id/$pwd/$name/$birth/$phone'));
 
   if (response.statusCode == 200) {
     if (json.decode(response.body) == true)
