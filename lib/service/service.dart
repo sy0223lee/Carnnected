@@ -98,7 +98,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/oil.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/oil.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -115,7 +115,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/carWash.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/carWash.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -132,7 +132,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/replacement.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/replacement.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -155,7 +155,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/maintenance.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/maintenance.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -172,7 +172,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/delivery.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/delivery.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -189,7 +189,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/drive.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/drive.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -212,7 +212,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/calculator.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/calculator.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 
                               },
@@ -272,7 +272,7 @@ class _ServicechoiceState extends State<Servicechoice> {
             children: [
               SizedBox(width: 26.0),
               CircleAvatar(
-                backgroundImage: AssetImage('image/peridot.jpg'),
+                backgroundImage: AssetImage('image/service/peridot.jpg'),
                 radius: 35.0,
               ),
               SizedBox(width: 17.0),
@@ -359,7 +359,7 @@ class _ServicechoiceState extends State<Servicechoice> {
               children: [
                 SizedBox(width: 26.0),
                 CircleAvatar(
-                  backgroundImage: AssetImage('image/peridot.jpg'),
+                  backgroundImage: AssetImage('image/service/peridot.jpg'),
                   radius: 35.0,
                 ),
                 SizedBox(width: 17.0),

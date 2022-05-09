@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
-import 'package:mosigg/home/home.dart';
-import 'package:mosigg/service/service.dart';
-import 'package:mosigg/setting/setting4.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/signup/signup1.dart';
