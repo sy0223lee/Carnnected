@@ -205,24 +205,25 @@ class _ServicechoiceState extends State<Servicechoice> {
                       ],
                     ),
                     SizedBox(height: 22.0),
-                    Row(
-                      children: [
-                        SizedBox(width: 59.0),
-                        Column(
-                          children: [
-                            InkWell(
-                              child:
-                                  Ink.image(image: AssetImage("image/service/calculator.png"), fit: BoxFit.cover, width: 60, height: 60),
-                              onTap: () {
+                    /*가계부 기능 추후 추가*/
+                    // Row(
+                    //   children: [
+                    //     SizedBox(width: 59.0),
+                    //     Column(
+                    //       children: [
+                    //         InkWell(
+                    //           child:
+                    //               Ink.image(image: AssetImage("image/service/calculator.png"), fit: BoxFit.cover, width: 60, height: 60),
+                    //           onTap: () {
                                 
-                              },
-                            ),
-                            SizedBox(height: 4.0),
-                            text('가계부', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                      ],
-                    ),
+                    //           },
+                    //         ),
+                    //         SizedBox(height: 4.0),
+                    //         text('가계부', 10.0, FontWeight.w400, Colors.black),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 );
               } else {
@@ -272,7 +273,7 @@ class _ServicechoiceState extends State<Servicechoice> {
             children: [
               SizedBox(width: 26.0),
               CircleAvatar(
-                backgroundImage: AssetImage('image/service/peridot.jpg'),
+                backgroundImage: AssetImage('image/peridot.jpg'),
                 radius: 35.0,
               ),
               SizedBox(width: 17.0),
@@ -359,7 +360,7 @@ class _ServicechoiceState extends State<Servicechoice> {
               children: [
                 SizedBox(width: 26.0),
                 CircleAvatar(
-                  backgroundImage: AssetImage('image/service/peridot.jpg'),
+                  backgroundImage: AssetImage('image/peridot.jpg'),
                   radius: 35.0,
                 ),
                 SizedBox(width: 17.0),

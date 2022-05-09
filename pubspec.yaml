@@ -67,6 +67,7 @@ flutter:
     - image/
     - image/replace_item/
     - image/service/
+    - image/key/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

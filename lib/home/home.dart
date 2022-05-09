@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   final String id;
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       usingservice = service;
     });
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -49,15 +50,12 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         backgroundColor: Colors.white,
         actions: [
-          IconButton( // 임시로그아웃 버튼
+          IconButton(
+            // 임시로그아웃 버튼
             onPressed: () {
               storage.delete(key: "login");
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginPage()
-                  ));
-
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
             },
             icon: Icon(
               Icons.help_outline,
@@ -84,9 +82,9 @@ class _HomePageState extends State<HomePage> {
                     text(snapshot.data![idx].carname, 14.0, FontWeight.w500,
                         Color(0xffA9A9A9)),
                     Container(
-                      height: 340,
-                      child: card(snapshot.data![idx].carnumber, usingservice, "공유중")
-                    ),
+                        height: 340,
+                        child: card(snapshot.data![idx].carnumber, usingservice,
+                            "공유중")),
                     SizedBox(height: 34.0),
                     Container(
                       width: 380,
@@ -103,13 +101,8 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 text('열기', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.lock_open_outlined,
-                                    color: Colors.black,
-                                  ),
-                                ),
+                                SvgPicture.asset('image/key/open.svg',
+                                    width: 24, height: 24),
                               ],
                             ),
                           ),
@@ -118,13 +111,8 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 text('닫기', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.lock_outline,
-                                    color: Colors.black,
-                                  ),
-                                ),
+                                SvgPicture.asset('image/key/close.svg',
+                                    width: 24, height: 24),
                               ],
                             ),
                           ),
@@ -133,13 +121,8 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 text('시동', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.power_settings_new,
-                                    color: Colors.black,
-                                  ),
-                                ),
+                                SvgPicture.asset('image/key/on.svg',
+                                    width: 24, height: 24),
                               ],
                             ),
                           ),
@@ -148,13 +131,8 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 text('경적', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.campaign,
-                                    color: Colors.black,
-                                  ),
-                                ),
+                                SvgPicture.asset('image/key/horn.svg',
+                                    width: 24, height: 24),
                               ],
                             ),
                           ),
@@ -164,13 +142,8 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 text(
                                     '트렁크', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.toys_outlined,
-                                    color: Colors.black,
-                                  ),
-                                ),
+                                SvgPicture.asset('image/key/trunk.svg',
+                                    width: 24, height: 24),
                               ],
                             ),
                           ),
@@ -181,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ));
             } else {
-              return pluscard();
+              return SizedBox(height: 100);
             }
           },
         ),
@@ -308,8 +281,8 @@ Future<List> cardata(String id) async {
 }
 
 Future<String> getUsingservice(String carnumber) async {
-  final response = await http
-      .get(Uri.parse('http://10.0.2.2:8080/usingservice/$carnumber'));
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8080/usingservice/$carnumber'));
 
   if (response.statusCode == 200) {
     String service = response.body.toString();
