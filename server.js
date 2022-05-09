@@ -900,26 +900,25 @@ app.get('/deliv_cancel/:id/:number/:time', function(req, res){
 })
 
 /***** 일정 서비스 *****/
-app.get('/calendar/:id/:month', function(req, res){
+app.get('/calendar/:id', function(req, res){
     var id = req.params.id;
-    var month = req.params.month;
 
     pool.getConnection(function(err, connection){           
-        var sqlGasSelect = "SELECT id, number, tablename, time FROM GAS_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlWashSelect = "SELECT id, number, tablename, time FROM WASH_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlReplaceSelect = "SELECT id, number, tablename, time FROM REPLACE_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlRepairSelect = "SELECT id, number, tablename, time FROM REPAIR_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlDriveSelect = "SELECT id, number, tablename, time FROM DRIVE_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlDelivSelect = "SELECT id, number, tablename, time FROM DELIV_RESRV WHERE `id` = ? and MONTH(time) = ?;";
-        var datas = [id, month, id, month, id, month, id, month, id, month, id, month];
+        var sqlGasSelect = "SELECT id, number, tablename, time FROM GAS_RESRV WHERE `id` = ?; ";
+        var sqlWashSelect = "SELECT id, number, tablename, time FROM WASH_RESRV WHERE `id` = ?; ";
+        var sqlReplaceSelect = "SELECT id, number, tablename, time FROM REPLACE_RESRV WHERE `id` = ?; ";
+        var sqlRepairSelect = "SELECT id, number, tablename, time FROM REPAIR_RESRV WHERE `id` = ?; ";
+        var sqlDriveSelect = "SELECT id, number, tablename, time FROM DRIVE_RESRV WHERE `id` = ?; ";
+        var sqlDelivSelect = "SELECT id, number, tablename, time FROM DELIV_RESRV WHERE `id` = ?;";
+        var datas = [id, id, id, id, id, id];
         
         connection.query(sqlGasSelect + sqlWashSelect + sqlReplaceSelect + sqlRepairSelect + sqlDriveSelect + sqlDelivSelect, datas, function(err, rows){
             if (err){
-                console.log(id + ":", month +'월', '일정 불러오기 오류\n', err);
+                console.log(id + ":", '일정 불러오기 오류\n', err);
                 res.send(false);
             }
             else {
-                console.log(id + ":", month +'월', '일정 불러오기 성공');
+                console.log(id + ":", '일정 불러오기 성공');
 
                 // 일정 모아서 넘겨주기
                 let result = [];
