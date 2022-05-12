@@ -138,8 +138,10 @@ class _Oiling3State extends State<Oiling3> {
       height: 40,
       child: ElevatedButton(
         onPressed: () {
-          if (controller.text != null) {}
-          Navigator.push(
+          if (controller.text.length > 0 &&
+              controller.text != "0" &&
+              controller.text[0] != "-") {
+            Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => Oiling4(
@@ -151,6 +153,7 @@ class _Oiling3State extends State<Oiling3> {
                     payment: payment,
                     gasStationName: gasStationName,
                     price: controller.text)));
+          }
         },
         child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
         style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),

@@ -34,8 +34,6 @@ class _CarWash1State extends State<CarWash1> {
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String _selectedTime = "";
   DateTime? _selectedDate;
-  String _selectedHour = '';
-  String _selectedMinute = '';
   String? carLocation;
   String? carDetailLocation;
   String? payment;
@@ -76,14 +74,13 @@ class _CarWash1State extends State<CarWash1> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedDate?.year != null)
-                  text(
-                      '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
-                      12.0,
-                      FontWeight.w400,
-                      Colors.black),
-                if (_selectedDate?.year == null)
-                  text("", 12.0, FontWeight.w400, Colors.black),
+                _selectedDate?.year != null
+                    ? text(
+                        '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
+                        12.0,
+                        FontWeight.w400,
+                        Colors.black)
+                    : text("", 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -124,11 +121,7 @@ class _CarWash1State extends State<CarWash1> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedMinute != '0')
-                  text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
-                if (_selectedMinute == '0')
-                  text(
-                      '$_selectedHour:00', 12.0, FontWeight.w400, Colors.black),
+                text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -145,9 +138,7 @@ class _CarWash1State extends State<CarWash1> {
                       selectedTime.then((timeOfDay) {
                         setState(() {
                           _selectedTime =
-                              '${timeOfDay?.hour}:${timeOfDay?.minute}';
-                          _selectedHour = '${timeOfDay?.hour}';
-                          _selectedMinute = '${timeOfDay?.minute}';
+                              timeOfDay.toString().substring(10, 15);
                         });
                       });
                     },
@@ -163,7 +154,7 @@ class _CarWash1State extends State<CarWash1> {
             text('시계 버튼을 눌러 원하시는 예약 시간을 입력하세요!', 10.0, FontWeight.w400,
                 Color(0xff9d9d9d)),
             SizedBox(height: 19),
-            text('차량위치', 14.0, FontWeight.w400, Colors.black),
+            text('차량 위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
             InkWell(
               onTap: () async {
@@ -210,46 +201,10 @@ class _CarWash1State extends State<CarWash1> {
                     });
                   },
                   children: [
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '신용카드',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '계좌이체',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '휴대폰결제',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width - 60.0) / 5,
-                      child: Center(
-                        child: Text(
-                          '카카오페이',
-                          style: TextStyle(
-                              fontSize: 12.0, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
+                    toggleItem(context, paymentList[0], 5),
+                    toggleItem(context, paymentList[1], 5),
+                    toggleItem(context, paymentList[2], 5),
+                    toggleItem(context, paymentList[3], 5),
                   ],
                   isSelected: isSelected2),
             ),
@@ -266,6 +221,7 @@ class _CarWash1State extends State<CarWash1> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_selectedDate != null &&
+                          _selectedTime != "" &&
                           carLocation != null &&
                           carDetailLocation != null &&
                           payment != null) {
@@ -298,4 +254,16 @@ class _CarWash1State extends State<CarWash1> {
       ),
     );
   }
+}
+
+Container toggleItem(context, text, itemNum) {
+  return Container(
+    width: (MediaQuery.of(context).size.width - 60.0) / itemNum,
+    child: Center(
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400),
+      ),
+    ),
+  );
 }

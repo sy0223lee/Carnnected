@@ -42,7 +42,7 @@ class _Oiling2State extends State<Oiling2> {
 
   Completer<GoogleMapController> _controller = Completer();
 
-  late String gasStationName;
+  late String gasStationName = "";
 
   void initState() {
     super.initState();
@@ -142,7 +142,8 @@ class _Oiling2State extends State<Oiling2> {
         child: TextButton(
           child: text("계속하기", 14.0, FontWeight.w500, Color(0xffffffff)),
           onPressed: () {
-            Navigator.push(
+            if(gasStationName != ""){
+              Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => Oiling3(
@@ -154,6 +155,7 @@ class _Oiling2State extends State<Oiling2> {
                     payment: widget.payment,
                     gasStationName: gasStationName
                     )));
+            }
           },
           style: TextButton.styleFrom(
             backgroundColor: Color(0xff001A5D),

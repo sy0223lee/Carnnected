@@ -256,7 +256,7 @@ class _Oiling1State extends State<Oiling1> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_selectedDate != null &&
-                          _selectedTime != null &&
+                          _selectedTime != "" &&
                           carLocation != null &&
                           carDetailLocation != null &&
                           fuel != null &&
