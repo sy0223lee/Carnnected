@@ -55,20 +55,6 @@ class _SettingidState extends State<Settingid> {
                         thickness: 2.0,
                       ),
                       SizedBox(height: 20.0),
-                      text('비밀번호', 14.0, FontWeight.w500, Colors.black),
-                      SizedBox(height: 10.0),
-                      Row(
-                        children: [
-                          for (var i = 0; i < snapshot.data![0].pwd.length; i++)
-                            text('*', 12.0, FontWeight.w400, Colors.black),
-                        ],
-                      ),
-                      Divider(
-                        height: 6.0,
-                        color: Color(0xffcbcbcb),
-                        thickness: 2.0,
-                      ),
-                      SizedBox(height: 20.0),
                       text('휴대폰 번호', 14.0, FontWeight.w500, Colors.black),
                       SizedBox(height: 10.0),
                       text(snapshot.data![0].phone, 12.0, FontWeight.w400,

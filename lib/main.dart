@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/service/maintenance/maintenance1.dart';
+import 'package:mosigg/service/maintenance/maintenance2.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/signup/signup1.dart';
@@ -31,10 +33,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => StartPage(),
+          '/': (context) => Maintenance1(
+                id: 'mouse0429@naver.com',
+              ),
           '/location1': (context) => LocationSearchPage1()
         }
-        //home: StartPage(),
+        // home:
+
         );
   }
 }

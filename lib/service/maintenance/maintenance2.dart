@@ -33,7 +33,7 @@ class _Maintenance2State extends State<Maintenance2> {
   late String id;
   final isSelected = <bool>[false, false, false];
   List<String> typeList = ['정기 검사', '종합 검사', '부분 검사'];
-  String type1 = '';
+  String? type1;
   TextEditingController plusRequest = TextEditingController();
 
   @override
@@ -157,18 +157,21 @@ class _Maintenance2State extends State<Maintenance2> {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => Maintenance3(
-                                  id: id,
-                                  dateAndTime: widget.dateAndTime,
-                                  carLocation: widget.carLocation,
-                                  carDetailLocation: widget.carDetailLocation,
-                                  type: type1,
-                                  payment: widget.payment,
-                                  carCoord: widget.carCoord,
-                                  detail: plusRequest.text)));
+                        if (type1 != null && plusRequest.text != '')
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Maintenance3(
+                                          id: id,
+                                          dateAndTime: widget.dateAndTime,
+                                          carLocation: widget.carLocation,
+                                          carDetailLocation:
+                                              widget.carDetailLocation,
+                                          type: type1!,
+                                          payment: widget.payment,
+                                          carCoord: widget.carCoord,
+                                          detail: plusRequest.text)));
                       },
                       child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
                       style:
