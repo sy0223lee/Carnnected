@@ -1,7 +1,8 @@
 const {Builder, By, Capabilities} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const options = new chrome.Options();
-options.addArguments("--incognito");  // 시크릿 모드로
+options.addArguments('--incognito');  // 시크릿 모드로
+options.excludeSwitches('enable-logging');  // ERROR:device_event_log_impl.cc(214)
 
 const search = async (keyword, x, y) => { 
   var driver = await new Builder()
@@ -14,9 +15,11 @@ const search = async (keyword, x, y) => {
 
   await driver.get('https://www.google.com/maps/search/' + keyword + '/@' + x + ',' + y + ',14z');
   
-  await driver.findElements(By.css('.a4gq8e-aVTXAb-haAclf-jRmmHf-hSRGPd')).then(function (item){
-    for(var i = 0; i < item.length; i++){
-      item[i].getAttribute('href').then(function (href){
+  await driver.findElements(By.css('a.hfpxzc')).then(function (item){
+    for(var value of item){
+      // console.log("value", value);
+      value.getAttribute('href').then(function (href){
+        // console.log("href", href);
         urlList.push(href);
       })
     }
@@ -24,20 +27,20 @@ const search = async (keyword, x, y) => {
 
   setTimeout(async () => {
     for(var i = 0; i < urlList.length; i++){
-        //console.log(urlList[i]);
+        // console.log("urlList", urlList[i]);
         await driver.get(urlList[i]);
 
-          var name = await driver.findElement(By.css('h1.x3AX1-LfntMc-header-title-title.gm2-headline-5 span')).getText();
-          var address = await driver.findElement(By.css('div.QSFF4-text.gm2-body-2')).getText();
+          var name = await driver.findElement(By.css('h1.DUwDvf.fontHeadlineLarge span')).getText();
+          var address = await driver.findElement(By.css('div.Io6YTe.fontBodyMedium')).getText();
           var type = await driver.findElement(By.xpath('//*[@id="pane"]/div/div[1]/div/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/span[1]/span[1]/button')).getText();
           if(type === "세차장") type = "세차";
           else if(type === "자동차 수리점") type = "정비";
-          //console.log(name, "-", address);
+          // console.log("name-address", name, "-", address);
 
           elements.push({"type": type,"name": name, "address": address});
 
     }
-    //console.log(elements);
+    console.log("elements", elements);
     await driver.quit();
   }, 3000);
   return elements;
