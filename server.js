@@ -192,7 +192,7 @@ app.get('/memberinfo/:id', function(req, res){
     var id = req.params.id;
 
     pool.getConnection(function(err, connection){
-        var sqlMeminfo = "SELECT * FROM MEMBER WHERE id = ?";
+        var sqlMeminfo = "SELECT * FROM `MEMBER` WHERE `id` = ?;";
         connection.query(sqlMeminfo, id, function(err, row){
             if(err){
                 console.log("회원 정보 전송 오류: ", err);
