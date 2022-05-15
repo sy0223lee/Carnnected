@@ -28,7 +28,7 @@ app.get('/signup/:idcheck', function(req, res){
     pool.getConnection(function(err, connection){
         var sqlIdCheck = "SELECT id FROM MEMBER WHERE id = ?";
         connection.query(sqlIdCheck, idcheck, function(err, row){
-            if(err) console.log('아이디 중복 확인 에러');
+            if(err) console.log('아이디 중복 확인 에러', err);
             if(row[0] !== undefined){
                 console.log('아이디 중복', row);
                 res.send(true);
@@ -56,7 +56,7 @@ app.get('/signup/:id/:pwd/:name/:birth/:phone', function(req, res){
     pool.getConnection(function(err, connection){
         var sqlMemInsert = "INSERT INTO MEMBER VALUES (?, ?, ?, ?, ?)";
         connection.query(sqlMemInsert, datas, function(err){
-            if(err) console.log('회원가입 INSERT 오류');
+            if(err) console.log('회원가입 INSERT 오류', err);
             else {
                 pool.query("SELECT * FROM MEMBER WHERE id = ?", id, function(err, row){
                     if(row[0].id === id){
@@ -64,7 +64,7 @@ app.get('/signup/:id/:pwd/:name/:birth/:phone', function(req, res){
                         res.send(true);
                     }
                     else {
-                        console.log('회원가입 실패');
+                        console.log('회원가입 실패', err);
                         res.send(false);
                     }
                 })
@@ -82,13 +82,13 @@ app.get('/login/:id/:pwd', function(req, res){
     pool.getConnection(function(err, connection){
         var sqlLogin = "SELECT * FROM MEMBER WHERE id = ? and pwd = ?";
         connection.query(sqlLogin, [id, pwd], function(err, result){
-            if(err) console.log('로그인 오류');
+            if(err) console.log('로그인 오류', err);
             if(result[0] !== undefined){
                 console.log("로그인 성공 id:", id);
                 res.send(true);
             }
             else {
-                console.log("로그인 실패");
+                console.log("로그인 실패", err);
                 res.send(false);
             }
             connection.release();
@@ -105,6 +105,7 @@ app.get('/favorite_addr/:id', function(req, res){
         var sqlAddr = "SELECT * FROM FAVORITE_ADDR WHERE id = ? ORDER BY num DESC";
         connection.query(sqlAddr, id, function(err, rows){
             if(err){
+                console.log("즐겨찾는 주소 전송 에러", err);
             }
             else{
                 console.log("즐겨찾는 주소 전송 성공:", rows);
@@ -134,7 +135,7 @@ app.get('/favorite_addr/insert/:id/:addr/:detailAddr', function(req, res){
             connection.query(sqlAddrInsert, [id, addr, detailAddr, addrCount+1], function(err){
                 if(err){
                     // 이미 추가했던 주소의 경우도 포함
-                    console.log("즐겨찾는 주소 추가 오류");
+                    console.log("즐겨찾는 주소 추가 오류", err);
                     res.send(false);
                 }
                 else{
@@ -157,7 +158,7 @@ app.get('/favorite_addr/delete/:id/:addr/:detailAddr', function(req, res){
         var sqlAddrDelete = "DELETE FROM FAVORITE_ADDR WHERE id = ? AND addr = ? AND detailAddr = ?";
         connection.query(sqlAddrDelete, [id, addr, detailAddr], function(err){
             if(err){
-                console.log("즐겨찾는 주소 삭제 오류:", addr, detailAddr);
+                console.log("즐겨찾는 주소 삭제 오류:", addr, detailAddr, err);
                 res.send(false);
             }
             else{
@@ -214,7 +215,7 @@ app.get('/carinfo/:id', function(req,res){
         var sqlCarinfo = "SELECT * FROM CAR WHERE id = ?";
         connection.query(sqlCarinfo, id, function(err, rows0){
             if(err){
-                console.log("차량 정보 전송 오류: ", rows0);
+                console.log("차량 정보 전송 오류: ", err);
                 res.send(false);
             }
             else{
@@ -233,7 +234,7 @@ app.get('/usingservice/:carnumber', function(req, res){
         var sqlUsingservice = "SELECT tablename, `time` FROM DELIV_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM DRIVE_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM GAS_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM REPAIR_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM REPLACE_RESRV WHERE number = '102허2152' AND status = 'progress' UNION SELECT tablename, `time` FROM WASH_RESRV WHERE number = '102허2152' AND status = 'progress' LIMIT 1;";
         connection.query(sqlUsingservice, carnumber, function(err, rows){
             if(err){
-                console.log("사용중인 서비스 오류: ", rows);
+                console.log("사용중인 서비스 오류: ", err);
                 res.send(false);
             }
             else{
@@ -255,7 +256,7 @@ app.get('/recentservice/:carnumber', function(req, res){
         var sqlRecent = "SELECT tablename, `time` FROM DELIV_RESRV UNION SELECT tablename, `time` FROM DRIVE_RESRV UNION SELECT tablename, `time` FROM GAS_RESRV UNION SELECT tablename, `time` FROM REPAIR_RESRV UNION SELECT tablename, `time` FROM REPLACE_RESRV UNION SELECT tablename, `time` FROM WASH_RESRV WHERE number = ? ORDER BY `time` DESC LIMIT 3;";
         connection.query(sqlRecent, carnumber, function(err, rows){
             if(err){
-                console.log("최근 사용 서비스 전송 오류: ", rows);
+                console.log("최근 사용 서비스 전송 오류: ", err);
                 res.send(false);
             }
             else{
@@ -272,6 +273,7 @@ app.get('/recentservice/:carnumber', function(req, res){
 // 크롤링
 // 정비 검색 키워드: "자동차 수리점"
 // 세차 검색 키워드: "세차장"
+// 전기차 충전소 검색 키워드: "전기자동차 충전소"
 // 정비, 세차 같이 검색: "자동차 수리점, 세차장"
 app.get('/map/:keyword/:x/:y', function(req, res){
     var keyword = req.params.keyword;
@@ -309,14 +311,14 @@ app.get('/gas_resrv/:id/:number/:time/:source/:detailSrc/:type/:dest_name/:amoun
     var onlytime = datetime[1].split(':');
     var beforeTime = onlydate[0]+'-'+onlydate[1]+'-'+onlydate[2]+'\u0020'+String(onlytime[0]*1-2)+':'+onlytime[1];   // 2시간 이전 예약 존재하는지 확인
     var afterTime = onlydate[0]+"-"+onlydate[1]+"-"+onlydate[2]+'\u0020'+String(onlytime[0]*1+2)+":"+onlytime[1];   // 2시간 이후 예약 존재하는지 확인
-    console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
+    //console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
 
     pool.getConnection(function(err, connection){
         // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
         var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
         connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
             if(err){
-                console.log("동일한 예약 존재 확인 오류:", row[0]);
+                console.log("동일한 예약 존재 확인 오류:", err);
                 res.send(false);
             }
             else{
@@ -389,14 +391,14 @@ app.get('/replace_resrv/:id/:number/:time/:source/:detailSrc/:items/:repair/:det
     var onlytime = datetime[1].split(':');
     var beforeTime = onlydate[0]+'-'+onlydate[1]+'-'+onlydate[2]+'\u0020'+String(onlytime[0]*1-2)+':'+onlytime[1];   // 2시간 이전 예약 존재하는지 확인
     var afterTime = onlydate[0]+"-"+onlydate[1]+"-"+onlydate[2]+'\u0020'+String(onlytime[0]*1+2)+":"+onlytime[1];   // 2시간 이후 예약 존재하는지 확인
-    console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
+    //console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
 
     pool.getConnection(function(err, connection){
         // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
         var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
         connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
             if(err){
-                console.log("동일한 예약 존재 확인 오류:", row[0]);
+                console.log("동일한 예약 존재 확인 오류:", err);
                 res.send(false);
             }
             else{
@@ -420,7 +422,7 @@ app.get('/replace_resrv/:id/:number/:time/:source/:detailSrc/:items/:repair/:det
                     })
                 }
                 else{   // 동일한 정보 존재하면 예약 불가능
-                    console.log("동일한 시간, 차량 예약 이미 존재:", row[0]);
+                    console.log("동일한 시간, 차량 예약 이미 존재:", err);
                     console.log('방문교체 예약 INSERT 실패');
                     res.send(false);
                 }
@@ -438,7 +440,7 @@ app.get('/replace_item/:index', function(req, res){
 	pool.getConnection(function(err, connection){
 		var sqlItem = "SELECT * FROM REPLACE_ITEM WHERE `index` = ?";
 		connection.query(sqlItem, index, function(err, row){
-			if(err) console.log("교체 아이템 불러오기 에러");
+			if(err) console.log("교체 아이템 불러오기 에러", err);
 			else {
 				console.log("리스트 성공");
 				res.send(row[0]);
@@ -467,14 +469,14 @@ app.get('/wash_resrv/:id/:number/:time/:source/:detailSrc/:type/:detail/:price/:
     var onlytime = datetime[1].split(':');
     var beforeTime = onlydate[0]+'-'+onlydate[1]+'-'+onlydate[2]+'\u0020'+String(onlytime[0]*1-2)+':'+onlytime[1];   // 2시간 이전 예약 존재하는지 확인
     var afterTime = onlydate[0]+"-"+onlydate[1]+"-"+onlydate[2]+'\u0020'+String(onlytime[0]*1+2)+":"+onlytime[1];   // 2시간 이후 예약 존재하는지 확인
-    console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
+    //console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
 
     pool.getConnection(function(err, connection){
         // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
         var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
         connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
             if(err){
-                console.log("동일한 예약 존재 확인 오류:", row[0]);
+                console.log("동일한 예약 존재 확인 오류:", err);
                 res.send(false);
             }
             else{
@@ -529,14 +531,14 @@ app.get('/repair_resrv/:id/:number/:time/:source/:detailSrc/:type/:detail/:dest_
     var onlytime = datetime[1].split(':');
     var beforeTime = onlydate[0]+'-'+onlydate[1]+'-'+onlydate[2]+'\u0020'+String(onlytime[0]*1-2)+':'+onlytime[1];   // 2시간 이전 예약 존재하는지 확인
     var afterTime = onlydate[0]+"-"+onlydate[1]+"-"+onlydate[2]+'\u0020'+String(onlytime[0]*1+2)+":"+onlytime[1];   // 2시간 이후 예약 존재하는지 확인
-    console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
+    //console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
 
     pool.getConnection(function(err, connection){
         // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
         var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
         connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
             if(err){
-                console.log("동일한 예약 존재 확인 오류:", row[0]);
+                console.log("동일한 예약 존재 확인 오류:", err);
                 res.send(false);
             }
             else{
@@ -586,14 +588,14 @@ app.get('/drive_resrv/:id/:number/:source/:detailSrc/:dest_name/:dest_addr/:pric
 
     var beforeTime = String(time.getFullYear())+'-'+String(time.getMonth()+1)+'-'+String(time.getDate())+'\u0020'+String(time.getHours()-2)+':'+String(time.getMinutes());
     var afterTime = String(time.getFullYear())+'-'+String(time.getMonth()+1)+'-'+String(time.getDate())+'\u0020'+String(time.getHours()+2)+':'+String(time.getMinutes());
-    console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
+    //console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
 
     pool.getConnection(function(err, connection){
         // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
         var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
         connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
             if(err){
-                console.log("동일한 예약 존재 확인 오류:", row[0]);
+                console.log("동일한 예약 존재 확인 오류:", err);
                 res.send(false);
             }
             else{
@@ -607,7 +609,7 @@ app.get('/drive_resrv/:id/:number/:source/:detailSrc/:dest_name/:dest_addr/:pric
     
                     pool.query(sqlDriveReserv, datas, function(err){
                         if(err){
-                            console.log('대리운전 예약 INSERT 오류');
+                            console.log('대리운전 예약 INSERT 오류', err);
                             res.send(false);
                         }
                         else{
@@ -639,7 +641,7 @@ app.get('/drive_resrv/:id/:number/:time', function (req, res){
         pool.getConnection(function(err, connection){
             connection.query(sqlReqCheck, [id, number, time], function(err, result){
                 if(err) {
-                    console.log("대리운전 예약 상태 확인 오류:", result[0]);
+                    console.log("대리운전 예약 상태 확인 오류:", err);
                     return res.send("false");
                 }
                 if(result[0] === undefined){
@@ -702,7 +704,7 @@ app.get('/drive_accept/:id/:number/:time', function(req, res){
         var sqlUpdate = "UPDATE `DRIVE_RESRV` SET `status` = 'reserved' WHERE `id` = ? AND `number` = ? AND `time` >= ?";
         connection.query(sqlUpdate, [id, number, time], function(err, rows){
             if(err){
-                console.log("대리운전 예약 요청 update 실패", rows);
+                console.log("대리운전 예약 요청 update 실패", err);
                 res.send(false);
             }
             else{
@@ -752,14 +754,14 @@ app.get('/deliv_resrv/:id/:number/:time/:source/:detailSrc/:dest_name/:dest_addr
     var onlytime = datetime[1].split(':');
     var beforeTime = onlydate[0]+'-'+onlydate[1]+'-'+onlydate[2]+'\u0020'+String(onlytime[0]*1-2)+':'+onlytime[1];   // 2시간 이전 예약 존재하는지 확인
     var afterTime = onlydate[0]+"-"+onlydate[1]+"-"+onlydate[2]+'\u0020'+String(onlytime[0]*1+2)+":"+onlytime[1];   // 2시간 이후 예약 존재하는지 확인
-    console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
+    //console.log("[BEFORETIME, AFTERTIME]:", beforeTime, ",", afterTime);
 
     pool.getConnection(function(err, connection){
         // 2시간 전후, 동일한 차량 예약 정보가 존재하는지 확인
         var sqlResrvCheck = 'SELECT count(*) as count FROM((SELECT `number` FROM DELIV_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM DRIVE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM GAS_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPAIR_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM REPLACE_RESRV WHERE `number`=? and `time` between ? and ?) UNION ALL (SELECT `number` FROM WASH_RESRV WHERE `number`=? and `time` between ? and ?)) as RESRV';
         connection.query(sqlResrvCheck, [number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime, number, beforeTime, afterTime], function(err, row){
             if(err){
-                console.log("동일한 예약 존재 확인 오류:", row[0]);
+                console.log("동일한 예약 존재 확인 오류:", err);
                 res.send(false);
             }
             else{
@@ -805,7 +807,7 @@ app.get('/deliv_resrv/:id/:number/:time', function (req, res){
         pool.getConnection(function(err, connection){
             connection.query(sqlReqCheck, [id, number, time], function(err, result){
                 if(err) {
-                    console.log("딜리버리 예약 상태 확인 오류:", result[0]);
+                    console.log("딜리버리 예약 상태 확인 오류:", err);
                     return res.send("false");
                 }
                 if(result[0] === undefined){
@@ -868,7 +870,7 @@ app.get('/deliv_accept/:id/:number/:time', function(req, res){
         var sqlUpdate = "UPDATE `DELIV_RESRV` SET `status` = 'reserved' WHERE `id` = ? AND `number` = ? AND `time` >= ?";
         connection.query(sqlUpdate, [id, number, time], function(err, rows){
             if(err){
-                console.log("딜리버리 예약 요청 update 실패", rows);
+                console.log("딜리버리 예약 요청 update 실패", err);
                 res.send(false);
             }
             else{
@@ -900,26 +902,25 @@ app.get('/deliv_cancel/:id/:number/:time', function(req, res){
 })
 
 /***** 일정 서비스 *****/
-app.get('/calendar/:id/:month', function(req, res){
+app.get('/calendar/:id', function(req, res){
     var id = req.params.id;
-    var month = req.params.month;
 
     pool.getConnection(function(err, connection){           
-        var sqlGasSelect = "SELECT id, number, tablename, time FROM GAS_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlWashSelect = "SELECT id, number, tablename, time FROM WASH_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlReplaceSelect = "SELECT id, number, tablename, time FROM REPLACE_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlRepairSelect = "SELECT id, number, tablename, time FROM REPAIR_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlDriveSelect = "SELECT id, number, tablename, time FROM DRIVE_RESRV WHERE `id` = ? and MONTH(time) = ?; ";
-        var sqlDelivSelect = "SELECT id, number, tablename, time FROM DELIV_RESRV WHERE `id` = ? and MONTH(time) = ?;";
-        var datas = [id, month, id, month, id, month, id, month, id, month, id, month];
+        var sqlGasSelect = "SELECT id, number, tablename, time FROM GAS_RESRV WHERE `id` = ?; ";
+        var sqlWashSelect = "SELECT id, number, tablename, time FROM WASH_RESRV WHERE `id` = ?; ";
+        var sqlReplaceSelect = "SELECT id, number, tablename, time FROM REPLACE_RESRV WHERE `id` = ?; ";
+        var sqlRepairSelect = "SELECT id, number, tablename, time FROM REPAIR_RESRV WHERE `id` = ?; ";
+        var sqlDriveSelect = "SELECT id, number, tablename, time FROM DRIVE_RESRV WHERE `id` = ?; ";
+        var sqlDelivSelect = "SELECT id, number, tablename, time FROM DELIV_RESRV WHERE `id` = ?;";
+        var datas = [id, id, id, id, id, id];
         
         connection.query(sqlGasSelect + sqlWashSelect + sqlReplaceSelect + sqlRepairSelect + sqlDriveSelect + sqlDelivSelect, datas, function(err, rows){
             if (err){
-                console.log(id + ":", month +'월', '일정 불러오기 오류\n', err);
+                console.log(id + ":", '일정 불러오기 오류\n', err);
                 res.send(false);
             }
             else {
-                console.log(id + ":", month +'월', '일정 불러오기 성공');
+                console.log(id + ":", '일정 불러오기 성공');
 
                 // 일정 모아서 넘겨주기
                 let result = [];
