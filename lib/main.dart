@@ -33,9 +33,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => Maintenance1(
-                id: 'mouse0429@naver.com',
-              ),
+          '/': (context) => StartPage(),
           '/location1': (context) => LocationSearchPage1()
         }
         // home:

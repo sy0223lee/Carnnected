@@ -17,8 +17,8 @@ class SignUp3 extends StatefulWidget {
 }
 
 class _SignUp3State extends State<SignUp3> {
-  final inputName = TextEditingController();
-  final inputBirth = TextEditingController();
+  final inputPhone = TextEditingController();
+  final inputCnum = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +64,15 @@ class _SignUp3State extends State<SignUp3> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextFieldMethod(
-                            controller: inputName,
-                            intro: '이름',
-                            helperText: '이름을 입력해주세요!',
+                            controller: inputPhone,
+                            intro: '휴대폰 번호',
+                            helperText: '휴대폰 번호를 입력한 후 인증 버튼을 눌러주세요!',
                             obsecure: false),
                         SizedBox(height: 15.0),
                         TextFieldMethod(
-                            controller: inputBirth,
-                            intro: '주민번호 앞자리',
-                            helperText: '주민번호 앞 6자리를 입력해주세요!',
+                            controller: inputCnum,
+                            intro: '인증 번호',
+                            helperText: '휴대폰 인증 번호를 입력해주세요!',
                             obsecure: false,
                             keyType: TextInputType.number),
                         SizedBox(height: 20.0),
@@ -82,10 +82,10 @@ class _SignUp3State extends State<SignUp3> {
                           child: ElevatedButton(
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
-                              name = inputName.text;
-                              birth = inputBirth.text;
-                              bool sign = await signup('$id', '$pwd',
-                                  '$name', '$birth', '01000000000');
+                              name = inputPhone.text;
+                              birth = inputCnum.text;
+                              bool sign = await signup('$id', '$pwd', '$name',
+                                  '$birth', '01000000000');
                               if (sign == true &&
                                   name.length != 0 &&
                                   birth.length != 0) {
@@ -124,8 +124,8 @@ class _SignUp3State extends State<SignUp3> {
 
 Future<bool> signup(
     String id, String pwd, String name, String birth, String phone) async {
-  final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/signup/$id/$pwd/$name/$birth/$phone'));
+  final response = await http.get(
+      Uri.parse('http://10.0.2.2:8080/signup/$id/$pwd/$name/$birth/$phone'));
 
   if (response.statusCode == 200) {
     if (json.decode(response.body) == true)
