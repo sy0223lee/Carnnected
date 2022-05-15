@@ -159,7 +159,12 @@ class _Oiling1State extends State<Oiling1> {
             SizedBox(height: 6),
             InkWell(
               onTap: () async {
-                final result = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LocationSearchPage1()));
+                final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LocationSearchPage1(
+                              id: id,
+                            )));
                 if (result is Addr) {
                   setState(() {
                     carLocation = result.addr;
@@ -245,7 +250,8 @@ class _Oiling1State extends State<Oiling1> {
                   isSelected: isSelected2),
             ),
             SizedBox(height: 6),
-            text('이용하실 결제 수단을 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
+            text(
+                '이용하실 결제 수단을 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -272,14 +278,14 @@ class _Oiling1State extends State<Oiling1> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) => Oiling2(
-                                  id: id,
-                                  dateAndTime: dateAndTime,
-                                  carLocation: carLocation!,
-                                  carDetailLocation: carDetailLocation!,
-                                  fuel: fuel!,
-                                  payment: payment!,
-                                  carCoord: carCoord)));
-                        }
+                                    id: id,
+                                    dateAndTime: dateAndTime,
+                                    carLocation: carLocation!,
+                                    carDetailLocation: carDetailLocation!,
+                                    fuel: fuel!,
+                                    payment: payment!,
+                                    carCoord: carCoord)));
+                      }
                     },
                     child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),

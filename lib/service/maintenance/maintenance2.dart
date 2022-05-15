@@ -157,7 +157,7 @@ class _Maintenance2State extends State<Maintenance2> {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (type1 != null && plusRequest.text != '')
+                        if (type1 != null)
                           Navigator.push(
                               context,
                               MaterialPageRoute(

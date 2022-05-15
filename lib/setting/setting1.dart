@@ -3,9 +3,11 @@ import 'package:mosigg/setting/setting3.dart';
 import 'package:mosigg/setting/setting4.dart';
 import 'package:mosigg/components.dart';
 import 'package:flutter/material.dart';
+import 'package:mosigg/signup/signup1.dart';
 
 class Settingstart extends StatefulWidget {
-  const Settingstart({Key? key}) : super(key: key);
+  final String id;
+  const Settingstart({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Settingstart> createState() => _SettingstartState();
@@ -30,9 +32,19 @@ class _SettingstartState extends State<Settingstart> {
             text('오늘도 안전운행하세요:)', 20.0, FontWeight.w500, Colors.black),
             SizedBox(height: 34.0),
             text('기본설정', 12.0, FontWeight.w400, Color(0xff747474)),
-            newsplitrow(context, '계정 관리', Settingid()),
-            newsplitrow(context, '차량 관리', Settingcar()),
-            newsplitrow(context, '즐겨찾는 주소 설정', Settingaddr()),
+            newsplitrow(
+                context,
+                '계정 관리',
+                Settingid(
+                  id: id,
+                )),
+            newsplitrow(
+                context,
+                '차량 관리',
+                Settingcar(
+                  id: id,
+                )),
+            newsplitrow(context, '즐겨찾는 주소 설정', Settingaddr(id: id)),
             Divider(
               height: 10.0,
               color: Color(0xffcbcbcb),
@@ -40,9 +52,19 @@ class _SettingstartState extends State<Settingstart> {
             ),
             SizedBox(height: 10.0),
             text('이용 약관', 12.0, FontWeight.w400, Color(0xff747474)),
-            newsplitrow(context, '서비스 이용 약관', Settingid()),
-            newsplitrow(context, '개인 정보 처리 약관', Settingid()),
-            newsplitrow(context, '위치 기반 서비스 이용 약관', Settingid())
+            newsplitrow(
+                context,
+                '서비스 이용 약관',
+                Settingid(
+                  id: id,
+                )),
+            newsplitrow(
+                context,
+                '개인 정보 처리 약관',
+                Settingid(
+                  id: id,
+                )),
+            newsplitrow(context, '위치 기반 서비스 이용 약관', Settingid(id: id))
           ],
         ),
       ),

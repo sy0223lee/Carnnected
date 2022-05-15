@@ -7,7 +7,11 @@ import 'package:mosigg/location/location2.dart';
 import 'package:mosigg/location/location3.dart';
 
 class LocationSearchPage1 extends StatefulWidget {
-  const LocationSearchPage1({Key? key}) : super(key: key);
+  final String id;
+  const LocationSearchPage1({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
 
   @override
   _LocationSearchPage1State createState() => _LocationSearchPage1State();
@@ -21,7 +25,7 @@ class _LocationSearchPage1State extends State<LocationSearchPage1> {
 
   @override
   void initState() {
-    favoriteAddrData = favoriteAddr('mouse0429@naver.com');
+    favoriteAddrData = favoriteAddr(widget.id);
     super.initState();
   }
 

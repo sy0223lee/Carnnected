@@ -163,7 +163,12 @@ class _Maintenance1State extends State<Maintenance1> {
             SizedBox(height: 6),
             InkWell(
               onTap: () async {
-                final result = await Navigator.pushNamed(context, '/location1');
+                final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LocationSearchPage1(
+                              id: id,
+                            )));
                 if (result is Addr) {
                   setState(() {
                     carLocation = result.addr;

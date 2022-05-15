@@ -35,24 +35,43 @@ class Maintenance4 extends StatefulWidget {
 class _Maintenance4State extends State<Maintenance4> {
   /*임시데이터*/
   late String id;
+  String detail2 = '없음';
+
   String carNum = '102허2152'; //해당 차량
   int price = 15;
   @override
   void initState() {
-    id = widget.id;
-    fixrsrv(
-      id,
-      carNum,
-      widget.dateAndTime,
-      widget.carLocation,
-      widget.carDetailLocation,
-      widget.type,
-      widget.detail,
-      widget.payment,
-      widget.destName,
-      widget.destaddr,
-      price,
-    );
+    if (widget.detail == '') {
+      id = widget.id;
+      fixrsrv(
+        id,
+        carNum,
+        widget.dateAndTime,
+        widget.carLocation,
+        widget.carDetailLocation,
+        widget.type,
+        detail2,
+        widget.payment,
+        widget.destName,
+        widget.destaddr,
+        price,
+      );
+    } else {
+      id = widget.id;
+      fixrsrv(
+        id,
+        carNum,
+        widget.dateAndTime,
+        widget.carLocation,
+        widget.carDetailLocation,
+        widget.type,
+        widget.detail,
+        widget.payment,
+        widget.destName,
+        widget.destaddr,
+        price,
+      );
+    }
     super.initState();
   }
 
@@ -140,8 +159,10 @@ class _Maintenance4State extends State<Maintenance4> {
       height: 40,
       child: ElevatedButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) => Maintenance5(id: id)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => Maintenance5(id: id)));
         },
         child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
         style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -158,7 +179,7 @@ Future<void> fixrsrv(
     String carDetailLocation,
     String type,
     String payment,
-    String detail,
+    String? detail,
     String destName,
     String destaddr,
     int price) async {
