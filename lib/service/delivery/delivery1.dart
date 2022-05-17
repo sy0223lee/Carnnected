@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosigg/location/location1.dart';
@@ -118,7 +117,8 @@ class _Delivery1State extends State<Delivery1> {
               color: Color(0xffcbcbcb),
               thickness: 2.0,
             ),
-            text('달력 버튼을 눌러 원하시는 예약 날짜를 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
+            text('달력 버튼을 눌러 원하시는 예약 날짜를 입력하세요!', 10.0, FontWeight.w400,
+                Color(0xff9d9d9d)),
             SizedBox(height: 19),
             text('예약 시간', 14.0, FontWeight.w400, Colors.black),
             Row(
@@ -154,13 +154,19 @@ class _Delivery1State extends State<Delivery1> {
               color: Color(0xffcbcbcb),
               thickness: 2.0,
             ),
-            text('시계 버튼을 눌러 원하시는 예약 시간을 입력하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
+            text('시계 버튼을 눌러 원하시는 예약 시간을 입력하세요!', 10.0, FontWeight.w400,
+                Color(0xff9d9d9d)),
             SizedBox(height: 19),
             text('차량 위치', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
             InkWell(
               onTap: () async {
-                final result = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LocationSearchPage1()));
+                final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LocationSearchPage1(
+                              id: id,
+                            )));
                 if (result is Addr) {
                   setState(() {
                     carLocation = result.addr;
@@ -183,7 +189,12 @@ class _Delivery1State extends State<Delivery1> {
             SizedBox(height: 6),
             InkWell(
               onTap: () async {
-                final result2 = await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LocationSearchPage1()));
+                final result2 = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LocationSearchPage1(
+                              id: id,
+                            )));
                 if (result2 is Addr) {
                   setState(() {
                     desLocation = result2.addr;
@@ -201,7 +212,8 @@ class _Delivery1State extends State<Delivery1> {
               thickness: 2.0,
             ),
             SizedBox(height: 6),
-            text('원하시는 배달 위치를 입력해주세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
+            text('원하시는 배달 위치를 입력해주세요!', 10.0, FontWeight.w400,
+                Color(0xff9d9d9d)),
             SizedBox(height: 19.0),
             text('결제수단', 14.0, FontWeight.w400, Colors.black),
             SizedBox(height: 6),
@@ -235,7 +247,8 @@ class _Delivery1State extends State<Delivery1> {
                   isSelected: isSelected2),
             ),
             SizedBox(height: 6),
-            text('이용하실 결제 수단을 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
+            text(
+                '이용하실 결제 수단을 선택하세요!', 10.0, FontWeight.w400, Color(0xff9d9d9d)),
             Expanded(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -252,22 +265,27 @@ class _Delivery1State extends State<Delivery1> {
                           desLocation != null &&
                           desDetailLocation != null &&
                           payment != null) {
-                        String dateAndTime = _selectedDate.toString().substring(0, 10) +  ' ' + _selectedTime! + ':00';
+                        String dateAndTime =
+                            _selectedDate.toString().substring(0, 10) +
+                                ' ' +
+                                _selectedTime! +
+                                ':00';
                         LatLng carCoord = await getCarCoord(carLocation!);
                         LatLng desCoord = await getCarCoord(desLocation!);
 
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Delivery2(
-                              id: id,
-                              dateAndTime: dateAndTime,
-                              carLocation: carLocation!,
-                              carDetailLocation: carDetailLocation!,
-                              desLocation: desLocation!,
-                              desDetailLocation: desDetailLocation!,
-                              payment: payment!,
-                              carCoord: carCoord,
-                              desCoord: desCoord
-                            )));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => Delivery2(
+                                    id: id,
+                                    dateAndTime: dateAndTime,
+                                    carLocation: carLocation!,
+                                    carDetailLocation: carDetailLocation!,
+                                    desLocation: desLocation!,
+                                    desDetailLocation: desDetailLocation!,
+                                    payment: payment!,
+                                    carCoord: carCoord,
+                                    desCoord: desCoord)));
                       }
                     },
                     child: text('계속하기', 14.0, FontWeight.w500, Colors.white),

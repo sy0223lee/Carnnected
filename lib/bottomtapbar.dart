@@ -38,8 +38,10 @@ class _BottomtabbarState extends State<Bottomtabbar> {
             Calenderpage(id: id), // 서비스 사용 내역
             Servicechoice(id: id), // 서비스 선택 페이지
             HomePage(id: id, pw: pw), // 홈 페이지
-            MapList(),    // 지도
-            Settingstart(),   // 설정?
+            MapList(), // 지도
+            Settingstart(
+              id: id,
+            ), // 설정?
           ],
         ),
         bottomNavigationBar: Container(

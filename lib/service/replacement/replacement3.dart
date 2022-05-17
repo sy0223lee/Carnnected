@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/replacement/replacement4.dart';
 import 'package:mosigg/components.dart';
@@ -10,13 +12,13 @@ class Replacement3 extends StatefulWidget {
   final String payment;
 
   const Replacement3(
-    {Key? key,
-    required this.id,
-    required this.dateAndTime,
-    required this.carLocation,
-    required this.carDetailLocation,
-    required this.payment}) 
-    : super(key: key);
+      {Key? key,
+      required this.id,
+      required this.dateAndTime,
+      required this.carLocation,
+      required this.carDetailLocation,
+      required this.payment})
+      : super(key: key);
 
   @override
   _Replacement3State createState() => _Replacement3State();
@@ -112,36 +114,38 @@ class _Replacement3State extends State<Replacement3> {
                 ),
               ),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 40,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if(maintenance != null){
-                            Navigator.push(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (maintenance != null && plusRequest != null) {
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext context) => Replacement4(
-                                    id: id,
-                                    dateAndTime: widget.dateAndTime,
-                                    carLocation: widget.carLocation,
-                                    carDetailLocation: widget.carDetailLocation,
-                                    payment: widget.payment,
-                                    maintenance: maintenance!,
-                                    plusRequest: plusRequest.text,
-                                  )));
-                          }
-                        },
-                        child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
-                        style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-                      ),
-                    )
-                  ],
-                )
-              ),
+                                  builder: (BuildContext context) =>
+                                      Replacement4(
+                                        id: id,
+                                        dateAndTime: widget.dateAndTime,
+                                        carLocation: widget.carLocation,
+                                        carDetailLocation:
+                                            widget.carDetailLocation,
+                                        payment: widget.payment,
+                                        maintenance: maintenance!,
+                                        plusRequest: plusRequest.text,
+                                      )));
+                        }
+                      },
+                      child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
+                      style:
+                          ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+                    ),
+                  )
+                ],
+              )),
             ],
           ),
         ),

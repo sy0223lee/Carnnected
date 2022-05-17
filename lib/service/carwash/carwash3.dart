@@ -30,6 +30,7 @@ class CarWash3 extends StatefulWidget {
 class _CarWash3State extends State<CarWash3> {
   late String id;
   var price = 0;
+  String detail2 = '없음';
   String carNum = '102허2152'; // 차량 번호 받아와야 됨
   late var arr = widget.type.split(',');
 
@@ -37,10 +38,35 @@ class _CarWash3State extends State<CarWash3> {
   void initState() {
     id = widget.id;
     var temp = widget.type.split(',');
-    if(temp[0] == "셀프 세차장 세차")       price = 4;
-    else if(temp[0] == "주차장 스팀 세차")  price = 5;
-    
-    if(temp[1] == "실내 클리닝")            price += 3;
+    if (temp[0] == "셀프 세차장 세차")
+      price = 4;
+    else if (temp[0] == "주차장 스팀 세차")
+      price = 5;
+    else
+      price = 0;
+    if (widget.detail == '') {
+      washRsrv(
+          id,
+          carNum,
+          widget.dateAndTime,
+          widget.carLocation,
+          widget.carDetailLocation,
+          widget.type,
+          widget.payment,
+          detail2,
+          price);
+    } else {}
+    washRsrv(
+        id,
+        carNum,
+        widget.dateAndTime,
+        widget.carLocation,
+        widget.carDetailLocation,
+        widget.type,
+        widget.payment,
+        widget.detail,
+        price);
+    if (temp[1] == "실내 클리닝") price += 3;
     super.initState();
   }
 
@@ -158,7 +184,7 @@ Future<void> washRsrv(
     String carDetailLocation,
     String type,
     String payment,
-    String detail,
+    String? detail,
     int price) async {
   final response = await http.get(Uri.parse(
       'http://10.0.2.2:8080/wash_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$type/$detail/$price/$payment/'));
