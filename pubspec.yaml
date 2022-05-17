@@ -39,6 +39,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   intl: ^0.17.0
   table_calendar: ^3.0.5
+  flutter_svg: ^1.0.3
  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -65,6 +66,8 @@ flutter:
   assets:
     - image/
     - image/replace_item/
+    - image/service/
+    - image/key/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

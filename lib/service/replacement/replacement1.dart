@@ -30,7 +30,7 @@ const MaterialColor _buttonTextColor = MaterialColor(0xFF001A5D, <int, Color>{
 
 class _Replacement1State extends State<Replacement1> {
   late String id;
-  final isSelected2 = <bool>[false, false, false, false];
+  final isSelected = <bool>[false, false, false, false];
   List<String> paymentList = ['신용카드', '계좌이체', '휴대폰결제', '카카오페이'];
   String? _selectedTime = "";
   DateTime? _selectedDate;
@@ -76,14 +76,13 @@ class _Replacement1State extends State<Replacement1> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedDate?.year != null)
-                  text(
-                      '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
-                      12.0,
-                      FontWeight.w400,
-                      Colors.black),
-                if (_selectedDate?.year == null)
-                  text("", 12.0, FontWeight.w400, Colors.black),
+                _selectedDate?.year != null
+                    ? text(
+                        '${_selectedDate?.year}/${_selectedDate?.month}/${_selectedDate?.day}',
+                        12.0,
+                        FontWeight.w400,
+                        Colors.black)
+                    : text("", 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -124,11 +123,7 @@ class _Replacement1State extends State<Replacement1> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedMinute != '0')
-                  text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
-                if (_selectedMinute == '0')
-                  text(
-                      '$_selectedHour:00', 12.0, FontWeight.w400, Colors.black),
+                text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -145,9 +140,7 @@ class _Replacement1State extends State<Replacement1> {
                       selectedTime.then((timeOfDay) {
                         setState(() {
                           _selectedTime =
-                              '${timeOfDay?.hour}:${timeOfDay?.minute}';
-                          _selectedHour = '${timeOfDay?.hour}';
-                          _selectedMinute = '${timeOfDay?.minute}';
+                              timeOfDay.toString().substring(10, 15);
                         });
                       });
                     },
@@ -199,13 +192,13 @@ class _Replacement1State extends State<Replacement1> {
                   onPressed: (int index2) {
                     setState(() {
                       for (int buttonIndex2 = 0;
-                          buttonIndex2 < isSelected2.length;
+                          buttonIndex2 < isSelected.length;
                           buttonIndex2++) {
                         if (buttonIndex2 == index2) {
-                          isSelected2[buttonIndex2] = true;
+                          isSelected[buttonIndex2] = true;
                           payment = paymentList[buttonIndex2];
                         } else {
-                          isSelected2[buttonIndex2] = false;
+                          isSelected[buttonIndex2] = false;
                         }
                       }
                     });
@@ -216,7 +209,7 @@ class _Replacement1State extends State<Replacement1> {
                     toggleItem(context, paymentList[2], 5),
                     toggleItem(context, paymentList[3], 5),
                   ],
-                  isSelected: isSelected2),
+                  isSelected: isSelected),
                     ),
             SizedBox(height: 6),
             text(
@@ -231,7 +224,7 @@ class _Replacement1State extends State<Replacement1> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_selectedDate != null &&
-                              _selectedTime != null &&
+                              _selectedTime != "" &&
                               carLocation != null &&
                               carDetailLocation != null &&
                               payment != null) {

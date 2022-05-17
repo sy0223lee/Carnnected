@@ -98,7 +98,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/oil.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/oil.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -115,7 +115,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/carWash.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/carWash.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -132,7 +132,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/replacement.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/replacement.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -155,7 +155,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/maintenance.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/maintenance.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -172,7 +172,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/delivery.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/delivery.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -189,7 +189,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                           children: [
                             InkWell(
                               child:
-                                  Ink.image(image: AssetImage("image/delivery.png"), fit: BoxFit.cover, width: 60, height: 60),
+                                  Ink.image(image: AssetImage("image/service/drive.png"), fit: BoxFit.cover, width: 60, height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -205,24 +205,25 @@ class _ServicechoiceState extends State<Servicechoice> {
                       ],
                     ),
                     SizedBox(height: 22.0),
-                    Row(
-                      children: [
-                        SizedBox(width: 59.0),
-                        Column(
-                          children: [
-                            InkWell(
-                              child:
-                                  Ink.image(image: AssetImage("image/calculator.png"), fit: BoxFit.cover, width: 60, height: 60),
-                              onTap: () {
+                    /*가계부 기능 추후 추가*/
+                    // Row(
+                    //   children: [
+                    //     SizedBox(width: 59.0),
+                    //     Column(
+                    //       children: [
+                    //         InkWell(
+                    //           child:
+                    //               Ink.image(image: AssetImage("image/service/calculator.png"), fit: BoxFit.cover, width: 60, height: 60),
+                    //           onTap: () {
                                 
-                              },
-                            ),
-                            SizedBox(height: 4.0),
-                            text('가계부', 10.0, FontWeight.w400, Colors.black),
-                          ],
-                        ),
-                      ],
-                    ),
+                    //           },
+                    //         ),
+                    //         SizedBox(height: 4.0),
+                    //         text('가계부', 10.0, FontWeight.w400, Colors.black),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 );
               } else {

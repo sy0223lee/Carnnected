@@ -120,7 +120,7 @@ class _Replacement3State extends State<Replacement3> {
                       height: 40,
                       child: ElevatedButton(
                         onPressed: () {
-                          if(maintenance != null && plusRequest != null){
+                          if(maintenance != null){
                             Navigator.push(
                               context,
                               MaterialPageRoute(

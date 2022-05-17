@@ -8,7 +8,7 @@ import 'package:mosigg/components.dart';
 
 class Replacement22 extends StatefulWidget {
   final int index;
-  final String image;
+  final String? image;
   final String name;
   final String price;
 
@@ -88,7 +88,7 @@ class _Replacement22State extends State<Replacement22> {
                 image: DecorationImage(
                   image: (widget.image == null)
                       ? AssetImage('image/none.png')
-                      : AssetImage(widget.image),
+                      : AssetImage(widget.image!),
                 ),
               ),
             ),

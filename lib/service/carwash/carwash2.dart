@@ -30,7 +30,7 @@ class _CarWash2State extends State<CarWash2> {
   late String id;
   final isSelected = <bool>[false, false, false];
   final isSelected2 = <bool>[false, false];
-  List<String> typeList = ['없음', '셀프 세차장 세차', '주차장 스팀 세차'];
+  List<String> typeList1 = ['없음', '셀프 세차장 세차', '주차장 스팀 세차'];
   List<String> typeList2 = ['없음', '실내 클리닝'];
   String type1 = '';
   String type2 = '';
@@ -86,7 +86,7 @@ class _CarWash2State extends State<CarWash2> {
                             buttonIndex++) {
                           if (buttonIndex == index) {
                             isSelected[buttonIndex] = true;
-                            type1 = typeList[buttonIndex];
+                            type1 = typeList1[buttonIndex];
                           } else {
                             isSelected[buttonIndex] = false;
                           }
@@ -94,36 +94,9 @@ class _CarWash2State extends State<CarWash2> {
                       });
                     },
                     children: [
-                      Container(
-                        width: (MediaQuery.of(context).size.width - 60.0) / 3,
-                        child: Center(
-                          child: Text(
-                            '없음',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: (MediaQuery.of(context).size.width - 60.0) / 3,
-                        child: Center(
-                          child: Text(
-                            '셀프 세차장 세차',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: (MediaQuery.of(context).size.width - 60.0) / 3,
-                        child: Center(
-                          child: Text(
-                            '주차장 스팀 세차',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
+                      toggleItem(context, typeList1[0], typeList1.length),
+                      toggleItem(context, typeList1[1], typeList1.length),
+                      toggleItem(context, typeList1[2], typeList1.length),
                     ],
                     isSelected: isSelected),
               ),
@@ -155,26 +128,8 @@ class _CarWash2State extends State<CarWash2> {
                       });
                     },
                     children: [
-                      Container(
-                        width: (MediaQuery.of(context).size.width - 60.0) / 3,
-                        child: Center(
-                          child: Text(
-                            '없음',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: (MediaQuery.of(context).size.width - 60.0) / 3,
-                        child: Center(
-                          child: Text(
-                            '실내 클리닝',
-                            style: TextStyle(
-                                fontSize: 12.0, fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                      ),
+                      toggleItem(context, typeList2[0], 3),
+                      toggleItem(context, typeList2[1], 3),
                     ],
                     isSelected: isSelected2),
               ),
@@ -207,6 +162,9 @@ class _CarWash2State extends State<CarWash2> {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
+                        if(type1 != "" &&
+                           type2 != "" &&
+                           (type1 != typeList1[0] || type2 != typeList2[0]))
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -232,4 +190,16 @@ class _CarWash2State extends State<CarWash2> {
       ),
     );
   }
+}
+
+Container toggleItem(context, text, itemNum) {
+  return Container(
+    width: (MediaQuery.of(context).size.width - 60.0) / itemNum,
+    child: Center(
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400),
+      ),
+    ),
+  );
 }
