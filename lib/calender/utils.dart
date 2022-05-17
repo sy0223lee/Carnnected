@@ -5,26 +5,30 @@ import 'package:table_calendar/table_calendar.dart';
 
 class Event {
   final String title;
-  final String datetime;
-  const Event(this.title, this.datetime);
+  final String time;
+  final String carnumber;
+  const Event(this.title, this.time, this.carnumber);
 
   @override
-  String toString() => title;
+  String toString() => '$title';
 }
 
-final kEvents = LinkedHashMap(
+late String test;
+late Map<DateTime, dynamic> kEventSource = {};
+
+var kEvents = LinkedHashMap(
   equals: isSameDay,
   hashCode: getHashCode,
-)..addAll(_kEventSource);
+)..addAll(kEventSource);
 
-Map<DateTime, dynamic> _kEventSource = {
-  DateTime(2022, 4, 3): [Event('주유서비스예약', '3일 일요일 14:00')],
-  DateTime(2022, 4, 4): [Event('세차서비스예약', '4일 월요일 15:00')],
-  DateTime(2022, 4, 5): [
-    Event('정비서비스예약', '5일 화요일 11:00'),
-    Event('딜리버리서비스예약', '5일 화요일 17:00')
-  ],
-};
+// Map<DateTime, dynamic> _kEventSource = {
+//   DateTime(2022, 4, 3): [Event('주유서비스예약', '3일 일요일 14:00')],
+//   DateTime(2022, 4, 4): [Event('세차서비스예약', '4일 월요일 15:00')],
+//   DateTime(2022, 4, 5): [
+//     Event('정비서비스예약', '5일 화요일 11:00'),
+//     Event('딜리버리서비스예약', '5일 화요일 17:00')
+//   ],
+// };
 
 List<DateTime> daysInRange(DateTime first, DateTime last) {
   final dayCount = last.difference(first).inDays + 1;
@@ -57,17 +61,24 @@ class Event1 {
       time: json['time'],
     );
   }
+
+  @override
+  String toString() => '$id $number $tablename $time';
 }
 
 Future<List> eventdata(String id) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/calender/$id'));
+      await http.get(Uri.parse('http://10.0.2.2:8080/calendar/$id'));
   late List<Event1> eventList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);
     for (var i = 0; i < json.length; i++) {
       eventList.add(Event1.fromJson(json[i]));
+      kEventSource[
+            DateTime(int.parse(eventList[i].time.substring(0, 4)), int.parse(eventList[i].time.substring(5, 7)), int.parse(eventList[i].time.substring(8, 10)))] = [
+          Event(eventList[i].tablename+'서비스예약', eventList[i].time.substring(11,16), eventList[i].number)];
     }
+    kEvents.addAll(kEventSource);
     return eventList;
   } else {
     throw Exception('Failed to load event data');
