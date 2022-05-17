@@ -23,34 +23,11 @@ class _CalenderpageState extends State<Calenderpage> {
   DateTime? _rangeEnd;
 
   Future getEvents(String id) async {
-    Future.delayed(Duration(seconds: 1),() async {
-      events = eventdata(id);
+    events = eventdata(id);
     eventlist = await events;
-    
-    print('eventlist: '+'$eventlist');
-    print('kEventSource: '+'$kEventSource');
-    });
-    
-  }
 
-  Future setEvents() async {
-    for(int i = 0; i < eventlist!.length; i++) {
-      String year = eventlist![i].time.substring(0, 4);
-      String month = eventlist![i].time.substring(5, 7);
-      String day = eventlist![i].time.substring(8, 10);
-      String time = eventlist![i].time.substring(11, 16);
-      String service = eventlist![i].tablename;
-      kEventSource[DateTime(int.parse(year), int.parse(month), int.parse(day))] = [Event('$service서비스예약', time)];
-    }
+    print('eventlist: ' + '$eventlist');
   }
-
-  // Future setEvents(String datetime, String service) async {
-  //   String year = datetime.substring(0, 4);
-  //   String month = datetime.substring(5, 7);
-  //   String day = datetime.substring(8, 10);
-  //   String time = datetime.substring(11, 16);
-  //   kEventSource[DateTime(int.parse(year), int.parse(month), int.parse(day))] = [Event('$service서비스예약', time)];
-  // }
 
   Future initEvents() async {
     _selectedDay = _focusedDay;
@@ -61,10 +38,8 @@ class _CalenderpageState extends State<Calenderpage> {
   void initState() {
     super.initState();
     id = widget.id;
-    
+
     getEvents(id);
-    setEvents();
-    // kEventSource[DateTime(2022, 5, 10)] = [Event('주유서비스예약', '20:00')]; // 여기서 하는 건 되는데, async 함수 안에서 하면 kEventSource에 들어는 가는데 달력에 표시가 안 됨
     initEvents();
   }
 
@@ -130,119 +105,144 @@ class _CalenderpageState extends State<Calenderpage> {
         centerTitle: true,
         title: text('일정', 18.0, FontWeight.w500, Colors.black),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-            child: TableCalendar<Event>(
-              headerStyle: HeaderStyle(
-                  titleCentered: true,
-                  formatButtonVisible: false,
-                  headerPadding: EdgeInsets.zero,
-                  titleTextStyle: TextStyle(
-                      fontFamily: 'NotoSansKR',
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500)),
-              calendarStyle: CalendarStyle(
-                markersAnchor: 1.3,
-                markerSizeScale: 0.18,
-                isTodayHighlighted: true,
-                outsideDaysVisible: true,
-                cellMargin: EdgeInsets.all(0.0),
-                weekendTextStyle: TextStyle(
-                    fontFamily: 'NotoSansKR',
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
-                holidayTextStyle: TextStyle(
-                    fontFamily: 'NotoSansKR',
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
-                selectedDecoration: BoxDecoration(
-                    color: Color(0xff001a5d), shape: BoxShape.rectangle),
-                todayDecoration: BoxDecoration(
-                    color: Color(0xff001a5d), shape: BoxShape.rectangle),
-              ),
-              rangeSelectionMode: _rangeSelectionMode,
-              eventLoader: _getEventsForDay,
-              startingDayOfWeek: StartingDayOfWeek.sunday,
-              onRangeSelected: _onRangeSelected,
-              onDaySelected: _onDaySelected,
-              selectedDayPredicate: (DateTime date) {
-                return isSameDay(_selectedDay, date);
-              },
-              firstDay: DateTime.utc(2022, 01, 01),
-              lastDay: DateTime.utc(2022, 12, 31),
-              focusedDay: _focusedDay,
-              rangeStartDay: _rangeStart,
-              rangeEndDay: _rangeEnd,
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, child) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
+      body: FutureBuilder(
+          future: eventdata(id), //setEvents(id),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData == false) {
+              return Container(height: 100);
+            } else if (snapshot.hasError) {
+              return Container(
+                height: 100,
+              );
+            } else {
+              return Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+                    child: TableCalendar<Event>(
+                      headerStyle: HeaderStyle(
+                          titleCentered: true,
+                          formatButtonVisible: false,
+                          headerPadding: EdgeInsets.zero,
+                          titleTextStyle: TextStyle(
+                              fontFamily: 'NotoSansKR',
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500)),
+                      calendarStyle: CalendarStyle(
+                        markersAnchor: 1.3,
+                        markerSizeScale: 0.18,
+                        isTodayHighlighted: true,
+                        outsideDaysVisible: true,
+                        cellMargin: EdgeInsets.all(0.0),
+                        weekendTextStyle: TextStyle(
+                            fontFamily: 'NotoSansKR',
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400),
+                        holidayTextStyle: TextStyle(
+                            fontFamily: 'NotoSansKR',
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400),
+                        selectedDecoration: BoxDecoration(
+                            color: Color(0xff001a5d),
+                            shape: BoxShape.rectangle),
+                        todayDecoration: BoxDecoration(
+                            color: Color(0xff001a5d),
+                            shape: BoxShape.rectangle),
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                              height: 54.0,
-                              width: 52.0,
-                              decoration:
-                                  BoxDecoration(color: Color(0xff001a5d)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                      rangeSelectionMode: _rangeSelectionMode,
+                      eventLoader: _getEventsForDay,
+                      startingDayOfWeek: StartingDayOfWeek.sunday,
+                      onRangeSelected: _onRangeSelected,
+                      onDaySelected: _onDaySelected,
+                      selectedDayPredicate: (DateTime date) {
+                        return isSameDay(_selectedDay, date);
+                      },
+                      firstDay: DateTime.utc(2022, 01, 01),
+                      lastDay: DateTime.utc(2022, 12, 31),
+                      focusedDay: _focusedDay,
+                      rangeStartDay: _rangeStart,
+                      rangeEndDay: _rangeEnd,
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  Expanded(
+                    child: ValueListenableBuilder<List<Event>>(
+                      valueListenable: _selectedEvents,
+                      builder: (context, value, child) {
+                        return ListView.builder(
+                          itemCount: value.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                                vertical: 4.0,
+                              ),
+                              child: Row(
                                 children: [
-                                  text('12가', 14.0, FontWeight.bold, Colors.white),
-                                  text('1234', 14.0, FontWeight.bold, Colors.white),
-                                ],
-                              )),
-                          Container(
-                            height: 54.0,
-                            width: 335,
-                            decoration: BoxDecoration(),
-                            child: ListTile(
-                              onTap: () {
-                                print('${value[index]}');
-                              },
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      text('${value[index]}', 14.0, FontWeight.w500, Colors.black),
-                                      SizedBox(height: 5.0),
-                                      text('14:00', 12.0, FontWeight.w400, Colors.black),
-                                    ],
-                                  ),
-                                  Icon(
-                                    Icons.navigate_next,
-                                    size: 50,
+                                  Container(
+                                      height: 54.0,
+                                      width: 52.0,
+                                      decoration: BoxDecoration(
+                                          color: Color(0xff001a5d)),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          text('${value[index].carnumber.substring(0,value[index].carnumber.length-4)}', 14.0, FontWeight.bold,
+                                              Colors.white),
+                                          text('${value[index].carnumber.substring(value[index].carnumber.length-4,)}', 14.0, FontWeight.bold,
+                                              Colors.white),
+                                        ],
+                                      )),
+                                  Container(
+                                    height: 54.0,
+                                    width: 335,
+                                    decoration: BoxDecoration(),
+                                    child: ListTile(
+                                      onTap: () {
+                                        print('${value[index]}');
+                                      },
+                                      title: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              text(
+                                                  '${value[index]}',
+                                                  14.0,
+                                                  FontWeight.w500,
+                                                  Colors.black),
+                                              SizedBox(height: 5.0),
+                                              text(
+                                                  '${value[index].time}',
+                                                  12.0,
+                                                  FontWeight.w400,
+                                                  Colors.black),
+                                            ],
+                                          ),
+                                          Icon(
+                                            Icons.navigate_next,
+                                            size: 50,
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          )
-        ],
-      ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  )
+                ],
+              );
+            }
+          })
     );
   }
 }

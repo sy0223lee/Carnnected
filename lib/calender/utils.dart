@@ -6,7 +6,8 @@ import 'package:table_calendar/table_calendar.dart';
 class Event {
   final String title;
   final String time;
-  const Event(this.title, this.time);
+  final String carnumber;
+  const Event(this.title, this.time, this.carnumber);
 
   @override
   String toString() => '$title';
@@ -15,7 +16,7 @@ class Event {
 late String test;
 late Map<DateTime, dynamic> kEventSource = {};
 
-final kEvents = LinkedHashMap(
+var kEvents = LinkedHashMap(
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(kEventSource);
@@ -73,7 +74,11 @@ Future<List> eventdata(String id) async {
     List<dynamic> json = jsonDecode(response.body);
     for (var i = 0; i < json.length; i++) {
       eventList.add(Event1.fromJson(json[i]));
+      kEventSource[
+            DateTime(int.parse(eventList[i].time.substring(0, 4)), int.parse(eventList[i].time.substring(5, 7)), int.parse(eventList[i].time.substring(8, 10)))] = [
+          Event(eventList[i].tablename+'서비스예약', eventList[i].time.substring(11,16), eventList[i].number)];
     }
+    kEvents.addAll(kEventSource);
     return eventList;
   } else {
     throw Exception('Failed to load event data');
