@@ -87,8 +87,8 @@ class _HomePageState extends State<HomePage> {
                             "공유중")),
                     SizedBox(height: 34.0),
                     Container(
-                      width: 380,
-                      height: 100,
+                      width: 300,
+                      height: 90,
                       decoration: BoxDecoration(
                         color: Color(0xffE8EAEE),
                         borderRadius: BorderRadius.circular(25),
@@ -116,16 +116,16 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                text('시동', 12.0, FontWeight.w400, Colors.black),
-                                SvgPicture.asset('image/key/on.svg',
-                                    width: 24, height: 24),
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   child: Column(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //     children: [
+                          //       text('시동', 12.0, FontWeight.w400, Colors.black),
+                          //       SvgPicture.asset('image/key/on.svg',
+                          //           width: 24, height: 24),
+                          //     ],
+                          //   ),
+                          // ),
                           Container(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
