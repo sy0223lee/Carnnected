@@ -34,12 +34,7 @@ class _Drive4State extends State<Drive4> {
             children: [
               text('예약이 완료되었습니다', 20.0, FontWeight.w500, Colors.black),
               text('최고의 서비스로 모시겠습니다:D', 20.0, FontWeight.w500, Colors.black),
-              SizedBox(height: 43),
-              Icon(
-                Icons.toys,
-                size: 223,
-                color: Colors.black,
-              ),
+              Image.asset('image/reserved.png', width: 300.0, height: 300.0),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,

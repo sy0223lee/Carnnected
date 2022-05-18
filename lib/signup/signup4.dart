@@ -59,10 +59,10 @@ class _SignUp4State extends State<SignUp4> {
                                 fontSize: 24.0,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black)),
-                        SizedBox(height: 60.0),
+                        SizedBox(height: 35.0),
                         Image.asset('image/signedup.png',
-                            width: 200.0, height: 200.0),
-                        SizedBox(height: 60.0),
+                            width: 250.0, height: 250.0),
+                        SizedBox(height: 35.0),
                         SizedBox(
                           width: 400.0,
                           height: 45.0,
