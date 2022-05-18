@@ -81,10 +81,11 @@ class _HomePageState extends State<HomePage> {
                         Colors.black),
                     text(snapshot.data![idx].carname, 14.0, FontWeight.w500,
                         Color(0xffA9A9A9)),
+                    SizedBox(height: 15),
                     Container(
                         height: 340,
-                        child: card(snapshot.data![idx].carnumber, usingservice,
-                            "공유중")),
+                        child:
+                            card(snapshot.data![idx].carnumber, usingservice)),
                     SizedBox(height: 34.0),
                     Container(
                       width: 300,
@@ -163,19 +164,20 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Card card(String carnumber, String usingservice, String sharedstate) {
+Card card(String carnumber, String usingservice) {
   return Card(
     elevation: 0.0,
     child: Container(
       width: 220,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
-        boxShadow: <BoxShadow>[
+        boxShadow: [
           BoxShadow(
-              color: Colors.black12,
-              blurRadius: 1.0,
-              spreadRadius: 1.0,
-              offset: Offset(10.0, 10.0))
+            color: Color(0x3f000000),
+            offset: Offset(10, 10),
+            blurRadius: 10,
+            spreadRadius: 0,
+          ),
         ],
         color: Color(0xff001A5D),
       ),
@@ -211,24 +213,36 @@ Card card(String carnumber, String usingservice, String sharedstate) {
             ),
           ),
           SizedBox(height: 13.0),
-          text('현재 이용중인 서비스', 12.0, FontWeight.w400, Colors.white),
+          text('마지막으로 이용한 서비스', 12.0, FontWeight.w400, Colors.white),
           SizedBox(height: 6.0),
           text(usingservice, 20.0, FontWeight.bold, Colors.white),
-          SizedBox(height: 6.0),
-          text('내 차를 누가 몰고 있는지 궁금하다면?', 10.0, FontWeight.w400, Colors.white),
-          SizedBox(height: 23.0),
+          SizedBox(height: 13.0),
           Container(
-            decoration: BoxDecoration(
+            padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+            child: Divider(
+              height: 0.0,
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(25.0),
-                bottomLeft: Radius.circular(25.0),
-              ),
+              thickness: 1.0,
             ),
-            height: 40,
-            width: 280,
-            child: Center(
-                child: text(sharedstate, 20.0, FontWeight.bold, Colors.black)),
+          ),
+          SizedBox(height: 26.0),
+          InkWell(
+            onTap: () {
+              print('공유하기 서비스');
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(25.0),
+                  bottomLeft: Radius.circular(25.0),
+                ),
+              ),
+              height: 40,
+              width: 280,
+              child: Center(
+                  child: text("공유하기", 20.0, FontWeight.bold, Colors.black)),
+            ),
           )
         ],
       ),
