@@ -96,16 +96,21 @@ class _CarWash3State extends State<CarWash3> {
                 text('추가 요청', 14.0, FontWeight.w500, Colors.black),
                 Container(
                   width: 271,
-                  child: Flexible(
-                      child: RichText(
-                    textAlign: TextAlign.right,
-                    text: TextSpan(
-                        text: widget.detail.length > 0 ? widget.detail : "",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w400)),
-                  )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                          child: RichText(
+                        //textAlign: TextAlign.right,
+                        text: TextSpan(
+                            text: widget.detail.length > 0 ? widget.detail : "",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400)),
+                      )),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -126,6 +131,7 @@ class _CarWash3State extends State<CarWash3> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
+                      print(widget.detail);
                       washRsrv(
                           id,
                           carNum,
@@ -134,7 +140,7 @@ class _CarWash3State extends State<CarWash3> {
                           widget.carDetailLocation,
                           widget.type,
                           widget.payment,
-                          widget.detail,
+                          (widget.detail == '' ? '없음' : widget.detail),
                           price);
                       Navigator.push(
                           context,
@@ -155,34 +161,6 @@ class _CarWash3State extends State<CarWash3> {
   }
 }
 
-//   Container reserving(BuildContext context) {
-//     return Container(
-//       width: double.infinity,
-//       height: 40,
-//       child: ElevatedButton(
-//         onPressed: () {
-//           washRsrv(
-//               id,
-//               carNum,
-//               widget.dateAndTime,
-//               widget.carLocation,
-//               widget.carDetailLocation,
-//               widget.type,
-//               widget.payment,
-//               widget.detail,
-//               price);
-//           Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                   builder: (BuildContext context) => CarWash4(id: id)));
-//         },
-//         child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
-//         style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-//       ),
-//     );
-//   }
-// }
-
 Future<void> washRsrv(
     String id,
     String carNum,
@@ -191,13 +169,13 @@ Future<void> washRsrv(
     String carDetailLocation,
     String type,
     String payment,
-    String? detail,
+    String detail,
     int price) async {
   final response = await http.get(Uri.parse(
       'http://10.0.2.2:8080/wash_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$type/$detail/$price/$payment/'));
   if (response.statusCode == 200) {
-    print('댕같이성공 ${response.body}');
+    print('세차 예약 성공 ${response.body}');
   } else {
-    print('개같이실패 ${response.statusCode}');
+    print('세차 예약 실패 ${response.statusCode}');
   }
 }
