@@ -9,6 +9,8 @@ import 'package:mosigg/signup/signup1.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/location/location1.dart';
 
+import 'calender/calender.dart';
+
 //void main() => runApp(MyApp());
 void main() {
   KakaoContext.clientId = 'f7926788ee7785502df4ce563f93d183';
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => Maintenance1(id: 'mouse0429@naver.com'),
+          '/': (context) => LoginPage(),
           '/location1': (context) => LocationSearchPage1(
                 id: id,
               )

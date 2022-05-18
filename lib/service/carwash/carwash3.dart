@@ -44,28 +44,6 @@ class _CarWash3State extends State<CarWash3> {
       price = 5;
     else
       price = 0;
-    if (widget.detail == '') {
-      washRsrv(
-          id,
-          carNum,
-          widget.dateAndTime,
-          widget.carLocation,
-          widget.carDetailLocation,
-          widget.type,
-          widget.payment,
-          detail2,
-          price);
-    } else {}
-    washRsrv(
-        id,
-        carNum,
-        widget.dateAndTime,
-        widget.carLocation,
-        widget.carDetailLocation,
-        widget.type,
-        widget.payment,
-        widget.detail,
-        price);
     if (temp[1] == "실내 클리닝") price += 3;
     super.initState();
   }
@@ -140,41 +118,70 @@ class _CarWash3State extends State<CarWash3> {
             splitrow2('예상 금액', '$price 만원'),
             splitrow2('결제방식', '${widget.payment}'),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [reserving(context)],
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      washRsrv(
+                          id,
+                          carNum,
+                          widget.dateAndTime,
+                          widget.carLocation,
+                          widget.carDetailLocation,
+                          widget.type,
+                          widget.payment,
+                          widget.detail,
+                          price);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  CarWash4(id: id)));
+                    },
+                    child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
+                    style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+                  ),
+                )
+              ],
             ))
           ],
         ),
       ),
     );
   }
-
-  Container reserving(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 40,
-      child: ElevatedButton(
-        onPressed: () {
-          washRsrv(
-            id,
-            carNum,
-            widget.dateAndTime,
-            widget.carLocation,
-            widget.carDetailLocation,
-            widget.type,
-            widget.payment,
-            widget.detail,
-            price);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) => CarWash4(id: id)));
-        },
-        child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
-        style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
-      ),
-    );
-  }
 }
+
+//   Container reserving(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       height: 40,
+//       child: ElevatedButton(
+//         onPressed: () {
+//           washRsrv(
+//               id,
+//               carNum,
+//               widget.dateAndTime,
+//               widget.carLocation,
+//               widget.carDetailLocation,
+//               widget.type,
+//               widget.payment,
+//               widget.detail,
+//               price);
+//           Navigator.push(
+//               context,
+//               MaterialPageRoute(
+//                   builder: (BuildContext context) => CarWash4(id: id)));
+//         },
+//         child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
+//         style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
+//       ),
+//     );
+//   }
+// }
 
 Future<void> washRsrv(
     String id,

@@ -162,20 +162,22 @@ class _CarWash2State extends State<CarWash2> {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        if(type1 != "" &&
-                           type2 != "" &&
-                           (type1 != typeList1[0] || type2 != typeList2[0]))
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => CarWash3(
-                                    id: id,
-                                    dateAndTime: widget.dateAndTime,
-                                    carLocation: widget.carLocation,
-                                    carDetailLocation: widget.carDetailLocation,
-                                    type: type1 + ',' + type2,
-                                    payment: widget.payment,
-                                    detail: plusRequest.text)));
+                        if (type1 != "" &&
+                            type2 != "" &&
+                            (type1 != typeList1[0] || type2 != typeList2[0])) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => CarWash3(
+                                      id: id,
+                                      dateAndTime: widget.dateAndTime,
+                                      carLocation: widget.carLocation,
+                                      carDetailLocation:
+                                          widget.carDetailLocation,
+                                      type: type1 + ',' + type2,
+                                      payment: widget.payment,
+                                      detail: plusRequest.text)));
+                        }
                       },
                       child: text('계속하기', 14.0, FontWeight.w500, Colors.white),
                       style:
