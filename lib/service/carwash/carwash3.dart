@@ -30,7 +30,6 @@ class CarWash3 extends StatefulWidget {
 class _CarWash3State extends State<CarWash3> {
   late String id;
   var price = 0;
-  String detail2 = '없음';
   String carNum = '102허2152'; // 차량 번호 받아와야 됨
   late var arr = widget.type.split(',');
 
@@ -131,7 +130,6 @@ class _CarWash3State extends State<CarWash3> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
-                      print(widget.detail);
                       washRsrv(
                           id,
                           carNum,
