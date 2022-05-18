@@ -44,7 +44,7 @@ class _ServicechoiceState extends State<Servicechoice> {
             future: data,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                if (serviceList[0] == "1") {
+                if (serviceList[0] == "1" && snapshot.data!.length != 0) {
                   initService(snapshot.data![0].carnumber);
                 }
                 return Column(
@@ -97,8 +97,11 @@ class _ServicechoiceState extends State<Servicechoice> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             InkWell(
-                              child:
-                                  Ink.image(image: AssetImage("image/service/oil.png"), fit: BoxFit.cover, width: 60, height: 60),
+                              child: Ink.image(
+                                  image: AssetImage("image/service/oil.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -114,8 +117,12 @@ class _ServicechoiceState extends State<Servicechoice> {
                         Column(
                           children: [
                             InkWell(
-                              child:
-                                  Ink.image(image: AssetImage("image/service/carWash.png"), fit: BoxFit.cover, width: 60, height: 60),
+                              child: Ink.image(
+                                  image:
+                                      AssetImage("image/service/carWash.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -131,8 +138,12 @@ class _ServicechoiceState extends State<Servicechoice> {
                         Column(
                           children: [
                             InkWell(
-                              child:
-                                  Ink.image(image: AssetImage("image/service/replacement.png"), fit: BoxFit.cover, width: 60, height: 60),
+                              child: Ink.image(
+                                  image: AssetImage(
+                                      "image/service/replacement.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -154,8 +165,12 @@ class _ServicechoiceState extends State<Servicechoice> {
                         Column(
                           children: [
                             InkWell(
-                              child:
-                                  Ink.image(image: AssetImage("image/service/maintenance.png"), fit: BoxFit.cover, width: 60, height: 60),
+                              child: Ink.image(
+                                  image: AssetImage(
+                                      "image/service/maintenance.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -171,8 +186,12 @@ class _ServicechoiceState extends State<Servicechoice> {
                         Column(
                           children: [
                             InkWell(
-                              child:
-                                  Ink.image(image: AssetImage("image/service/delivery.png"), fit: BoxFit.cover, width: 60, height: 60),
+                              child: Ink.image(
+                                  image:
+                                      AssetImage("image/service/delivery.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -188,8 +207,11 @@ class _ServicechoiceState extends State<Servicechoice> {
                         Column(
                           children: [
                             InkWell(
-                              child:
-                                  Ink.image(image: AssetImage("image/service/drive.png"), fit: BoxFit.cover, width: 60, height: 60),
+                              child: Ink.image(
+                                  image: AssetImage("image/service/drive.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -215,7 +237,7 @@ class _ServicechoiceState extends State<Servicechoice> {
                     //           child:
                     //               Ink.image(image: AssetImage("image/service/calculator.png"), fit: BoxFit.cover, width: 60, height: 60),
                     //           onTap: () {
-                                
+
                     //           },
                     //         ),
                     //         SizedBox(height: 4.0),
@@ -432,7 +454,8 @@ Container currentservice(service) {
 }
 
 Future<List> recentservice(String carnumber) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/recentservice/$carnumber'));
+  final response = await http
+      .get(Uri.parse('http://10.0.2.2:8080/recentservice/$carnumber'));
   if (response.statusCode == 200) {
     List service = [];
     List<dynamic> json = jsonDecode(response.body);
@@ -446,7 +469,8 @@ Future<List> recentservice(String carnumber) async {
 }
 
 Future<List> cardata(String id) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/$id'));
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/$id'));
   late List<Car> carList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);
