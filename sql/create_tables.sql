@@ -19,6 +19,7 @@ CREATE TABLE `CAR`(
     `number` CHAR(11) NOT NULL,			# 차 번호
     `name` VARCHAR(30) NULL,			# 차 별명
     `image` VARCHAR(50) NOT NULL,		# 차 사진 경로
+    `vehicleId` INT NOT NULL,			# 차량 id
     PRIMARY KEY(`number`),
     FOREIGN KEY(`id`)
     REFERENCES `MEMBER`(`id`) ON UPDATE CASCADE);
