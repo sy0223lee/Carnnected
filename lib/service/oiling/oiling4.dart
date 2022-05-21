@@ -3,6 +3,8 @@ import 'package:mosigg/service/oiling/oiling5.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
 
+import 'oiling6.dart';
+
 class Oiling4 extends StatefulWidget {
   final String id;
   final String dateAndTime;
@@ -98,19 +100,31 @@ class _Oiling4State extends State<Oiling4> {
                   child: ElevatedButton(
                     onPressed: () {
                       gasRsv(
-                          id,
-                          carNum,
-                          widget.dateAndTime,
-                          widget.carLocation,
-                          widget.carDetailLocation,
-                          widget.fuel,
-                          widget.payment,
-                          widget.gasStationName,
-                          int.parse(widget.price));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Oiling5(id: id)));
+                              id,
+                              carNum,
+                              widget.dateAndTime,
+                              widget.carLocation,
+                              widget.carDetailLocation,
+                              widget.fuel,
+                              widget.payment,
+                              widget.gasStationName,
+                              int.parse(widget.price))
+                          .then((result) {
+                        if (result == true) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Oiling5(id: id)));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Oiling6(id: id)));
+                          print("댕같이 실패");
+                        }
+                      });
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -125,7 +139,7 @@ class _Oiling4State extends State<Oiling4> {
   }
 }
 
-Future<void> gasRsv(
+Future<bool> gasRsv(
     String id,
     String carNum,
     String dateAndTime,
@@ -141,7 +155,10 @@ Future<void> gasRsv(
       'http://10.0.2.2:8080/gas_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$fuel/$gasStationName/$amount/$exPrice/$payment'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
+    bool result = (response.body == 'true') ? true : false;
+    return result;
   } else {
     print('개같이실패 ${response.statusCode}');
+    return false;
   }
 }

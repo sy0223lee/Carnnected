@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosigg/service/carwash/carwash4.dart';
+import 'package:mosigg/service/carwash/carwash5.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
 
@@ -139,12 +140,24 @@ class _CarWash3State extends State<CarWash3> {
                           widget.type,
                           widget.payment,
                           (widget.detail == '' ? '없음' : widget.detail),
-                          price);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  CarWash4(id: id)));
+                          price)
+                        .then((result) {
+                          if(result == true) {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    CarWash4(id: id)));
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                  CarWash5(id: id)));
+                            print("댕같이 실패");
+                          }
+                        });
+                      
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -159,7 +172,7 @@ class _CarWash3State extends State<CarWash3> {
   }
 }
 
-Future<void> washRsrv(
+Future<bool> washRsrv(
     String id,
     String carNum,
     String dateAndTime,
@@ -173,7 +186,10 @@ Future<void> washRsrv(
       'http://10.0.2.2:8080/wash_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$type/$detail/$price/$payment/'));
   if (response.statusCode == 200) {
     print('세차 예약 성공 ${response.body}');
+    bool result = (response.body == 'true') ? true : false;
+    return result;
   } else {
     print('세차 예약 실패 ${response.statusCode}');
+    return false;
   }
 }
