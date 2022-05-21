@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:mosigg/bottomtapbar.dart';
+import 'package:mosigg/home/home.dart';
 import 'package:mosigg/service/carwash/carwash1.dart';
 import 'package:mosigg/service/carwash/carwash4.dart';
 import 'package:mosigg/service/maintenance/maintenance1.dart';
@@ -39,7 +41,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => Oiling6(id: 'mouse0429@naver.com'),//LoginPage(),
+          // '/': (context) => Bottomtabbar(id: 'mouse0429@naver.com', pw: 'password1234'),
+          '/': (context) => LoginPage(),
           '/location1': (context) => LocationSearchPage1(
                 id: id,
               )

@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:mosigg/service/delivery/delivery3.dart';
+import 'package:mosigg/service/delivery/delivery5.dart';
 import 'package:mosigg/components.dart';
 
 class Delivery2 extends StatefulWidget {
@@ -240,7 +241,14 @@ class _Delivery2State extends State<Delivery2> {
                         width: 150.0,
                         height: 34.0,
                         child: TextButton(
-                          onPressed: (){Navigator.pop(context);},
+                          onPressed: (){
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                  Delivery5(id: id)));
+                          },
                           child: text("취소", 14.0, FontWeight.w500, Color(0xff000000)),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Color(0xfff5f5f5)),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/service/replacement/replacement5.dart';
+import 'package:mosigg/service/replacement/replacement6.dart';
 import 'package:provider/src/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
@@ -188,7 +189,24 @@ class _Replacement4State extends State<Replacement4> {
                             widget.carLocation,
                             widget.carDetailLocation,
                             context.read<MyCart>().totalPrice,
-                            widget.payment);
+                            widget.payment)
+                          .then((result) {
+                            if(result == true) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => Replacement5(
+                                          id: id,
+                                        )));
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Replacement6(id: id)));
+                          print("댕같이 실패");
+                            }
+                          });
                       else
                         repRsv(
                             id,
@@ -200,13 +218,25 @@ class _Replacement4State extends State<Replacement4> {
                             widget.carLocation,
                             widget.carDetailLocation,
                             context.read<MyCart>().totalPrice,
-                            widget.payment);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Replacement5(
-                                    id: id,
-                                  )));
+                            widget.payment)
+                          .then((result) {
+                            if(result == true) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => Replacement5(
+                                          id: id,
+                                        )));
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Replacement6(id: id)));
+                          print("댕같이 실패");
+                            }
+                          });
+                      
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -221,7 +251,7 @@ class _Replacement4State extends State<Replacement4> {
   }
 }
 
-Future<void> repRsv(
+Future<bool> repRsv(
     String id,
     String carNum,
     String dateAndTime,
@@ -236,7 +266,10 @@ Future<void> repRsv(
       'http://10.0.2.2:8080/replace_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$item/$maintenance/$plusRequest/$totalPrice/$payment'));
   if (response.statusCode == 200) {
     print('예약 성공 ${response.body}');
+    bool result = (response.body == 'true') ? true : false;
+    return result;
   } else {
     print('예약 실패 ${response.statusCode}');
+    return false;
   }
 }
