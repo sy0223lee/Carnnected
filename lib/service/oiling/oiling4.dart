@@ -152,7 +152,7 @@ Future<bool> gasRsv(
   String amount = (price * 10000).toString();
   String exPrice = ((price + 2) * 10000).toString();
   final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/gas_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$fuel/$gasStationName/$amount/$exPrice/$payment'));
+      'http://10.20.10.189:8080/gas_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$fuel/$gasStationName/$amount/$exPrice/$payment'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
     bool result = (response.body == 'true') ? true : false;

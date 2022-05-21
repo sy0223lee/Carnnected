@@ -1,9 +1,7 @@
-import 'package:mosigg/login/login.dart'; // 로그아웃
 import 'package:mosigg/components.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 //import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,7 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static final storage = FlutterSecureStorage(); // 로그아웃
   late String id;
   late String pw;
   var idx = 0;
@@ -53,9 +50,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             // 임시로그아웃 버튼
             onPressed: () {
-              storage.delete(key: "login");
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+              
             },
             icon: Icon(
               Icons.help_outline,
@@ -310,7 +305,7 @@ Container pluscard() {
 
 Future<List> cardata(String id) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/$id'));
+      await http.get(Uri.parse('http://10.20.10.189:8080/carinfo/$id'));
   late List<Car> carList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);
@@ -325,7 +320,7 @@ Future<List> cardata(String id) async {
 
 Future<String> getUsingservice(String carnumber) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/usingservice/$carnumber'));
+      await http.get(Uri.parse('http://10.20.10.189:8080/usingservice/$carnumber'));
 
   if (response.statusCode == 200) {
     String service = response.body.toString();

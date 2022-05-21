@@ -214,7 +214,7 @@ Future<bool> fixrsrv(
     String destaddr,
     int price) async {
   final response = await http.get(Uri.parse(
-      'http://10.0.2.2:8080/repair_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$type/$detail/$destName/$destaddr/$price/$payment'));
+      'http://10.20.10.189:8080/repair_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$type/$detail/$destName/$destaddr/$price/$payment'));
   if (response.statusCode == 200) {
     print('댕같이성공 ${response.body}');
     bool result = (response.body == 'true') ? true : false;

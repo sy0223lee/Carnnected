@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 Future login(String id, String pwd) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/login/$id/$pwd'));
+  final response = await http.get(Uri.parse('http://10.20.10.189:8080/login/$id/$pwd'));
 
   if(response.statusCode == 200) {
     if(json.decode(response.body) == true)  return true;  // 로그인 성공

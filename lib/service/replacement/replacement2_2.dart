@@ -238,7 +238,7 @@ class CustomRadio {
 
 Future<Item> getItemDetail(int index) async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8080/replace_item/$index'));
+      await http.get(Uri.parse('http://10.20.10.189:8080/replace_item/$index'));
 
   late Item item;
 
