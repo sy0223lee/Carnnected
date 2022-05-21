@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
 import 'package:mosigg/service/replacement/replacement5.dart';
+import 'package:mosigg/service/replacement/replacement6.dart';
 import 'package:provider/src/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosigg/components.dart';
@@ -20,15 +21,15 @@ class Replacement4 extends StatefulWidget {
   final String plusRequest;
 
   const Replacement4(
-    {Key? key,
-    required this.id,
-    required this.dateAndTime,
-    required this.carLocation,
-    required this.carDetailLocation,
-    required this.payment,
-    required this.maintenance,
-    required this.plusRequest}) 
-    : super(key: key);
+      {Key? key,
+      required this.id,
+      required this.dateAndTime,
+      required this.carLocation,
+      required this.carDetailLocation,
+      required this.payment,
+      required this.maintenance,
+      required this.plusRequest})
+      : super(key: key);
 
   @override
   State<Replacement4> createState() => _Replacement4State();
@@ -37,7 +38,7 @@ class Replacement4 extends StatefulWidget {
 class _Replacement4State extends State<Replacement4> {
   late String id;
   String carNum = '102허2152';
-
+  String detail2 = '없음';
   get index => null; //해당 차량
 
   @override
@@ -127,19 +128,26 @@ class _Replacement4State extends State<Replacement4> {
                           child: Row(
                             children: [
                               Flexible(
-                                child: RichText(
-                                  textAlign: TextAlign.left,
-                                  text: TextSpan(
-                                    text: context.read<MyCart>().items[index].name,
-                                    style: TextStyle(color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w500)
-                                  ),
-                                )
-                              ),
+                                  child: RichText(
+                                textAlign: TextAlign.left,
+                                text: TextSpan(
+                                    text: context
+                                        .read<MyCart>()
+                                        .items[index]
+                                        .name,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w500)),
+                              )),
                             ],
                           ),
                         ),
-                        text('${priceFormat.format(context.read<MyCart>().items[index].price)}원',
-                              14.0, FontWeight.w400, Colors.black),
+                        text(
+                            '${priceFormat.format(context.read<MyCart>().items[index].price)}원',
+                            14.0,
+                            FontWeight.w400,
+                            Colors.black),
                       ],
                     );
                   }),
@@ -149,7 +157,8 @@ class _Replacement4State extends State<Replacement4> {
               color: Color(0xffcbcbcb),
               thickness: 1.0,
             ),
-            splitrow2('예상 금액', '${priceFormat.format(context.read<MyCart>().totalPrice)} 원'),
+            splitrow2('예상 금액',
+                '${priceFormat.format(context.read<MyCart>().totalPrice)} 원'),
             splitrow2('결제방식', '${widget.payment}'),
             Expanded(
                 child: Column(
@@ -163,22 +172,71 @@ class _Replacement4State extends State<Replacement4> {
                       if (widget.maintenance == '적용') {
                         boolOfMaintenance = true;
                       }
-                      for(var i=0; i<context.read<MyCart>().items.length; i++){
-                        items += '${context.read<MyCart>().items[i].itemList}, ';
+                      for (var i = 0;
+                          i < context.read<MyCart>().items.length;
+                          i++) {
+                        items +=
+                            '${context.read<MyCart>().items[i].itemList}, ';
                       }
-                      repRsv(
-                        id,
-                        carNum,
-                        widget.dateAndTime,
-                        items,
-                        boolOfMaintenance,
-                        widget.plusRequest,
-                        widget.carLocation,
-                        widget.carDetailLocation,
-                        context.read<MyCart>().totalPrice,
-                        widget.payment);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) => Replacement5(id: id,)));
+                      if (widget.plusRequest == '')
+                        repRsv(
+                            id,
+                            carNum,
+                            widget.dateAndTime,
+                            items,
+                            boolOfMaintenance,
+                            detail2,
+                            widget.carLocation,
+                            widget.carDetailLocation,
+                            context.read<MyCart>().totalPrice,
+                            widget.payment)
+                          .then((result) {
+                            if(result == true) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => Replacement5(
+                                          id: id,
+                                        )));
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Replacement6(id: id)));
+                          print("댕같이 실패");
+                            }
+                          });
+                      else
+                        repRsv(
+                            id,
+                            carNum,
+                            widget.dateAndTime,
+                            items,
+                            boolOfMaintenance,
+                            widget.plusRequest,
+                            widget.carLocation,
+                            widget.carDetailLocation,
+                            context.read<MyCart>().totalPrice,
+                            widget.payment)
+                          .then((result) {
+                            if(result == true) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => Replacement5(
+                                          id: id,
+                                        )));
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        Replacement6(id: id)));
+                          print("댕같이 실패");
+                            }
+                          });
+                      
                     },
                     child: text('예약하기', 14.0, FontWeight.w500, Colors.white),
                     style: ElevatedButton.styleFrom(primary: Color(0xff001a5d)),
@@ -193,12 +251,12 @@ class _Replacement4State extends State<Replacement4> {
   }
 }
 
-Future<void> repRsv(
+Future<bool> repRsv(
     String id,
     String carNum,
     String dateAndTime,
     String item,
-    bool maintenance, 
+    bool maintenance,
     String plusRequest,
     String carLocation,
     String carDetailLocation,
@@ -208,7 +266,10 @@ Future<void> repRsv(
       'http://10.0.2.2:8080/replace_resrv/$id/$carNum/$dateAndTime/$carLocation/$carDetailLocation/$item/$maintenance/$plusRequest/$totalPrice/$payment'));
   if (response.statusCode == 200) {
     print('예약 성공 ${response.body}');
+    bool result = (response.body == 'true') ? true : false;
+    return result;
   } else {
     print('예약 실패 ${response.statusCode}');
+    return false;
   }
 }

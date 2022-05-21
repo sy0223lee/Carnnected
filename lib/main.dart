@@ -9,6 +9,8 @@ import 'package:mosigg/signup/signup1.dart';
 import 'package:mosigg/login/login.dart';
 import 'package:mosigg/location/location1.dart';
 
+import 'calender/calender.dart';
+
 //void main() => runApp(MyApp());
 void main() {
   KakaoContext.clientId = 'f7926788ee7785502df4ce563f93d183';
@@ -34,11 +36,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => StartPage(),
-          '/location1': (context) => LocationSearchPage1()
+          // '/': (context) => Bottomtabbar(id: 'mouse0429@naver.com', pw: 'password1234'),
+          '/': (context) => LoginPage(),
+          '/location1': (context) => LocationSearchPage1(
+                id: id,
+              )
         }
-
-        //home: SignUp3(),
+        // home:
         );
   }
 }

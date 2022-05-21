@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   final String id;
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       usingservice = service;
     });
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -49,15 +50,12 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         backgroundColor: Colors.white,
         actions: [
-          IconButton( // 임시로그아웃 버튼
+          IconButton(
+            // 임시로그아웃 버튼
             onPressed: () {
               storage.delete(key: "login");
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginPage()
-                  ));
-
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
             },
             icon: Icon(
               Icons.help_outline,
@@ -71,117 +69,104 @@ class _HomePageState extends State<HomePage> {
           future: data,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              if (usingservice == "") {
-                initService(snapshot.data![idx].carnumber);
+              if (snapshot.data!.length == 0) {
+                return pluscard();
+              } else {
+                if (usingservice == "") {
+                  initService(snapshot.data![idx].carnumber);
+                }
+                return SingleChildScrollView(
+                    child: Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      text(snapshot.data![idx].cartype, 18.0, FontWeight.w500,
+                          Colors.black),
+                      text(snapshot.data![idx].carname, 14.0, FontWeight.w500,
+                          Color(0xffA9A9A9)),
+                      SizedBox(height: 15),
+                      Container(
+                          height: 340,
+                          child: card(
+                              snapshot.data![idx].carnumber, usingservice)),
+                      SizedBox(height: 34.0),
+                      Container(
+                        width: 300,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: Color(0xffE8EAEE),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  text('열기', 12.0, FontWeight.w400,
+                                      Colors.black),
+                                  SvgPicture.asset('image/key/open.svg',
+                                      width: 24, height: 24),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  text('닫기', 12.0, FontWeight.w400,
+                                      Colors.black),
+                                  SvgPicture.asset('image/key/close.svg',
+                                      width: 24, height: 24),
+                                ],
+                              ),
+                            ),
+                            // Container(
+                            //   child: Column(
+                            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            //     children: [
+                            //       text('시동', 12.0, FontWeight.w400, Colors.black),
+                            //       SvgPicture.asset('image/key/on.svg',
+                            //           width: 24, height: 24),
+                            //     ],
+                            //   ),
+                            // ),
+                            Container(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  text('경적', 12.0, FontWeight.w400,
+                                      Colors.black),
+                                  SvgPicture.asset('image/key/horn.svg',
+                                      width: 24, height: 24),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  text('트렁크', 12.0, FontWeight.w400,
+                                      Colors.black),
+                                  SvgPicture.asset('image/key/trunk.svg',
+                                      width: 24, height: 24),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ));
               }
-              return SingleChildScrollView(
-                  child: Container(
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    text(snapshot.data![idx].cartype, 18.0, FontWeight.w500,
-                        Colors.black),
-                    text(snapshot.data![idx].carname, 14.0, FontWeight.w500,
-                        Color(0xffA9A9A9)),
-                    Container(
-                      height: 340,
-                      child: card(snapshot.data![idx].carnumber, usingservice, "공유중")
-                    ),
-                    SizedBox(height: 34.0),
-                    Container(
-                      width: 380,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Color(0xffE8EAEE),
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                text('열기', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.lock_open_outlined,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                text('닫기', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.lock_outline,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                text('시동', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.power_settings_new,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                text('경적', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.campaign,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                text(
-                                    '트렁크', 12.0, FontWeight.w400, Colors.black),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.toys_outlined,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ));
             } else {
-              return pluscard();
+              return SizedBox(height: 100);
             }
           },
         ),
@@ -190,19 +175,20 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Card card(String carnumber, String usingservice, String sharedstate) {
+Card card(String carnumber, String usingservice) {
   return Card(
     elevation: 0.0,
     child: Container(
       width: 220,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
-        boxShadow: <BoxShadow>[
+        boxShadow: [
           BoxShadow(
-              color: Colors.black12,
-              blurRadius: 1.0,
-              spreadRadius: 1.0,
-              offset: Offset(10.0, 10.0))
+            color: Color(0x3f000000),
+            offset: Offset(10, 10),
+            blurRadius: 10,
+            spreadRadius: 0,
+          ),
         ],
         color: Color(0xff001A5D),
       ),
@@ -238,24 +224,36 @@ Card card(String carnumber, String usingservice, String sharedstate) {
             ),
           ),
           SizedBox(height: 13.0),
-          text('현재 이용중인 서비스', 12.0, FontWeight.w400, Colors.white),
+          text('마지막으로 이용한 서비스', 12.0, FontWeight.w400, Colors.white),
           SizedBox(height: 6.0),
           text(usingservice, 20.0, FontWeight.bold, Colors.white),
-          SizedBox(height: 6.0),
-          text('내 차를 누가 몰고 있는지 궁금하다면?', 10.0, FontWeight.w400, Colors.white),
-          SizedBox(height: 23.0),
+          SizedBox(height: 13.0),
           Container(
-            decoration: BoxDecoration(
+            padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+            child: Divider(
+              height: 0.0,
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(25.0),
-                bottomLeft: Radius.circular(25.0),
-              ),
+              thickness: 1.0,
             ),
-            height: 40,
-            width: 280,
-            child: Center(
-                child: text(sharedstate, 20.0, FontWeight.bold, Colors.black)),
+          ),
+          SizedBox(height: 26.0),
+          InkWell(
+            onTap: () {
+              print('공유하기 서비스');
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(25.0),
+                  bottomLeft: Radius.circular(25.0),
+                ),
+              ),
+              height: 40,
+              width: 280,
+              child: Center(
+                  child: text("공유하기", 20.0, FontWeight.bold, Colors.black)),
+            ),
           )
         ],
       ),
@@ -263,31 +261,49 @@ Card card(String carnumber, String usingservice, String sharedstate) {
   );
 }
 
-Card pluscard() {
-  return Card(
-    elevation: 0.0,
-    child: Container(
-      width: 200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.black12,
-              blurRadius: 1.0,
-              spreadRadius: 1.0,
-              offset: Offset(10.0, 10.0))
-        ],
-        color: Colors.grey[300],
-      ),
-      child: Center(
-        child: IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.plus_one,
-            color: Color(0xffA9A9A9),
+Container pluscard() {
+  return Container(
+    alignment: Alignment.center,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        text('차량 없음', 18.0, FontWeight.w500, Colors.black),
+        text('차량을 등록해주세요', 14.0, FontWeight.w500, Color(0xffA9A9A9)),
+        SizedBox(height: 15),
+        Container(
+          width: 220,
+          height: 330,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x3f000000),
+                offset: Offset(10, 10),
+                blurRadius: 10,
+                spreadRadius: 0,
+              ),
+            ],
+            color: Colors.grey[300],
           ),
+          child: Center(
+              child: text('+', 40.0, FontWeight.w400, Color(0xffA9A9A9))),
         ),
-      ),
+        SizedBox(height: 34.0),
+        Container(
+            alignment: Alignment.center,
+            width: 300,
+            height: 90,
+            decoration: BoxDecoration(
+              color: Color(0xffE8EAEE),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              text('차량을 등록하면\n이용 가능합니다', 14.0, FontWeight.w400, Colors.black),
+            ]) //Container(),
+            ),
+      ],
     ),
   );
 }
@@ -308,8 +324,8 @@ Future<List> cardata(String id) async {
 }
 
 Future<String> getUsingservice(String carnumber) async {
-  final response = await http
-      .get(Uri.parse('http://10.0.2.2:8080/usingservice/$carnumber'));
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8080/usingservice/$carnumber'));
 
   if (response.statusCode == 200) {
     String service = response.body.toString();

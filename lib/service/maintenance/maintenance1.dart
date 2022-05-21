@@ -9,7 +9,8 @@ class Maintenance1 extends StatefulWidget {
   final String? carLocation;
   final String? carDetailLocation;
 
-  const Maintenance1({Key? key, required this.id, this.carLocation, this.carDetailLocation})
+  const Maintenance1(
+      {Key? key, required this.id, this.carLocation, this.carDetailLocation})
       : super(key: key);
 
   @override
@@ -125,11 +126,7 @@ class _Maintenance1State extends State<Maintenance1> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_selectedMinute != '0')
-                  text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
-                if (_selectedMinute == '0')
-                  text(
-                      '$_selectedHour:00', 12.0, FontWeight.w400, Colors.black),
+                text('$_selectedTime', 12.0, FontWeight.w400, Colors.black),
                 IconButton(
                     padding: EdgeInsets.only(left: 2),
                     constraints: BoxConstraints(),
@@ -146,9 +143,7 @@ class _Maintenance1State extends State<Maintenance1> {
                       selectedTime.then((timeOfDay) {
                         setState(() {
                           _selectedTime =
-                              '${timeOfDay?.hour}:${timeOfDay?.minute}';
-                          _selectedHour = '${timeOfDay?.hour}';
-                          _selectedMinute = '${timeOfDay?.minute}';
+                              timeOfDay.toString().substring(10, 15);
                         });
                       });
                     },
@@ -168,7 +163,12 @@ class _Maintenance1State extends State<Maintenance1> {
             SizedBox(height: 6),
             InkWell(
               onTap: () async {
-                final result = await Navigator.pushNamed(context, '/location1');
+                final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LocationSearchPage1(
+                              id: id,
+                            )));
                 if (result is Addr) {
                   setState(() {
                     carLocation = result.addr;
@@ -281,12 +281,12 @@ class _Maintenance1State extends State<Maintenance1> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) => Maintenance2(
-                                  id: id,
-                                  dateAndTime: dateAndTime,
-                                  carLocation: carLocation!,
-                                  carDetailLocation: carDetailLocation!,
-                                  payment: payment!,
-                                  carCoord: carCoord)));
+                                    id: id,
+                                    dateAndTime: dateAndTime,
+                                    carLocation: carLocation!,
+                                    carDetailLocation: carDetailLocation!,
+                                    payment: payment!,
+                                    carCoord: carCoord)));
                       }
                     },
                     child: text('계속하기', 14.0, FontWeight.w500, Colors.white),

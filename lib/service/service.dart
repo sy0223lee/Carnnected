@@ -21,7 +21,7 @@ class Servicechoice extends StatefulWidget {
 class _ServicechoiceState extends State<Servicechoice> {
   late String id;
   Future<List>? data;
-  List serviceList = ["1","1","1"];
+  List serviceList = ["1", "1", "1"];
 
   Future initService(String carNumber) async {
     var service = await recentservice(carNumber);
@@ -40,193 +40,218 @@ class _ServicechoiceState extends State<Servicechoice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List>(
-        future: data,
-        builder: (context, snapshot) {
-          if(snapshot.hasData) {
-            if(serviceList[0] == "1"){
-              initService(snapshot.data![0].carnumber);
-            }
-            return Column(
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    height: 153,
-                    color: Color(0xff001a5d),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+        body: FutureBuilder<List>(
+            future: data,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (serviceList[0] == "1" && snapshot.data!.length != 0) {
+                  initService(snapshot.data![0].carnumber);
+                }
+                return Column(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.help_outline),
-                              color: Colors.white,
-                            ),
-                          ],
-                        )
+                        Container(
+                          height: 153,
+                          color: Color(0xff001a5d),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.help_outline),
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                            top: 50.0,
+                            right: 60.0,
+                            child: snapshot.data!.length == 0
+                                ? card3()
+                                : serviceList == []
+                                    ? card2(
+                                        snapshot.data![0].carnumber,
+                                        snapshot.data![0].cartype,
+                                        snapshot.data![0].carname)
+                                    : card1(
+                                        snapshot.data![0].carnumber,
+                                        snapshot.data![0].cartype,
+                                        snapshot.data![0].carname))
                       ],
                     ),
-                  ),
-                  Positioned(
-                    top: 50.0,
-                    right: 60.0,
-                    child:  snapshot.data!.length == 0 ?
-                      card3() :
-                        serviceList == [] ?
-                          card2(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname) :
-                            card1(snapshot.data![0].carnumber, snapshot.data![0].cartype, snapshot.data![0].carname)
-                  )
-                ],
-              ),
-              SizedBox(height: 84.0),
-              text('이용 가능한 서비스', 16.0, FontWeight.bold, Colors.black),
-              SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Oiling1(id: id)));
-                        },
-                        icon: Icon(
-                          Icons.person,
-                          size: 60.0,
-                        ),
-                      ),
-                      SizedBox(height: 4.0),
-                      text('주유', 10.0, FontWeight.w400, Colors.black),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => CarWash1(id: id)));
-                        },
-                        icon: Icon(
-                          Icons.person,
-                          size: 60.0,
-                        ),
-                      ),
-                      SizedBox(height: 4.0),
-                      text('방문세차', 10.0, FontWeight.w400, Colors.black),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Replacement1(id: id)));
-                        },
-                        icon: Icon(
-                          Icons.person,
-                          size: 60.0,
-                        ),
-                      ),
-                      SizedBox(height: 4.0),
-                      text('방문교체', 10.0, FontWeight.w400, Colors.black),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 22.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Maintenance1(id: id)));
-                        },
-                        icon: Icon(
-                          Icons.person,
-                          size: 60.0,
-                        ),
-                      ),
-                      SizedBox(height: 4.0),
-                      text('정비', 10.0, FontWeight.w400, Colors.black),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Delivery1(id: id)));
-                        },
-                        icon: Icon(
-                          Icons.person,
-                          size: 60.0,
-                        ),
-                      ),
-                      SizedBox(height: 4.0),
-                      text('딜리버리', 10.0, FontWeight.w400, Colors.black),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.only(right: 35.0),
-                        onPressed: () {
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) => Drive1(id: id)));
-                        },
-                        icon: Icon(
-                          Icons.person,
-                          size: 60.0,
-                        ),
-                      ),
-                      SizedBox(height: 4.0),
-                      text('대리운전', 10.0, FontWeight.w400, Colors.black),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 22.0),
-              Row(
-                    children: [
-                      SizedBox(width: 59.0),
-                      Column(
-                        children: [
-                          IconButton(
-                            padding: EdgeInsets.only(right: 35.0),
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.person,
-                              size: 60.0,
+                    SizedBox(height: 84.0),
+                    text('이용 가능한 서비스', 16.0, FontWeight.bold, Colors.black),
+                    SizedBox(height: 16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              child: Ink.image(
+                                  image: AssetImage("image/service/oil.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Oiling1(id: id)));
+                              },
                             ),
-                          ),
-                          SizedBox(height: 4.0),
-                          text('가계부', 10.0, FontWeight.w400, Colors.black),
-                        ],
-                      ),
-                    ],
-                  ),
-            ],
-          );
-          } else {
-            return Container();
-          }
-          
-        }
-    ));
+                            SizedBox(height: 4.0),
+                            text('주유', 10.0, FontWeight.w400, Colors.black),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            InkWell(
+                              child: Ink.image(
+                                  image:
+                                      AssetImage("image/service/carWash.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            CarWash1(id: id)));
+                              },
+                            ),
+                            SizedBox(height: 4.0),
+                            text('방문세차', 10.0, FontWeight.w400, Colors.black),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            InkWell(
+                              child: Ink.image(
+                                  image: AssetImage(
+                                      "image/service/replacement.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Replacement1(id: id)));
+                              },
+                            ),
+                            SizedBox(height: 4.0),
+                            text('방문교체', 10.0, FontWeight.w400, Colors.black),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 22.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            InkWell(
+                              child: Ink.image(
+                                  image: AssetImage(
+                                      "image/service/maintenance.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Maintenance1(id: id)));
+                              },
+                            ),
+                            SizedBox(height: 4.0),
+                            text('정비', 10.0, FontWeight.w400, Colors.black),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            InkWell(
+                              child: Ink.image(
+                                  image:
+                                      AssetImage("image/service/delivery.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Delivery1(id: id)));
+                              },
+                            ),
+                            SizedBox(height: 4.0),
+                            text('딜리버리', 10.0, FontWeight.w400, Colors.black),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            InkWell(
+                              child: Ink.image(
+                                  image: AssetImage("image/service/drive.png"),
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Drive1(id: id)));
+                              },
+                            ),
+                            SizedBox(height: 4.0),
+                            text('대리운전', 10.0, FontWeight.w400, Colors.black),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 22.0),
+                    /*가계부 기능 추후 추가*/
+                    // Row(
+                    //   children: [
+                    //     SizedBox(width: 59.0),
+                    //     Column(
+                    //       children: [
+                    //         InkWell(
+                    //           child:
+                    //               Ink.image(image: AssetImage("image/service/calculator.png"), fit: BoxFit.cover, width: 60, height: 60),
+                    //           onTap: () {
+
+                    //           },
+                    //         ),
+                    //         SizedBox(height: 4.0),
+                    //         text('가계부', 10.0, FontWeight.w400, Colors.black),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                );
+              } else {
+                return Container();
+              }
+            }));
   }
 
   Container card1(String carnumber, String cartype, String carname) {
@@ -429,7 +454,8 @@ Container currentservice(service) {
 }
 
 Future<List> recentservice(String carnumber) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/recentservice/$carnumber'));
+  final response = await http
+      .get(Uri.parse('http://10.0.2.2:8080/recentservice/$carnumber'));
   if (response.statusCode == 200) {
     List service = [];
     List<dynamic> json = jsonDecode(response.body);
@@ -443,7 +469,8 @@ Future<List> recentservice(String carnumber) async {
 }
 
 Future<List> cardata(String id) async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/$id'));
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8080/carinfo/$id'));
   late List<Car> carList = [];
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);

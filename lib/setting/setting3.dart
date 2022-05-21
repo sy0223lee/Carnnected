@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Settingcar extends StatefulWidget {
-  const Settingcar({Key? key}) : super(key: key);
+  final String id;
+  const Settingcar({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Settingcar> createState() => _SettingcarState();
@@ -14,7 +15,7 @@ class _SettingcarState extends State<Settingcar> {
   Future<List>? data;
   @override
   void initState() {
-    data = cardata('mouse0429@naver.com');
+    data = cardata(widget.id);
     super.initState();
   }
 

@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Settingid extends StatefulWidget {
-  const Settingid({Key? key}) : super(key: key);
+  final String id;
+  const Settingid({Key? key, required this.id}) : super(key: key);
 
   @override
   State<Settingid> createState() => _SettingidState();
@@ -14,7 +15,7 @@ class _SettingidState extends State<Settingid> {
   Future<List>? data;
   @override
   void initState() {
-    data = userdata('mouse0429@naver.com');
+    data = userdata(widget.id);
     super.initState();
   }
 
@@ -49,20 +50,6 @@ class _SettingidState extends State<Settingid> {
                       SizedBox(height: 10.0),
                       text(snapshot.data![0].id, 12.0, FontWeight.w400,
                           Colors.black),
-                      Divider(
-                        height: 6.0,
-                        color: Color(0xffcbcbcb),
-                        thickness: 2.0,
-                      ),
-                      SizedBox(height: 20.0),
-                      text('비밀번호', 14.0, FontWeight.w500, Colors.black),
-                      SizedBox(height: 10.0),
-                      Row(
-                        children: [
-                          for (var i = 0; i < snapshot.data![0].pwd.length; i++)
-                            text('*', 12.0, FontWeight.w400, Colors.black),
-                        ],
-                      ),
                       Divider(
                         height: 6.0,
                         color: Color(0xffcbcbcb),
