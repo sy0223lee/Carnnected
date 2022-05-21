@@ -70,13 +70,20 @@ Future<List> eventdata(String id) async {
   final response =
       await http.get(Uri.parse('http://10.0.2.2:8080/calendar/$id'));
   late List<Event1> eventList = [];
+  kEventSource = {};
   if (response.statusCode == 200) {
     List<dynamic> json = jsonDecode(response.body);
     for (var i = 0; i < json.length; i++) {
       eventList.add(Event1.fromJson(json[i]));
-      kEventSource[
-            DateTime(int.parse(eventList[i].time.substring(0, 4)), int.parse(eventList[i].time.substring(5, 7)), int.parse(eventList[i].time.substring(8, 10)))] = [
-          Event(eventList[i].tablename+'서비스예약', eventList[i].time.substring(11,16), eventList[i].number)];
+      int year = int.parse(eventList[i].time.substring(0, 4));
+      int month = int.parse(eventList[i].time.substring(5, 7));
+      int day = int.parse(eventList[i].time.substring(8, 10));
+      Event curEvent = Event(eventList[i].tablename + '서비스예약',
+          eventList[i].time.substring(11, 16), eventList[i].number);
+
+      kEventSource[DateTime(year, month, day)] == null
+          ? kEventSource[DateTime(year, month, day)] = [curEvent]
+          : kEventSource[DateTime(year, month, day)].add(curEvent);
     }
     kEvents.addAll(kEventSource);
     return eventList;

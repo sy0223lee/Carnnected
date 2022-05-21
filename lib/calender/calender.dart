@@ -106,7 +106,7 @@ class _CalenderpageState extends State<Calenderpage> {
         title: text('일정', 18.0, FontWeight.w500, Colors.black),
       ),
       body: FutureBuilder(
-          future: eventdata(id), //setEvents(id),
+          future: eventdata(id), 
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData == false) {
               return Container(height: 100);
