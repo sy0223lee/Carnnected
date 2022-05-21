@@ -1,13 +1,14 @@
-const {Builder, By, Capabilities} = require('selenium-webdriver');
+const {Builder, By} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const options = new chrome.Options();
 options.addArguments('--incognito');  // 시크릿 모드로
 options.excludeSwitches('enable-logging');  // ERROR:device_event_log_impl.cc(214)
+options.headless(); // 창 없이
 
 const search = async (keyword, x, y) => { 
   var driver = await new Builder()
     .forBrowser('chrome')
-    .setChromeOptions(options.headless()) // 창 없이
+    .setChromeOptions(options)
     .build();
 
   var urlList = [];
@@ -32,7 +33,7 @@ const search = async (keyword, x, y) => {
 
           var name = await driver.findElement(By.css('h1.DUwDvf.fontHeadlineLarge span')).getText();
           var address = await driver.findElement(By.css('div.Io6YTe.fontBodyMedium')).getText();
-          var type = await driver.findElement(By.xpath('//*[@id="pane"]/div/div[1]/div/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/span[1]/span[1]/button')).getText();
+          var type = await driver.findElement(By.xpath('//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/span[1]/span[1]/button')).getText();
           if(type === "세차장") type = "세차";
           else if(type === "자동차 수리점") type = "정비";
           // console.log("name-address", name, "-", address);
