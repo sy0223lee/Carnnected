@@ -119,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 44,
                             child: TextField(
                               controller: inputid,
+                              keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                   hintText: '아이디', helperText: '아이디를 입력해주세요!'),
                             ),
