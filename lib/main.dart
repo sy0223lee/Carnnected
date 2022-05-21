@@ -4,6 +4,7 @@ import 'package:mosigg/service/carwash/carwash1.dart';
 import 'package:mosigg/service/carwash/carwash4.dart';
 import 'package:mosigg/service/maintenance/maintenance1.dart';
 import 'package:mosigg/service/maintenance/maintenance2.dart';
+import 'package:mosigg/service/oiling/oiling6.dart';
 import 'package:mosigg/signup/signup4.dart';
 import 'package:provider/provider.dart';
 import 'package:mosigg/provider/replaceProvider.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => LoginPage(),
+          '/': (context) => Oiling6(id: 'mouse0429@naver.com'),//LoginPage(),
           '/location1': (context) => LocationSearchPage1(
                 id: id,
               )
