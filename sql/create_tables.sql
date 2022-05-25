@@ -1,4 +1,4 @@
-#create schema carnnected;
+create schema carnnected;
 use carnnected;
 
 # 회원 테이블

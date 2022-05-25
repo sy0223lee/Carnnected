@@ -15,7 +15,7 @@ INSERT INTO `GAS_RESRV` VALUES('주유','mouse0429@naver.com','102허2152','2022
 INSERT INTO `REPLACE_RESRV` VALUES('방문교체','mouse0429@naver.com','102허2152','2022-03-02 18:00:00','아이템',true,'디테일','출발지','디테일출발지',15000,'카카오페이','reserved');
 
 INSERT INTO `CAR` VALUES
-('mouse0429@naver.com','페리도트 그린','2018','102허2152','완고한 고집의 힘','image/periodt.jpg',100),
+('sy02lee@naver.com','페리도트 그린','2018','102허2152','완고한 고집의 힘','image/periodt.jpg',100),
 ('dlekdud0102@naver.com','그랜저IG','2019','102하4651','내 차','image/grandeur.jpg',134);
 
 INSERT INTO `FAVORITE_ADDR` VALUES

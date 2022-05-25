@@ -18,9 +18,9 @@ const search = async (keyword, x, y) => {
   
   await driver.findElements(By.css('a.hfpxzc')).then(function (item){
     for(var value of item){
-      // console.log("value", value);
+      console.log("crawling_value", value);
       value.getAttribute('href').then(function (href){
-        // console.log("href", href);
+        console.log("crawling_href", href);
         urlList.push(href);
       })
     }
@@ -28,7 +28,7 @@ const search = async (keyword, x, y) => {
 
   setTimeout(async () => {
     for(var i = 0; i < urlList.length; i++){
-        // console.log("urlList", urlList[i]);
+        console.log("crawling_urlList", urlList[i]);
         await driver.get(urlList[i]);
 
           var name = await driver.findElement(By.css('h1.DUwDvf.fontHeadlineLarge span')).getText();
@@ -36,7 +36,7 @@ const search = async (keyword, x, y) => {
           var type = await driver.findElement(By.xpath('//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[1]/div[1]/div[2]/div/div[2]/span[1]/span[1]/button')).getText();
           if(type === "세차장") type = "세차";
           else if(type === "자동차 수리점") type = "정비";
-          // console.log("name-address", name, "-", address);
+          console.log("crawling_name-address", name, "-", address);
 
           elements.push({"type": type,"name": name, "address": address});
 

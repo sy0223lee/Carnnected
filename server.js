@@ -43,18 +43,19 @@ app.get('/signup/:idcheck', function(req, res){
 })
 
 // 회원 정보 저장
-app.get('/signup/:id/:pwd/:name/:birth/:phone', function(req, res){
+app.get('/signup/:id//:authToken/:pwd/:name/:birth/:phone', function(req, res){
     var id = req.params.id;
+    var authToken = req.params.authToken;
     var pwd = req.params.pwd;
     var name = req.params.name;
     var birth = req.params.birth;
     var phone = req.params.phone;
 
-    var datas = [id, pwd, name, birth, phone];
+    var datas = [id, authToken, pwd, name, birth, phone];
     console.log("회원 정보:", datas);
         
     pool.getConnection(function(err, connection){
-        var sqlMemInsert = "INSERT INTO MEMBER VALUES (?, ?, ?, ?, ?)";
+        var sqlMemInsert = "INSERT INTO MEMBER VALUES (?, ?, ?, ?, ?, ?)";
         connection.query(sqlMemInsert, datas, function(err){
             if(err) console.log('회원가입 INSERT 오류', err);
             else {
@@ -260,6 +261,8 @@ app.get('/recentservice/:carnumber', function(req, res){
                 res.send(false);
             }
             else{
+                console.log(rows[0]);
+                if(rows[0] === undefined) rows[0] = {tablename: "없음", time: '2022-05-26 20:00'};
                 console.log("최근 사용 서비스 전송 성공: ", rows);
                 res.send(rows);
             }
@@ -274,7 +277,6 @@ app.get('/recentservice/:carnumber', function(req, res){
 // 정비 검색 키워드: "자동차 수리점"
 // 세차 검색 키워드: "세차장"
 // 전기차 충전소 검색 키워드: "전기자동차 충전소"
-// 정비, 세차 같이 검색: "자동차 수리점, 세차장"
 app.get('/map/:keyword/:x/:y', function(req, res){
     var keyword = req.params.keyword;
     var x = req.params.x;
