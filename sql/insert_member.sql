@@ -1,15 +1,19 @@
+-- INSERT INTO `MEMBER` VALUES
+-- ('dlekdud0102@naver.com','password1234','이다영','010102','01012345678'),
+-- ('mouse0429@naver.com','password1234','김민지','000429','01023456789'),
+-- ('sy02lee@naver.com','password1234','이승윤','000223','01034567890'),
+-- ('harrydh@naver.com','password1234','정도훈','000601','01045678901'),
+-- ('lseyeon0723@naver.com','password1234','이세연','990326','01056789012'),
+-- ('baekhyuneeexo@naver.com','password1234','변백현','920506','01067890123'),
+-- ('dlwlrma@naver.com','password1234','이지은','930516','01078901234'),
+-- ('beeeestdjdjdj@naver.com','password1234','윤두준','890704','01089012345'),
+-- ('yysbeast@naver.com','password1234','양요섭','900105','01090123456'),
+-- ('gttk0000@naver.com','password1234','이기광','900330','01001234567'),
+-- ('highlightdnpn@naver.com','password1234','손동운','910606','01089756421');
+
 INSERT INTO `MEMBER` VALUES
-('dlekdud0102@naver.com','password1234','이다영','010102','01012345678'),
-('mouse0429@naver.com','password1234','김민지','000429','01023456789'),
-('sy02lee@naver.com','password1234','이승윤','000223','01034567890'),
-('harrydh@naver.com','password1234','정도훈','000601','01045678901'),
-('lseyeon0723@naver.com','password1234','이세연','990326','01056789012'),
-('baekhyuneeexo@naver.com','password1234','변백현','920506','01067890123'),
-('dlwlrma@naver.com','password1234','이지은','930516','01078901234'),
-('beeeestdjdjdj@naver.com','password1234','윤두준','890704','01089012345'),
-('yysbeast@naver.com','password1234','양요섭','900105','01090123456'),
-('gttk0000@naver.com','password1234','이기광','900330','01001234567'),
-('highlightdnpn@naver.com','password1234','손동운','910606','01089756421');
+('dlekdud0102@naver.com','다영authToken','password1234','이다영','010102','01097532160'),
+('sy02lee@naver.com','승윤authToken','password1234','이승윤','000223','01072030939');
 
 INSERT INTO `GAS_RESRV` VALUES('주유','mouse0429@naver.com','102허2152','2022-03-02 15:00:00','경유',50000,'어쩌구저쩌구','여기요여기','GS칼텍스',50000,'카카오페이','progress');
 INSERT INTO `REPLACE_RESRV` VALUES('방문교체','mouse0429@naver.com','102허2152','2022-03-02 18:00:00','아이템',true,'디테일','출발지','디테일출발지',15000,'카카오페이','reserved');
