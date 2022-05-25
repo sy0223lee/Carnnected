@@ -26,7 +26,7 @@ app.get('/signup/:idcheck', function(req, res){
     console.log('확인할 아이디:', idcheck);
     
     pool.getConnection(function(err, connection){
-        var sqlIdCheck = "SELECT id FROM MEMBER WHERE id = ?";
+        var sqlIdCheck = "SELECT `id` FROM `MEMBER` WHERE `id` = ?";
         connection.query(sqlIdCheck, idcheck, function(err, row){
             if(err) console.log('아이디 중복 확인 에러', err);
             if(row[0] !== undefined){
@@ -55,11 +55,11 @@ app.get('/signup/:id//:authToken/:pwd/:name/:birth/:phone', function(req, res){
     console.log("회원 정보:", datas);
         
     pool.getConnection(function(err, connection){
-        var sqlMemInsert = "INSERT INTO MEMBER VALUES (?, ?, ?, ?, ?, ?)";
+        var sqlMemInsert = "INSERT INTO` MEMBER` VALUES (?, ?, ?, ?, ?, ?)";
         connection.query(sqlMemInsert, datas, function(err){
             if(err) console.log('회원가입 INSERT 오류', err);
             else {
-                pool.query("SELECT * FROM MEMBER WHERE id = ?", id, function(err, row){
+                pool.query("SELECT * FROM `MEMBER` WHERE `id` = ?", id, function(err, row){
                     if(row[0].id === id){
                         console.log('회원가입 성공:', row);
                         res.send(true);
@@ -81,7 +81,7 @@ app.get('/login/:id/:pwd', function(req, res){
     var pwd = req.params.pwd;
 
     pool.getConnection(function(err, connection){
-        var sqlLogin = "SELECT * FROM MEMBER WHERE id = ? and pwd = ?";
+        var sqlLogin = "SELECT * FROM `MEMBER` WHERE `id` = ? and `pwd` = ?";
         connection.query(sqlLogin, [id, pwd], function(err, result){
             if(err) console.log('로그인 오류', err);
             if(result[0] !== undefined){
@@ -103,7 +103,7 @@ app.get('/login/:id/:pwd', function(req, res){
 app.get('/favorite_addr/:id', function(req, res){
 	var id = req.params.id;
     pool.getConnection(function(err, connection){
-        var sqlAddr = "SELECT * FROM FAVORITE_ADDR WHERE id = ? ORDER BY num DESC";
+        var sqlAddr = "SELECT * FROM `FAVORITE_ADDR` WHERE `id` = ? ORDER BY `num` DESC";
         connection.query(sqlAddr, id, function(err, rows){
             if(err){
                 console.log("즐겨찾는 주소 전송 에러", err);
@@ -123,7 +123,7 @@ app.get('/favorite_addr/insert/:id/:addr/:detailAddr', function(req, res){
     var addr = req.params.addr;
     var detailAddr = req.params.detailAddr;
 
-    var sqlAddrCount = "SELECT count(*) AS addrCount FROM FAVORITE_ADDR WHERE id = ?";
+    var sqlAddrCount = "SELECT count(*) AS addrCount FROM FAVORITE_ADDR WHERE `id` = ?";
     pool.query(sqlAddrCount, id, function(err, result){
         console.log(result[0]);
         if(result[0] === undefined)
@@ -156,7 +156,7 @@ app.get('/favorite_addr/delete/:id/:addr/:detailAddr', function(req, res){
     var detailAddr = req.params.detailAddr;
 
     pool.getConnection(function(err, connection){
-        var sqlAddrDelete = "DELETE FROM FAVORITE_ADDR WHERE id = ? AND addr = ? AND detailAddr = ?";
+        var sqlAddrDelete = "DELETE FROM FAVORITE_ADDR WHERE `id` = ? AND addr = ? AND detailAddr = ?";
         connection.query(sqlAddrDelete, [id, addr, detailAddr], function(err){
             if(err){
                 console.log("즐겨찾는 주소 삭제 오류:", addr, detailAddr, err);
@@ -166,14 +166,14 @@ app.get('/favorite_addr/delete/:id/:addr/:detailAddr', function(req, res){
                 console.log("즐겨찾는 주소 삭제 성공:", addr, detailAddr);
                 
                 // num 연속되게 다시 설정
-                var sqlAddrCount = "SELECT count(*) AS addrCount FROM FAVORITE_ADDR WHERE id = ?";
+                var sqlAddrCount = "SELECT count(*) AS addrCount FROM FAVORITE_ADDR WHERE `id` = ?";
                 pool.query(sqlAddrCount, id, function(err, result){
                     if(result[0] !== undefined){
-                        var sqlAddrNum = "SELECT num FROM FAVORITE_ADDR WHERE id = ? ORDER BY num";
+                        var sqlAddrNum = "SELECT `num` FROM FAVORITE_ADDR WHERE id = ? ORDER BY `num`";
                         pool.query(sqlAddrNum, id, function(err, rows){
                             for(var i = 0; i<result[0].addrCount; i++){
                                 if(i+1 !== rows[i].num){
-                                    var sqlOrder = "UPDATE FAVORITE_ADDR SET num = ? WHERE num = ?"
+                                    var sqlOrder = "UPDATE FAVORITE_ADDR SET `num` = ? WHERE `num` = ?"
                                     pool.query(sqlOrder, [i+1, rows[i].num], function(err){
                                         console.log("순서 다시 정렬");
                                     })
@@ -213,7 +213,7 @@ app.get('/memberinfo/:id', function(req, res){
 app.get('/carinfo/:id', function(req,res){
     var id = req.params.id;
     pool.getConnection(function(err, connection){
-        var sqlCarinfo = "SELECT * FROM CAR WHERE id = ?";
+        var sqlCarinfo = "SELECT * FROM `CAR` WHERE `id` = ?";
         connection.query(sqlCarinfo, id, function(err, rows0){
             if(err){
                 console.log("차량 정보 전송 오류: ", err);
